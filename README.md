@@ -1,10 +1,11 @@
 ## Project Proposal: Bier aanbieding notificatie applicatie
 
 **Author**: Alex van der Meer  
-**Start date**: 4-1-2016
+**Start date**: 4-1-2016  
+**Platform**: Android
 
 #### Applicatie doelen samenvatting
-Het doel van deze app is om een gebruiker een notificatie te laten ontvangen wanneer zijn of haar favoriete bier in een lokale supermarkt in de buurt is. 
+Het doel van deze app is om een gebruiker een notificatie te laten ontvangen wanneer zijn of haar favoriete bier in een lokale supermarkt in de buurt in de aanbieding is. 
 
 #### Probleem beschrijving en applicatie features
 Wanneer men een feestje geeft levert het een grote reductie in kosten op wanneer bier in de aanbieding wordt gekocht. Dit is op zon moment makkelijk op te zoeken op een aanbiedingen site. Echter de kosten van bier voor standaard gebruik door het jaar heen zouden ook goed gedrukt kunnen worden door het kopen van bier in de aanbieding. Door het jaar heen is het al snel te veel moeite om te zoeken naar een aanbieding. Deze app voorkomt het actief zoeken naar een aanbieding, door de gebruiker een notificatie te sturen over de nieuwste aanbieding in de buurt. Te veel notificaties kunnen irriteren, daarom is het mogelijk om aan te geven welke afstand je maximaal wilt reizen vanaf bijvoorbeeld je huis, om bij een supermarkt te komen. Om verder de informatie stroom te beperken is het mogelijk voor een gebruiker om aan te geven welk of welke bier merken hem/haar interesseren. 
