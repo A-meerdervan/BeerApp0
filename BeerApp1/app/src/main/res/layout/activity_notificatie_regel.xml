@@ -6,7 +6,20 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="nl.mprog.project.bieraanbiedingnotificatie.NotificatieRegelActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deze aanbiedingen volgen uit uw voorkeuren: "
+        android:id="@+id/introNotificationsTV"
+        android:layout_centerHorizontal="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notifcationsItemsList"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/introNotificationsTV"/>
 
 </RelativeLayout>
+

@@ -16,21 +16,23 @@ public class HomeScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        // TODO dit gaat meteen naar naar het volgende scherm
-        TextView nonsens = (TextView)findViewById(R.id.html_content);
-        onClickDiscountsButton(nonsens);
+//        // TODO dit gaat meteen naar naar het volgende scherm
+//        TextView nonsens = (TextView)findViewById(R.id.html_content);
+//        onClickDiscountsButton(nonsens);
     }
 
     public void onClickNotificationButton(View view){
         // Go to the Notification managing Activity
         startActivity(new Intent(getApplicationContext(), NotificatieRegelActivity.class));
-        this.finish();
+//        TODO: Fixen dat ie m wel finished maar dat je weer terug kunt vanuit het volgende scherm
+//        this.finish();
     }
 
     public void onClickDiscountsButton(View view){
         // Go to the activity with all discounts
         startActivity(new Intent(getApplicationContext(), AlleAanbiedingenActivity.class));
-        this.finish();
+//        TODO: Fixen dat ie m wel finished maar dat je weer terug kunt vanuit het volgende scherm
+//        this.finish();
     }
 
     @Override

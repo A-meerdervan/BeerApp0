@@ -1,14 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="0dp"
+    android:weightSum="1">
 
-    <TextView
-        android:layout_marginLeft="25dp"
-        android:layout_width="40dp"
+    <ImageView
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:id="@+id/img"
+        android:src="@drawable/nederlandsevlag"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_centerHorizontal="false"
+        android:layout_marginTop="@dimen/MarginTopSmall"
+        android:background="@android:color/transparent"/>
+
+    <LinearLayout
+        android:layout_toRightOf="@+id/img"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Test tekst"
-        android:id="@+id/RankNumber" />
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/MarginTopSmall"
+        android:padding="@dimen/MarginTopSmall">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Default text"
+            android:id="@+id/brand"
+            android:textColor="@color/Black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="default text"
+            android:id="@+id/format"
+            android:textSize="12sp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="default text"
+            android:id="@+id/period"
+            android:textColor="@color/Black"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentRight="true"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/MarginTopSmall"
+        android:padding="@dimen/MarginTopSmall">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Default text"
+            android:id="@+id/price"
+            android:textColor="@color/Black"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="default text"
+            android:id="@+id/literPrice"
+            android:textSize="14sp"
+            />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:id="@+id/imgSuper"
+            android:src="@drawable/nederlandsevlag"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_centerHorizontal="false"
+            android:layout_marginTop="@dimen/MarginTopSmall"
+            android:background="@android:color/transparent"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
