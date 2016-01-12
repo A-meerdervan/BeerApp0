@@ -20,7 +20,7 @@ import java.util.List;
 
 public class HtmlParser {
 
-    private static final String tag = "htmlParse";
+    private static final String tag = "C_htmlParse";
     private Document doc;
     private String htmlURL = "http://www.bierindeaanbieding.nl/krattenindeaanbieding.html";
     public List<DiscountObject> discountArray = new ArrayList<>();

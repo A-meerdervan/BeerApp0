@@ -7,10 +7,23 @@ Doelen van de dag:
 Actuele supermarkt info model class schrijven en linken aan de fragment invul informatie in de app. 
 
 Gedaan:  
-dd  
+Erachter gekomen dat er een bug in de google API zit:
+Wanneer je meerdere zoektermen invult gescheiden met een | teken (or),  
+dan is het zo dat er niet meer op afstand word geselecteerd zoals wel gespecificeerd door rankby:distance
+Dat is erg jammer. En dat je maximaal 20 resultaten gereturned krijgt.
+Hierdoor is het niet mogelijk om alle ondersteunde supermarkten gescheiden met | tekens te zoeken, 
+Maar moet ik het doen met de rankby:importance doen en genoegen nemen met het ontbreken van een hoop supermarkten.
+Een mogelijke oplossing zou zijn om per supermarkt zoekwoord een API request te sturen. 
+Echter heb je 1000 requests gratis op je API sleutel en word dat snel overtreden. Daarnaast zou dat veel netwerk kosten.
+
+Besloten een model class Supermarket toe te voegen voor supermarkt objecten met een keten naam en individuele naam en een adres veld op het moment
+
+Gevonden dat je met latitude en longitude coordinaten de afstand tussen twee punten kunt berekenen met een formule  
+http://www.movable-type.co.uk/scripts/latlong.html  
+Dit kan later gebruikt worden om de afstand tot een supermarkt weer te geven en daarmee dan te kunnen sorteren op afstand. 
 
 
-**Ma 11-1-2016**  
+*Ma 11-1-2016**  
 Doelen van de dag:  
 Supermarkt info van google places API succesvol verkrijgen en tonen in een app
 

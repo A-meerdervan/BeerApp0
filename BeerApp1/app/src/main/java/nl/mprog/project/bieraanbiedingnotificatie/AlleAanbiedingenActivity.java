@@ -28,7 +28,7 @@ import android.os.AsyncTask;
 
 public class AlleAanbiedingenActivity extends AppCompatActivity implements FilterFragment.OnFragmentInteractionListener {
 
-    private static final String tag = "AllDisc";
+    private static final String tag = "C_AllDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
     private HtmlParser htmlParser;
 

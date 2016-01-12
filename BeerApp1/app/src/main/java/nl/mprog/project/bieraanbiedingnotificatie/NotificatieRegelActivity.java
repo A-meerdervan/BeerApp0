@@ -18,7 +18,7 @@ import java.util.List;
 
 public class NotificatieRegelActivity extends AppCompatActivity {
 
-    private static final String tag = "NotifDisc";
+    private static final String tag = "C_NotifDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
 
     @Override
