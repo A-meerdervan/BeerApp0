@@ -3,7 +3,11 @@
 
     <color name="ActionBarColor">#CFD8DC</color>
     <color name="MainBackgroundColor">#607D8B</color>
-    <color name="MainButtonColor">#FF9800</color>
+    <color name="MainButtonColor">#C2F0FF</color>
     <color name="Black">#212121</color>
     <color name="BlueButtonColor">#2196F3</color>
+    <color name="SeparationLineColor">#848E91</color>
+    <color name="ButtonColor">#D6D6D6</color>
+
+
 </resources>

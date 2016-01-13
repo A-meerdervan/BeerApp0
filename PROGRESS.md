@@ -2,6 +2,16 @@
 **Author** Alex van der Meer  
 **Start date:** 5-1-2016
 
+**Wo 13-1-2016**  
+Doelen van de dag:  
+In de app via een fragment je locatie in kunnen voeren en de straal, en dan alle aanbiedingen zien.
+Database maken en overal implementeren
+
+Gedaan:  
+Communicatie tussen de notifcatie settings fragment en de activity opgezet. (Dit koste veel moeite)
+Nu is het mogelijk om de lengte en breedte graden in te voeren en de straal, dan worden alleen de matchende
+aanbiedingen weergegeven.  Helaas is het niet gelukt om aan de database te beginnen.  
+
 **Di 12-1-2016**  
 Doelen van de dag:
 Actuele supermarkt info model class schrijven en linken aan de fragment invul informatie in de app. 
@@ -21,6 +31,14 @@ Besloten een model class Supermarket toe te voegen voor supermarkt objecten met 
 Gevonden dat je met latitude en longitude coordinaten de afstand tussen twee punten kunt berekenen met een formule  
 http://www.movable-type.co.uk/scripts/latlong.html  
 Dit kan later gebruikt worden om de afstand tot een supermarkt weer te geven en daarmee dan te kunnen sorteren op afstand. 
+
+Besloten een class te maken: supportedSupermarketMap, een hashmap met alle ondersteunde supermarkten erin.
+De code hiervoor is geinspireerd door:  
+http://www.coderanch.com/t/386333/java/java/HashMap-Construction-initial-values  
+
+Succesvol de gevonden supermarkten gefilterd op alleen de ondersteunde supermarkten. 
+
+
 
 
 *Ma 11-1-2016**  

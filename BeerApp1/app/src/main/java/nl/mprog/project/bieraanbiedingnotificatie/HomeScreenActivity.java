@@ -16,9 +16,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-//        // TODO dit gaat meteen naar naar het volgende scherm
-//        TextView nonsens = (TextView)findViewById(R.id.html_content);
-//        onClickDiscountsButton(nonsens);
+        // TODO dit gaat meteen naar naar het volgende scherm
+        TextView nonsens = (TextView)findViewById(R.id.html_content);
+        onClickNotificationButton(nonsens);
     }
 
     public void onClickNotificationButton(View view){

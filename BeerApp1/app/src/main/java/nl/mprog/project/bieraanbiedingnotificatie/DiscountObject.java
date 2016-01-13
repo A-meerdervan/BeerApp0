@@ -11,6 +11,7 @@ package nl.mprog.project.bieraanbiedingnotificatie;
 
 public class DiscountObject {
 
+    public String brandPrint = "defaultBrandPrint";
     public String brand = "defaultBrand";
     public String format = "defaultFormat";
     public double price = 0;
@@ -21,7 +22,8 @@ public class DiscountObject {
     public int id = 0;
 
     // Constructor
-    public DiscountObject(String brand, String format, double price, double pricePerLiter, String superMarkt, String discountPeriod, String type){
+    public DiscountObject(String brandPrint, String brand , String format, double price, double pricePerLiter, String superMarkt, String discountPeriod, String type){
+        this.brandPrint = brandPrint;
         this.brand = brand;
         this.format = format;
         this.price = price;

@@ -31,6 +31,8 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
     private static final String tag = "C_AllDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
     private HtmlParser htmlParser;
+    private SuperMarketFinder superMarketFinder;
+    private List<SuperMarket> superMarkets = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,12 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
         htmlParser = new HtmlParser();
         JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
         jsoupAsyncTask.execute();
+
+        // Create an object of the class that can find near supermarkets
+        superMarketFinder = new SuperMarketFinder();
+        // Run the supermarket finding as a background thread
+        HttpTestAsyncTask testTask = new HttpTestAsyncTask();
+        testTask.execute();
     }
 
     private void populateListView() {
@@ -51,6 +59,26 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
         ArrayAdapter<DiscountObject> adapter = new MyListAdapter();
         ListView list = (ListView) findViewById(R.id.AllDiscountsList);
         list.setAdapter(adapter);
+    }
+
+    // this returns the resource integer id of a supermaket image
+    private int getSuperImageResource(String superMarket) {
+        int resId = getApplicationContext().getResources().getIdentifier(superMarket, "drawable", "nl.mprog.project.bieraanbiedingnotificatie");
+        if(resId != 0){
+            return resId;
+        }
+        // If image is not found:
+        return R.drawable.hertogjan;
+    }
+
+    // this returns the resource integer id of a brand image
+    private int getBeerImageResource(String brand) {
+        int resId = getApplicationContext().getResources().getIdentifier(brand, "drawable", "nl.mprog.project.bieraanbiedingnotificatie");
+        if(resId != 0){
+            return resId;
+        }
+        // If image is not found:
+        return R.drawable.imagenotfound;
     }
 
     // This custom adapter class is made to fill the listview with discount information
@@ -77,7 +105,7 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
 
             // Fill the brand
             TextView brand = (TextView) itemView.findViewById(R.id.brand);
-            brand.setText(discountObject.brand);
+            brand.setText(discountObject.brandPrint);
 
             // Fill the format
             TextView format = (TextView) itemView.findViewById(R.id.format);
@@ -89,22 +117,79 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
 
             // Fill the price
             TextView price = (TextView) itemView.findViewById(R.id.price);
-            price.setText("$" + discountObject.price);
+            price.setText("€" + discountObject.price);
 
             // Fill the literPrice
             TextView literPrice = (TextView) itemView.findViewById(R.id.literPrice);
-            literPrice.setText("$" + discountObject.pricePerLiter + " p/lr");
+            literPrice.setText("€" + discountObject.pricePerLiter + " p/lr");
 
             // Set the supermarkt image
             ImageView superMarkt = (ImageView) itemView.findViewById(R.id.imgSuper);
-            superMarkt.setImageResource(R.drawable.albertheijn);
+            superMarkt.setImageResource(getSuperImageResource(discountObject.superMarkt));
+
 
             // Set the item image
             ImageView itemImg = (ImageView) itemView.findViewById(R.id.img);
-            itemImg.setImageResource(R.drawable.hertogjan);
+            itemImg.setImageResource(getBeerImageResource(discountObject.brand));
             return itemView;
         }
     }
+
+
+    // TODO: this class is currently run from the oncreate function.
+    // It should be run every night or something, to update the database
+    private class HttpTestAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+//            // Uilenstede:
+//            String lat = "52.3202303";
+//            String lng = "4.870456";
+
+            // Abbekerk
+            String latitude = "52.7299972";
+            String longitude = "5.0129737";
+
+//            // Science park:
+//            String lat = "52.3545072";
+//            String lng = "4.9491274";
+
+            int radius = 7000;
+            superMarkets = superMarketFinder.getResults(radius, latitude, longitude);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // Print supermarket info to textview
+            Log.d(tag, "Nu zit ik in de onPostExecute functie");
+//            TextView outputTV = (TextView)findViewById(R.id.outputTV);
+//            String output = "";
+            // Create a list with only the bare supermarket names, like: deen,albertheijn,coop
+            List <String> superMarketsBare = new ArrayList<>();
+            for(int i = 0; i < superMarkets.size(); i++){
+                // add to all supermarktes info output string
+//                output += superMarkets.get(i).toString();
+                // only add supermarket if it has not already been added.
+                if (! superMarketsBare.contains(superMarkets.get(i).chainName)){
+                    superMarketsBare.add(superMarkets.get(i).chainName);
+                }
+            }
+//            outputTV.setText("Supermarkten: \n" + output);
+            String testArray = "";
+            for (String testChain : superMarketsBare){
+                testArray += (testChain + " , ") ;
+            }
+            Log.d(tag, testArray);
+        }
+    }
+
 
     // TODO: this class is currently run from the oncreate function.
     // It should be run every night or something, to update the database
@@ -171,9 +256,6 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
     }
 
     public void toggleFragment() {
-//        TextView ChangeLanguage = (TextView) findViewById(R.id.LanguageTV);
-//        Button ViewRules = (Button) findViewById(R.id.ViewRulesButton);
-//        Button Continue = (Button) findViewById(R.id.ContinueButton);
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("filter");
         if(fragment.isVisible()) {
@@ -181,9 +263,6 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
                     .hide(fragment)
                     .commit();
             getSupportFragmentManager().popBackStack();
-//            ChangeLanguage.setVisibility(View.VISIBLE);
-//            ViewRules.setVisibility(View.VISIBLE);
-//            Continue.setVisibility(View.VISIBLE);
         }
         else {
             transaction
@@ -191,9 +270,6 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
                     .show(fragment)
                     .addToBackStack("filter")
                     .commit();
-//            ChangeLanguage.setVisibility(View.GONE);
-//            ViewRules.setVisibility(View.GONE);
-//            Continue.setVisibility(View.GONE);
         }
     }
 

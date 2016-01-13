@@ -1,0 +1,205 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="nl.mprog.project.bieraanbiedingnotificatie.NotifyFragment"
+android:background="@color/MainButtonColor"
+android:clickable="true">
+
+
+    <ScrollView android:id="@+id/ScrlView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout android:id="@+id/layoutForScroll"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/MarginTop"
+            android:paddingLeft="@dimen/fragmentMargLeft">
+
+            <TextView
+                android:layout_marginTop="@dimen/MarginTop"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Specificeer hier voor welke aanbiedingen u een notificatie wilt ontvangen "
+                android:id="@+id/notifyIntroTV"/>
+
+            <!--Favorite beer selection -->
+
+            <TextView
+                android:layout_marginTop="@dimen/MarginTopSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favoriete bieren: "
+                android:textSize="14sp"
+                android:textColor="@color/Black"/>
+
+            <TextView
+                android:layout_marginTop="@dimen/MarginTopSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Default beer1 \nDefault beer2 "
+                android:textSize="14sp"
+                android:textColor="@color/Black"
+                android:id="@+id/favoBeersTV"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="voeg toe: "/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/favoBeerSpinner">
+
+                </Spinner>
+
+            </LinearLayout>
+
+
+            <!--Show a horizontal line-->
+
+            <View
+                android:layout_marginTop="@dimen/MarginLine"
+                android:layout_marginRight="@dimen/fragmentMargLeft"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/SeparationLineColor" />
+
+            <!--Adres part-->
+
+            <TextView
+                android:layout_marginTop="@dimen/MarginTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vul hier uw (woon) adres in "
+                android:textSize="14sp"
+                android:textColor="@color/Black"/>
+            
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/latitudeET"
+                    android:layout_marginRight="@dimen/fragmentMargLeft"
+                    android:hint="latitude"
+                    android:textSize="@dimen/editTextSize"
+                    />
+
+                <EditText
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/longitudeET"
+                    android:hint="longitude"
+                    android:textSize="@dimen/editTextSize"
+                    />
+
+            </LinearLayout>
+
+            <!--Show a horizontal line-->
+
+            <View
+                android:layout_marginTop="@dimen/MarginLine"
+                android:layout_marginRight="@dimen/fragmentMargLeft"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/SeparationLineColor" />
+
+            <!--specify the distance prepared to travel-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/radiusLinLay">
+
+                <TextView
+                    android:layout_marginRight="@dimen/MarginTopSmall"
+                    android:layout_width="162dp"
+                    android:layout_height="50dp"
+                    android:text="Maximale afstand tot supermarkt (in meters)"
+                    android:textSize="14sp"
+                    android:textColor="@color/Black"/>
+
+                <EditText
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/radiusET"
+                    android:hint="800"
+                    android:textSize="@dimen/editTextSize"
+                    />
+
+            </LinearLayout>
+
+            <!--Show a horizontal line-->
+
+            <View
+                android:layout_marginTop="@dimen/MarginLine"
+                android:layout_marginRight="@dimen/fragmentMargLeft"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/SeparationLineColor" />
+
+            <!--max price lin layout-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/maxPriceNotifyLinLay">
+
+                <TextView
+                    android:layout_marginRight="@dimen/MarginTopSmall"
+                    android:layout_width="162dp"
+                    android:layout_height="wrap_content"
+                    android:text="Maximale prijs: "
+                    android:textSize="14sp"
+                    android:textColor="@color/Black"/>
+
+                <EditText
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/maxPriceNotifyET"
+                    android:hint="10.10"
+                    android:textSize="@dimen/editTextSize"
+                    />
+
+            </LinearLayout>
+
+            <!--Save changes button-->
+
+            <Button
+                android:layout_marginTop="@dimen/MarginTopSmall"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:onClick="onClickSaveSettings"
+                android:background="@color/BlueButtonColor"
+                android:text="Opslaan"
+                android:textSize="@dimen/editTextSize"
+                android:textAllCaps="false"
+                android:textStyle="normal"
+                android:id="@+id/saveNotifySettingsBtn" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

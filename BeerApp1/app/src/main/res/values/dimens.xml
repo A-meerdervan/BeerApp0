@@ -4,7 +4,14 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="DpFromSide">30dp</dimen>
     <dimen name="MarginTop">30dp</dimen>
-    <dimen name="MarginTopSmall">5dp</dimen>
+    <dimen name="MarginTopSmall">10dp</dimen>
+    <dimen name="fragmentMargLeft">30dp</dimen>
+    <dimen name="MarginLine">18dp</dimen>
+    <dimen name="editTextSize">16sp</dimen>
+
+
+
+
 
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->

@@ -5,6 +5,8 @@
 
     <item android:id="@+id/filter" android:title="filter"
         android:orderInCategory="100"
-        app:showAsAction="always">
+        app:showAsAction="always"
+        android:textAllCaps="false"
+        >
     </item>
 </menu>
