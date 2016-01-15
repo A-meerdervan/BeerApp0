@@ -34,6 +34,7 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
     private SuperMarketFinder superMarketFinder;
     private List<SuperMarket> superMarkets = new ArrayList<>();
     private DataBaseHandler dataBaseHandler;
+    private FilterAndSorter filterAndSorter = new FilterAndSorter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,8 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
     }
 
     private void populateListView() {
+        // Sort the discounts on price
+        discountArray = filterAndSorter.sortOnPrice(discountArray);
         // Fill the listview list
         ArrayAdapter<DiscountObject> adapter = new MyListAdapter();
         ListView list = (ListView) findViewById(R.id.AllDiscountsList);

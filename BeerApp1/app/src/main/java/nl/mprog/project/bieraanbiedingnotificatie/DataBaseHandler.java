@@ -145,7 +145,60 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         db.execSQL(Query);
     }
 
-    
+    public List<DiscountObject> getNotifyFlaggedDiscounts(){
+        // get reference of the database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // get player query
+        Cursor cursor = db.query(TABLE_DISCOUNTS, DISCOUNTS_COLUMNS,
+                " " + DISCOUNT_NOTIFY_FLAG + " = ?", new String[]{String.valueOf(1)}, null, null, null, null);
+
+        List<DiscountObject> notifyFLaggedArray = new ArrayList<>();
+
+        DiscountObject discountObject;
+        if (cursor.moveToFirst()) {
+            do {
+                discountObject = new DiscountObject();
+                discountObject.id = Integer.parseInt(cursor.getString(0));
+                discountObject.brand = cursor.getString(1);
+                discountObject.brandPrint = cursor.getString(2);
+                discountObject.format = cursor.getString(3);
+                discountObject.price = cursor.getDouble(4);
+                discountObject.pricePerLiter = cursor.getDouble(5);
+                discountObject.superMarkt = cursor.getString(6);
+                discountObject.discountPeriod = cursor.getString(7);
+                discountObject.type = cursor.getString(8);
+                discountObject.notificationFlag = cursor.getInt(9);
+                // Add object to the array
+                notifyFLaggedArray.add(discountObject);
+            } while (cursor.moveToNext());
+        }
+        return notifyFLaggedArray;
+    }
+
+    // This function sets all notify flags to 0 when the user changes the notify settings
+    public void resetNotifyFlags(){
+        // get reference of the database
+        SQLiteDatabase db = this.getWritableDatabase();
+        String Query = "UPDATE " + TABLE_DISCOUNTS +
+                " SET " + DISCOUNT_NOTIFY_FLAG +
+                " = " + String.valueOf(0);
+        db.execSQL(Query);
+    }
+
+
+    // This function sets the notify flag of all the discounts from one supermarket to 1.
+    public void setFlagsBySuperMarket(String superMarket){
+        // get reference of the database
+        SQLiteDatabase db = this.getWritableDatabase();
+        String Query = "UPDATE " + TABLE_DISCOUNTS +
+                " SET " + DISCOUNT_NOTIFY_FLAG +
+                " = " + String.valueOf(1) +
+                " WHERE " + DISCOUNT_SUPERMARKT +
+                " = " + superMarket;
+        db.execSQL(Query);
+    }
+
 
 //    public DiscountObject readDiscount(int id) {
 //        // get reference of the database

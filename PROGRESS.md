@@ -2,12 +2,27 @@
 **Author** Alex van der Meer  
 **Start date:** 5-1-2016
 
+**Vr 15-1-13**  
+Doelen van de dag:  
+Data base implementeren voor alle aanbiedingen, en daarmee de app een stuk sneller maken
+beginnen met het maken van de FilterAndSorter class en zijn functionaliteit. 
+
+Gedaan:  
+Data base geimplementeerd voor alle aanbiedingen. De app is nu een stuk sneller. Op dit moment
+laad ie bij het eerst opstarten alle discount informatie van het internet, en daarna haalt ie het uit zijn
+database. Ik heb de class FilterAndSorter aangemaakt. Deze moet alle filter en sorteer taken op zich nemen.
+Sorteren op prijs is toegevoegd. Nu laat de app overal de kortingen zien gesorteerd op prijs van laag naar hoog.  
+Verder is toegevoegd dat men nu een maximale prijs kan invoeren voor de aanbiedingen waar hij een notificatie voor wil
+ontvangen. 
+
 **Do 14-1-13**  
 Doelen van de dag:  
 Zorgen dat de gebruiker zijn postcode in kan voeren en dan specifieke actuele aanbiedingen krijgt.
 De database opzetten in alle activities
 
-Gedaan:  
+Gedaan:
+Zorgen dat de gebruiker zijn postcode in kan voeren en dat die dan specifieke aanbiedingen krijgt.
+De notifcatie instellingen fragment zijn format een stuk opgeschoont. 
 
 
 **Wo 13-1-2016**  

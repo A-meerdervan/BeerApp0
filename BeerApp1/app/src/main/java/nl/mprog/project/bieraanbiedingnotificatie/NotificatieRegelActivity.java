@@ -3,7 +3,6 @@ package nl.mprog.project.bieraanbiedingnotificatie;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.AsyncTask;
 //import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
@@ -21,18 +20,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class NotificatieRegelActivity extends AppCompatActivity implements NotifyFragment.OnFragmentInteractionListener {
 
     private static final String tag = "*C_NotifDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
-    private List<DiscountObject> discountsNearbyArray = new ArrayList<>();
+    private List<DiscountObject> discountsNotifyArray = new ArrayList<>();
     private SuperMarketFinder superMarketFinder = new SuperMarketFinder();
     private List<SuperMarket> superMarkets = new ArrayList<>();
     private List<String> bareSuperMarkets = new ArrayList<>();
-
+    private FilterAndSorter filterAndSorter = new FilterAndSorter();
     private DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
 
     @Override
@@ -45,7 +43,15 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
 
         // Get the discount information from the database
         discountArray = dataBaseHandler.getAllDiscounts();
-
+        // if there are already discounts flagged for notifying, display them
+        discountsNotifyArray = dataBaseHandler.getNotifyFlaggedDiscounts();
+        if (discountsNotifyArray.size() == 0){
+            Log.d(tag, "Er zijn geen geflagde units gevonden");
+        }
+        else{
+            Log.d(tag, "hij heeft wel flags gevonden, zoveel: " + discountsNotifyArray.size());
+        }
+        populateListView();
         // TODO: get the already flagged for notification discounts from the DB
         // discountNotifyArray = databaseHandler.getFlaggedDiscounts();
     }
@@ -73,6 +79,9 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
     }
 
     private void populateListView() {
+        // Sort the entry's on price
+        discountsNotifyArray = filterAndSorter.sortOnPrice(discountsNotifyArray);
+
         // Fill the listview list
         ArrayAdapter<DiscountObject> adapter = new MyListAdapter();
         ListView list = (ListView) findViewById(R.id.notifcationsItemsList);
@@ -85,7 +94,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
 
         // constructor
         public MyListAdapter() {
-            super(NotificatieRegelActivity.this, R.layout.listview, discountsNearbyArray);
+            super(NotificatieRegelActivity.this, R.layout.listview, discountsNotifyArray);
         }
 
         @Override
@@ -97,7 +106,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             }
 
             // Get the discount object
-            DiscountObject discountObject = discountsNearbyArray.get(position);
+            DiscountObject discountObject = discountsNotifyArray.get(position);
 
             // Fill the views
 
@@ -166,17 +175,28 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         protected void onPostExecute(Void result) {
             Log.d(tag, "Nu zit ik in de onPostExecute functie");
 
-            // Filter the discounts on nearby supermarkets
-            // First empty the discountsNearbyArray for a fresh start
-            discountsNearbyArray.clear();
+            // Set all notify flags to 0 in the database
+            dataBaseHandler.resetNotifyFlags();
 
+            // Filter the discounts on nearby supermarkets
+            // First empty the discountsNotifyArray for a fresh start
+            discountsNotifyArray.clear();
+            // Update the discountArray from the dataBase and set the notify flags to 1
+            discountArray = dataBaseHandler.getAllDiscounts();
+            // for the newly found settings
             for (int i = 0; i< discountArray.size(); i++) {
-                if (bareSuperMarkets.contains(discountArray.get(i).superMarkt)) {
-                    discountsNearbyArray.add(discountArray.get(i));
+                if (bareSuperMarkets.contains(discountArray.get(i).superMarkt)
+                    && discountArray.get(i).price < maxPrice) {
+                    // TODO: hier toevoegen dat het biermerk ook hetzelfde moet zijn als de gebruiker zijn voorkeuren
+
+                    discountsNotifyArray.add(discountArray.get(i));
                     // Set the notify flag of the disount objects
                     discountArray.get(i).notificationFlag = 1;
                 }
             }
+            // Udate de dataBase with the newly flagged discounts
+            // TODO: per id een update doen in plaats van de hele DB te verwijderen en weer op te bouwen (dan kun je de discountarr = .getAllDIscounts regel hierboven ook weghalen)
+            dataBaseHandler.storeDiscounts(discountArray);
 
             populateListView();
         }
