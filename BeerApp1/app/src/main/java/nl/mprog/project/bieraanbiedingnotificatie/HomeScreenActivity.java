@@ -11,14 +11,16 @@ import android.widget.TextView;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
+    private static final String tag = "*C_HomeAct";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        // TODO dit gaat meteen naar naar het volgende scherm
-        TextView nonsens = (TextView)findViewById(R.id.html_content);
-        onClickNotificationButton(nonsens);
+//        // TODO dit gaat meteen naar naar het volgende scherm
+//        TextView nonsens = (TextView)findViewById(R.id.html_content);
+//        onClickNotificationButton(nonsens);
     }
 
     public void onClickNotificationButton(View view){

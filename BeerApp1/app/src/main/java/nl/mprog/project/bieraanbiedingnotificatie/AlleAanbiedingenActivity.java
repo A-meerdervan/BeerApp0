@@ -28,11 +28,12 @@ import android.os.AsyncTask;
 
 public class AlleAanbiedingenActivity extends AppCompatActivity implements FilterFragment.OnFragmentInteractionListener {
 
-    private static final String tag = "C_AllDisc";
+    private static final String tag = "*C_AllDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
     private HtmlParser htmlParser;
     private SuperMarketFinder superMarketFinder;
     private List<SuperMarket> superMarkets = new ArrayList<>();
+    private DataBaseHandler dataBaseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +43,13 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
         // Start up the filter fragment
         initializeFragment();
 
+        // Create the database helper object
+        dataBaseHandler = new DataBaseHandler(this);
+
         // parse HTML
         htmlParser = new HtmlParser();
         JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
         jsoupAsyncTask.execute();
-
-        // Create an object of the class that can find near supermarkets
-        superMarketFinder = new SuperMarketFinder();
-        // Run the supermarket finding as a background thread
-        HttpTestAsyncTask testTask = new HttpTestAsyncTask();
-        testTask.execute();
     }
 
     private void populateListView() {
@@ -135,62 +133,6 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
         }
     }
 
-
-    // TODO: this class is currently run from the oncreate function.
-    // It should be run every night or something, to update the database
-    private class HttpTestAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-//            // Uilenstede:
-//            String lat = "52.3202303";
-//            String lng = "4.870456";
-
-            // Abbekerk
-            String latitude = "52.7299972";
-            String longitude = "5.0129737";
-
-//            // Science park:
-//            String lat = "52.3545072";
-//            String lng = "4.9491274";
-
-            int radius = 7000;
-            superMarkets = superMarketFinder.getResults(radius, latitude, longitude);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            // Print supermarket info to textview
-            Log.d(tag, "Nu zit ik in de onPostExecute functie");
-//            TextView outputTV = (TextView)findViewById(R.id.outputTV);
-//            String output = "";
-            // Create a list with only the bare supermarket names, like: deen,albertheijn,coop
-            List <String> superMarketsBare = new ArrayList<>();
-            for(int i = 0; i < superMarkets.size(); i++){
-                // add to all supermarktes info output string
-//                output += superMarkets.get(i).toString();
-                // only add supermarket if it has not already been added.
-                if (! superMarketsBare.contains(superMarkets.get(i).chainName)){
-                    superMarketsBare.add(superMarkets.get(i).chainName);
-                }
-            }
-//            outputTV.setText("Supermarkten: \n" + output);
-            String testArray = "";
-            for (String testChain : superMarketsBare){
-                testArray += (testChain + " , ") ;
-            }
-            Log.d(tag, testArray);
-        }
-    }
-
-
     // TODO: this class is currently run from the oncreate function.
     // It should be run every night or something, to update the database
     private class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -202,7 +144,17 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
 
         @Override
         protected Void doInBackground(Void... params) {
-            discountArray = htmlParser.getDiscountsArray();
+
+            discountArray = dataBaseHandler.getAllDiscounts();
+            if (discountArray.size() == 0){
+                // The database has not been filled yet
+                Log.d(tag, "the database has not been filled yet");
+                discountArray = htmlParser.getDiscountsArray();
+                dataBaseHandler.storeDiscounts(discountArray);
+            }
+            else{
+                Log.d(tag, "the database was already filled");
+            }
 
             return null;
         }

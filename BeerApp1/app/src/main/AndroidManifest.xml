@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--android.supp  android.support.PARENT_ACTIVITY-->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,11 +22,21 @@
         </activity>
         <activity
             android:name=".NotificatieRegelActivity"
-            android:label="@string/title_activity_notificatie_regel" >
+            android:label="@string/title_activity_notificatie_regel"
+            android:parentActivityName="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" />
         </activity>
         <activity
             android:name=".AlleAanbiedingenActivity"
-            android:label="@string/title_activity_alle_aanbiedingen" >
+            android:label="@string/title_activity_alle_aanbiedingen"
+            android:parentActivityName="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" />
         </activity>
     </application>
 

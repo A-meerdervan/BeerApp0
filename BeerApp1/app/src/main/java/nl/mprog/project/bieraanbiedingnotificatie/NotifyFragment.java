@@ -31,6 +31,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String tag = "*C_NotifyFrag";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -89,27 +90,29 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if (mListener != null) {
 
-            EditText latitude = (EditText)getView().findViewById(R.id.latitudeET);
-            EditText longitude = (EditText)getView().findViewById(R.id.longitudeET);
+            EditText zipCodenumbersET = (EditText)getView().findViewById(R.id.zipCodeNumbersET);
+            EditText zipCodeLettersET = (EditText)getView().findViewById(R.id.zipCodeLettersET);
             EditText radiusET = (EditText)getView().findViewById(R.id.radiusET);
             EditText maxPriceET = (EditText)getView().findViewById(R.id.maxPriceNotifyET);
 
             // Check whether all fields are filled
-            if (latitude.getText().toString().equals("") ||
-                    longitude.getText().toString().equals("") ||
+            if (zipCodeLettersET.getText().toString().equals("") ||
+                    zipCodenumbersET.getText().toString().equals("") ||
                     radiusET.getText().toString().equals("") ||
                     maxPriceET.getText().toString().equals("")) {
-                Toast.makeText(this.getActivity(), "Alle velden zijn niet ingevuld", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getActivity(), "Niet alle velden zijn ingevuld", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            Double lat = Double.valueOf(latitude.getText().toString());
-            Double lng = Double.valueOf(longitude.getText().toString());
+            String zipCodeNumbers = zipCodenumbersET.getText().toString();
+            String zipCodeLetters = zipCodeLettersET.getText().toString();
+            String zipCode = zipCodeNumbers + zipCodeLetters;
             int radius = Integer.parseInt(radiusET.getText().toString());
             Double maxPrice = Double.valueOf(maxPriceET.getText().toString());
 
-            mListener.onFragmentInteraction(lat, lng, radius, maxPrice);
-
+            mListener.onFragmentInteraction(zipCode, radius, maxPrice);
+            // Let the user now the settings are saved
+            Toast.makeText(this.getActivity(), "Opgeslagen, aanbiediengen ophalen...", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -142,7 +145,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Double lat, Double lng, int radius, Double maxPrice);
+        public void onFragmentInteraction(String zipCode, int radius, Double maxPrice);
 
         //TODO: meer methods toevoegen
     }

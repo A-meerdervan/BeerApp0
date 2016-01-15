@@ -11,18 +11,19 @@ package nl.mprog.project.bieraanbiedingnotificatie;
 
 public class DiscountObject {
 
+    public int id = 0;
     public String brandPrint = "defaultBrandPrint";
     public String brand = "defaultBrand";
     public String format = "defaultFormat";
-    public double price = 0;
-    public double pricePerLiter = 0;
+    public Double price = 0.;
+    public Double pricePerLiter = 0.;
     public String superMarkt = "defaultSuperMarkt";
     public String discountPeriod = "defaultPeriod";
     public String type = "defaultType";
-    public int id = 0;
+    public Integer notificationFlag = 0;
 
     // Constructor
-    public DiscountObject(String brandPrint, String brand , String format, double price, double pricePerLiter, String superMarkt, String discountPeriod, String type){
+    public DiscountObject(String brandPrint, String brand , String format, Double price, Double pricePerLiter, String superMarkt, String discountPeriod, String type){
         this.brandPrint = brandPrint;
         this.brand = brand;
         this.format = format;
@@ -31,6 +32,11 @@ public class DiscountObject {
         this.superMarkt = superMarkt;
         this.discountPeriod = discountPeriod;
         this.type = type;
+    }
+
+    // Empty constructor for use in the database
+    public DiscountObject(){
+
     }
 
 

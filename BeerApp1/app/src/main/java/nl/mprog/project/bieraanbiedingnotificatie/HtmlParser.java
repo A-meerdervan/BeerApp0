@@ -21,7 +21,7 @@ import java.util.List;
 
 public class HtmlParser {
 
-    private static final String tag = "C_htmlParse";
+    private static final String tag = "*C_htmlParse";
     private Document doc;
     private String htmlURL = "http://www.bierindeaanbieding.nl/krattenindeaanbieding.html";
     public List<DiscountObject> discountArray = new ArrayList<>();
@@ -46,14 +46,13 @@ public class HtmlParser {
                 // Get the supermarket
                 Element div = element.getElementsByClass("data3").first();
                 String superMarket = div.child(0).attr("alt");
-                Log.d(tag, superMarket);
                 String[] supportInfo = superMarketFinder.checkStore(superMarket);
                 // if the suppermarket is not supported it is not shown as a result (for exaple hanos)
                 if (supportInfo[0].equals("false")){
+                    Log.d(tag, "Deze is niet supported: " + superMarket);
                     continue;
                 }
                 superMarket = supportInfo[1];
-                Log.d(tag, "deze is wel supported: " + superMarket);
                 // Get table rows filled with info
                 div = element.getElementsByClass("data2").first();
                 Elements tableRows = div.getElementsByTag("tbody").first().children();

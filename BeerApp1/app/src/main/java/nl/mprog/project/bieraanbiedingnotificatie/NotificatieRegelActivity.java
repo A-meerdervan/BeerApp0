@@ -26,12 +26,14 @@ import java.util.List;
 
 public class NotificatieRegelActivity extends AppCompatActivity implements NotifyFragment.OnFragmentInteractionListener {
 
-    private static final String tag = "C_NotifDisc";
+    private static final String tag = "*C_NotifDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
     private List<DiscountObject> discountsNearbyArray = new ArrayList<>();
-    private HtmlParser htmlParser;
-    private SuperMarketFinder superMarketFinder;
+    private SuperMarketFinder superMarketFinder = new SuperMarketFinder();
     private List<SuperMarket> superMarkets = new ArrayList<>();
+    private List<String> bareSuperMarkets = new ArrayList<>();
+
+    private DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +43,11 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         // Start up the settings fragment
         initializeFragment();
 
-        // parse HTML and create an object of the class that can find near supermarkets
-        superMarketFinder = new SuperMarketFinder();
-        htmlParser = new HtmlParser();
-        CustomAsyncTask customAsyncTask = new CustomAsyncTask(52.3202303, 4.870456 , 1000, 10.3);
-        // Uilenstede:
-        //            String latitude = "52.3202303";
-        //            String longitude = "4.870456";
-        customAsyncTask.execute();
+        // Get the discount information from the database
+        discountArray = dataBaseHandler.getAllDiscounts();
 
-//        // Create an object of the class that can find near supermarkets
-//        superMarketFinder = new SuperMarketFinder();
-//        // Run the supermarket finding as a background thread
-//        HttpTestAsyncTask testTask = new HttpTestAsyncTask();
-//        testTask.execute();
+        // TODO: get the already flagged for notification discounts from the DB
+        // discountNotifyArray = databaseHandler.getFlaggedDiscounts();
     }
 
     // this returns the resource integer id of a supermaket image
@@ -145,14 +138,12 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
     // It should be run every night or something, to update the database
     private class CustomAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private Double lat;
-        private Double lng;
+        private String zipCode;
         private int radius;
         private Double maxPrice;
 
-        public CustomAsyncTask(Double lat, Double lng, int radius, Double maxPrice){
-            this.lat = lat;
-            this.lng = lng;
+        public CustomAsyncTask(String zipCode, int radius, Double maxPrice){
+            this.zipCode = zipCode;
             this.radius = radius;
             this.maxPrice = maxPrice;
         }
@@ -164,24 +155,10 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         @Override
         protected Void doInBackground(Void... params) {
 
-            // get the discount data from parsing html
-            discountArray = htmlParser.getDiscountsArray();
-
             // get the supermarkets nearby information
-            // Uilenstede:
-//            String latitude = "52.3202303";
-//            String longitude = "4.870456";
-
-//            // Abbekerk
-//            String latitude = "52.7299972";
-//            String longitude = "5.0129737";
-
-//            // Science park:
-//            String latitude = "52.3545072";
-//            String longitude = "4.9491274";
-
-//            int radius = 1000;
-            superMarkets = superMarketFinder.getResults(radius, lat.toString(), lng.toString());
+            superMarkets = superMarketFinder.getResults(radius, zipCode);
+            // get a list with only the bare supermarket names, like: deen,albertheijn,coop
+            bareSuperMarkets = superMarketFinder.getBareSupermarkets();
             return null;
         }
 
@@ -189,27 +166,15 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         protected void onPostExecute(Void result) {
             Log.d(tag, "Nu zit ik in de onPostExecute functie");
 
-            // Create a list with only the bare supermarket names, like: deen,albertheijn,coop
-            List<String> superMarketsBare = new ArrayList<>();
-            for (int i = 0; i < superMarkets.size(); i++) {
-                if (!superMarketsBare.contains(superMarkets.get(i).chainName)) {
-                    superMarketsBare.add(superMarkets.get(i).chainName);
-                }
-            }
-            String testArray = "";
-            for (String testChain : superMarketsBare) {
-                testArray += (testChain + " , ");
-            }
-            Log.d(tag, testArray);
-
             // Filter the discounts on nearby supermarkets
             // First empty the discountsNearbyArray for a fresh start
             discountsNearbyArray.clear();
 
-            for (DiscountObject discountObject : discountArray) {
-                superMarketsBare.contains(discountObject.superMarkt);
-                if (superMarketsBare.contains(discountObject.superMarkt)) {
-                    discountsNearbyArray.add(discountObject);
+            for (int i = 0; i< discountArray.size(); i++) {
+                if (bareSuperMarkets.contains(discountArray.get(i).superMarkt)) {
+                    discountsNearbyArray.add(discountArray.get(i));
+                    // Set the notify flag of the disount objects
+                    discountArray.get(i).notificationFlag = 1;
                 }
             }
 
@@ -221,12 +186,12 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
     // And updates the discount information
 
     @Override
-    public void onFragmentInteraction(Double lat, Double lng, int radius, Double maxPrice) {
+    public void onFragmentInteraction(String zipCode, int radius, Double maxPrice) {
         TextView tvINT = (TextView)findViewById(R.id.introNotificationsTV);
-        tvINT.setText("" + lat + " " + lng + " " + radius + " " + maxPrice );
+        tvINT.setText(zipCode + " " + radius + " " + maxPrice );
 
-        // Get the supermarkets
-        CustomAsyncTask customAsyncTask = new CustomAsyncTask(lat, lng , radius, maxPrice);
+//         Get the supermarkets
+        CustomAsyncTask customAsyncTask = new CustomAsyncTask(zipCode, radius, maxPrice);
         customAsyncTask.execute();
 
         // Filter the discounts

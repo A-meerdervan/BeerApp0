@@ -2,6 +2,14 @@
 **Author** Alex van der Meer  
 **Start date:** 5-1-2016
 
+**Do 14-1-13**  
+Doelen van de dag:  
+Zorgen dat de gebruiker zijn postcode in kan voeren en dan specifieke actuele aanbiedingen krijgt.
+De database opzetten in alle activities
+
+Gedaan:  
+
+
 **Wo 13-1-2016**  
 Doelen van de dag:  
 In de app via een fragment je locatie in kunnen voeren en de straal, en dan alle aanbiedingen zien.
@@ -9,8 +17,13 @@ Database maken en overal implementeren
 
 Gedaan:  
 Communicatie tussen de notifcatie settings fragment en de activity opgezet. (Dit koste veel moeite)
-Nu is het mogelijk om de lengte en breedte graden in te voeren en de straal, dan worden alleen de matchende
+Nu is het mogelijk om in de app de lengte en breedte graden in te voeren en de straal, dan worden alleen de matchende
 aanbiedingen weergegeven.  Helaas is het niet gelukt om aan de database te beginnen.  
+
+Functionaliteit is toegevoegd om een postcode in Nederland om te zetten in een lengte en breedte graad
+Dit is gedaan met de google geoCoding API
+Instructies verkregen van:
+https://developers.google.com/maps/documentation/geocoding/intro
 
 **Di 12-1-2016**  
 Doelen van de dag:

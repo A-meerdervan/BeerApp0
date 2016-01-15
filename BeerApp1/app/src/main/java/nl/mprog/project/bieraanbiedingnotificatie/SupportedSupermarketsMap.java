@@ -43,6 +43,8 @@ public class SupportedSupermarketsMap extends HashMap {
 
         this.put("Emte","emte");
         this.put("emte","emte");
+        this.put("EMTÉ","emte");
+        
 
         this.put("Spar","spar");
         this.put("spar","spar");

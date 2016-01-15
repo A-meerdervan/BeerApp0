@@ -31,21 +31,32 @@ import java.util.HashMap;
 
 public class SuperMarketFinder {
 
-    private static final String tag = "C_SuperFndr";
+    private static final String tag = "*C_SuperFndr";
     private static final HashMap supportedSupermarketsMap = new SupportedSupermarketsMap();
+    private AdresToLocation adresToLocation = new AdresToLocation();
+    private List<SuperMarket> superMarkets = new ArrayList<>();
 
     // Constructor
     public void SuperMarketFinder(){
 
     }
 
+    // This function takes a radius and a zipCode and returns all superMarkets that are
+    // near the entered zipCode.
     // Some HTTP request code was taken from http://developer.android.com/reference/java/net/HttpURLConnection.html
-    public List<SuperMarket> getResults(int radius, String latitude, String longitude){
+    public List<SuperMarket> getResults(int radius, String zipCode){
 
-        String placesSearchURL = createAPIsearchURL(radius, latitude, longitude);
+        String[] location = adresToLocation.getLocationFromAdres(zipCode);
+        // Print the coordinates
+        Log.d(tag, location[0]);
+        Log.d(tag, location[1]);
 
+        // Get the API url
+        String placesSearchURL = createAPIsearchURL(radius, location[0], location[1]);
+
+        // Create the string builder that will receive the supermarket data from the google places API
+        // And the required HTTP connection.
         StringBuilder placesBuilder = new StringBuilder();
-
         URL url = null;
         HttpURLConnection urlConnection = null;
 
@@ -85,7 +96,25 @@ public class SuperMarketFinder {
         String JSONreturned = placesBuilder.toString();
 
         // Return the parsed JSON input
-        return parseJSONsupermarketInfo(JSONreturned);
+        superMarkets = parseJSONsupermarketInfo(JSONreturned);
+        return superMarkets;
+    }
+
+    // Create a list with only the bare supermarket names, like: deen,albertheijn,coop
+    public List<String> getBareSupermarkets(){
+        List<String> bareSuperMarkets = new ArrayList<>();
+        for (int i = 0; i < superMarkets.size(); i++) {
+            // If it is not already stored, store it.
+            if (!bareSuperMarkets.contains(superMarkets.get(i).chainName)) {
+                bareSuperMarkets.add(superMarkets.get(i).chainName);
+            }
+        }
+        String testArray = "";
+        for (String testChain : bareSuperMarkets) {
+            testArray += (testChain + ",");
+        }
+        Log.d(tag, testArray);
+        return bareSuperMarkets;
     }
 
     // Some code was taken from
@@ -124,10 +153,13 @@ public class SuperMarketFinder {
             // Loop all supermarkt JSON objects and parse them to SuperMarkt class objects
             for (int i = 0; i < superMarketArray.length(); i++)
             {
-                // Only store supported supermarkets
+                // Get the storename from the Json and use the checkStore function to
+                // get the name of the store chain like "albertheijn" and to see whether the store
+                // is supported
                 String storeName = superMarketArray.getJSONObject(i).getString("name");
                 String[] resultArray = checkStore(storeName);
                 boolean isSupported = resultArray[0].equals("true");
+                // only store supported supermarkets
                 if ( isSupported ){
                     String chainName = resultArray[1];
                     String adres = superMarketArray.getJSONObject(i).getString("vicinity");
@@ -137,7 +169,11 @@ public class SuperMarketFinder {
                     SuperMarket superMarket = new SuperMarket(chainName, storeName, adres, latitude, longitude);
                     superMarkets.add(superMarket);
                 }
-                // else: ignore supermarkt
+                else{
+                    // ignore supermarkt
+                    Log.d(tag, "Not supported: " + storeName);
+                }
+
             }
 
         } catch (JSONException e) {

@@ -31,7 +31,7 @@ android:clickable="true">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Favoriete bieren: "
-                android:textSize="14sp"
+                android:textSize="@dimen/standardTextSize"
                 android:textColor="@color/Black"/>
 
             <TextView
@@ -39,7 +39,7 @@ android:clickable="true">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Default beer1 \nDefault beer2 "
-                android:textSize="14sp"
+                android:textSize="@dimen/standardTextSize"
                 android:textColor="@color/Black"
                 android:id="@+id/favoBeersTV"/>
 
@@ -65,22 +65,24 @@ android:clickable="true">
 
             <!--Show a horizontal line-->
 
-            <View
-                android:layout_marginTop="@dimen/MarginLine"
-                android:layout_marginRight="@dimen/fragmentMargLeft"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="@color/SeparationLineColor" />
+            <!--<View-->
+                <!--android:layout_marginTop="@dimen/MarginLine"-->
+                <!--android:layout_marginRight="@dimen/fragmentMargLeft"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="@color/SeparationLineColor" />-->
 
             <!--Adres part-->
 
             <TextView
-                android:layout_marginTop="@dimen/MarginTop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vul hier uw (woon) adres in "
-                android:textSize="14sp"
-                android:textColor="@color/Black"/>
+                android:layout_marginTop="@dimen/MarginTopSmall"
+                android:text="Uw postcode"
+                android:textSize="@dimen/standardTextSize"
+                android:textColor="@color/Black"
+                />
+
             
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -90,21 +92,21 @@ android:clickable="true">
                 <EditText
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/latitudeET"
+                    android:id="@+id/zipCodeNumbersET"
                     android:layout_marginRight="@dimen/fragmentMargLeft"
-                    android:hint="latitude"
+                    android:hint="b.v. 1657"
                     android:textSize="@dimen/editTextSize"
                     />
 
                 <EditText
-                    android:layout_width="120dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
+                    android:inputType="textCapCharacters"
                     android:ems="10"
-                    android:id="@+id/longitudeET"
-                    android:hint="longitude"
+                    android:id="@+id/zipCodeLettersET"
+                    android:hint="b.v. KG"
                     android:textSize="@dimen/editTextSize"
                     />
 
@@ -112,12 +114,12 @@ android:clickable="true">
 
             <!--Show a horizontal line-->
 
-            <View
-                android:layout_marginTop="@dimen/MarginLine"
-                android:layout_marginRight="@dimen/fragmentMargLeft"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="@color/SeparationLineColor" />
+            <!--<View-->
+                <!--android:layout_marginTop="@dimen/MarginLine"-->
+                <!--android:layout_marginRight="@dimen/fragmentMargLeft"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="@color/SeparationLineColor" />-->
 
             <!--specify the distance prepared to travel-->
 
@@ -128,11 +130,11 @@ android:clickable="true">
                 android:id="@+id/radiusLinLay">
 
                 <TextView
-                    android:layout_marginRight="@dimen/MarginTopSmall"
-                    android:layout_width="162dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="130dp"
                     android:layout_height="50dp"
-                    android:text="Maximale afstand tot supermarkt (in meters)"
-                    android:textSize="14sp"
+                    android:text="Maximum afstand\n(in m)"
+                    android:textSize="@dimen/standardTextSize"
                     android:textColor="@color/Black"/>
 
                 <EditText
@@ -141,7 +143,7 @@ android:clickable="true">
                     android:inputType="numberDecimal"
                     android:ems="10"
                     android:id="@+id/radiusET"
-                    android:hint="800"
+                    android:hint="b.v. 800"
                     android:textSize="@dimen/editTextSize"
                     />
 
@@ -149,12 +151,12 @@ android:clickable="true">
 
             <!--Show a horizontal line-->
 
-            <View
-                android:layout_marginTop="@dimen/MarginLine"
-                android:layout_marginRight="@dimen/fragmentMargLeft"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="@color/SeparationLineColor" />
+            <!--<View-->
+                <!--android:layout_marginTop="@dimen/MarginLine"-->
+                <!--android:layout_marginRight="@dimen/fragmentMargLeft"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="@color/SeparationLineColor" />-->
 
             <!--max price lin layout-->
 
@@ -165,20 +167,20 @@ android:clickable="true">
                 android:id="@+id/maxPriceNotifyLinLay">
 
                 <TextView
-                    android:layout_marginRight="@dimen/MarginTopSmall"
-                    android:layout_width="162dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
-                    android:text="Maximale prijs: "
-                    android:textSize="14sp"
+                    android:text="Maximale prijs "
+                    android:textSize="@dimen/standardTextSize"
                     android:textColor="@color/Black"/>
 
                 <EditText
-                    android:layout_width="60dp"
+                    android:layout_width="90dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:ems="10"
                     android:id="@+id/maxPriceNotifyET"
-                    android:hint="10.10"
+                    android:hint="b.v. 10.10"
                     android:textSize="@dimen/editTextSize"
                     />
 
