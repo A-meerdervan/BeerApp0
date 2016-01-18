@@ -41,19 +41,30 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         // Start up the settings fragment
         initializeFragment();
 
+        // Hide the loading spinner
+        findViewById(R.id.loadSpinnerNotify).setVisibility(View.GONE);
+
         // Get the discount information from the database
         discountArray = dataBaseHandler.getAllDiscounts();
+
+        // If there are no discounts in the database then the data was not downloaded yet, this
+        // could be caused by a lack of internet connection for example. A message is shown to the
+        // user
+        TextView introTV = (TextView)findViewById(R.id.introNotificationsTV);
+        if (discountArray.size() == 0) {
+            introTV.setText("Er is geen aanbieding informatie gevonden, wellicht heeft u geen " +
+                    "internet verbinding");
+            return;
+        }
+
         // if there are already discounts flagged for notifying, display them
         discountsNotifyArray = dataBaseHandler.getNotifyFlaggedDiscounts();
         if (discountsNotifyArray.size() == 0){
-            Log.d(tag, "Er zijn geen geflagde units gevonden");
+            introTV.setText("Er zijn op dit moment geen aanbiedingen die aan uw eisen voldoen");
+            return;
         }
-        else{
-            Log.d(tag, "hij heeft wel flags gevonden, zoveel: " + discountsNotifyArray.size());
-        }
+        introTV.setText("Deze aanbiedingen volgen uit uw voorkeuren");
         populateListView();
-        // TODO: get the already flagged for notification discounts from the DB
-        // discountNotifyArray = databaseHandler.getFlaggedDiscounts();
     }
 
     // this returns the resource integer id of a supermaket image
@@ -198,6 +209,8 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             // TODO: per id een update doen in plaats van de hele DB te verwijderen en weer op te bouwen (dan kun je de discountarr = .getAllDIscounts regel hierboven ook weghalen)
             dataBaseHandler.storeDiscounts(discountArray);
 
+            // Stop the loading spinner and fill the listview with results
+            findViewById(R.id.loadSpinnerNotify).setVisibility(View.GONE);
             populateListView();
         }
     }
@@ -207,16 +220,17 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
 
     @Override
     public void onFragmentInteraction(String zipCode, int radius, Double maxPrice) {
-        TextView tvINT = (TextView)findViewById(R.id.introNotificationsTV);
-        tvINT.setText(zipCode + " " + radius + " " + maxPrice );
+        // Show the loading spinner
+        findViewById(R.id.loadSpinnerNotify).setVisibility(View.VISIBLE);
 
-//         Get the supermarkets
+        // TODO: Zorgen dat de fragment nice opzij swiped
+        // Hide the fragment to show loading spinner
+        toggleFragment();
+
+        // Get the supermarkets
         CustomAsyncTask customAsyncTask = new CustomAsyncTask(zipCode, radius, maxPrice);
         customAsyncTask.execute();
 
-        // Filter the discounts
-
-        // Update the listview
     }
 
 // fragment related functions:

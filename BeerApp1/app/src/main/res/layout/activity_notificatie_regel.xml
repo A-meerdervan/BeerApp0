@@ -13,22 +13,40 @@
     </FrameLayout>
 
     <RelativeLayout
+        android:id="@+id/secondRelLay"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
+            android:layout_marginBottom="@dimen/MarginTopSmall"
+            android:layout_marginTop="@dimen/MarginTopSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Deze aanbiedingen volgen uit uw voorkeuren: "
+            android:text="Default"
             android:id="@+id/introNotificationsTV"
             android:layout_centerHorizontal="true" />
+
+        <!--Standard android loading spinner taken from http://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff-->
+
+        <RelativeLayout
+            android:layout_below="@+id/introNotificationsTV"
+            android:id="@+id/loadSpinnerNotify"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
 
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/notifcationsItemsList"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/introNotificationsTV"/>
+            android:layout_below="@+id/loadSpinnerNotify"/>
 
     </RelativeLayout>
 

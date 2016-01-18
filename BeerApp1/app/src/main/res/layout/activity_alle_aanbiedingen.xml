@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="nl.mprog.project.bieraanbiedingnotificatie.AlleAanbiedingenActivity">
 
     <FrameLayout
@@ -18,18 +17,35 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:layout_marginTop="@dimen/MarginTopSmall"
+            android:layout_marginBottom="@dimen/MarginTopSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welkom vandaag, dit is het aanbod:"
-            android:id="@+id/html_content"
+            android:text="Dit is het huidige aanbod"
+            android:id="@+id/introAllDiscountsTV"
             android:layout_centerHorizontal="true" />
+
+        <!--Standard android loading spinner taken from http://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff-->
+
+        <RelativeLayout
+            android:layout_below="@+id/introAllDiscountsTV"
+            android:id="@+id/loadSpinnerAllDisc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
 
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/AllDiscountsList"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/html_content"/>
+            android:layout_below="@+id/introAllDiscountsTV"/>
 
     </RelativeLayout>
 

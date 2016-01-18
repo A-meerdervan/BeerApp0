@@ -30,10 +30,10 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
 
     private static final String tag = "*C_AllDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
-    private HtmlParser htmlParser;
+    private HtmlParser htmlParser = new HtmlParser();
     private SuperMarketFinder superMarketFinder;
     private List<SuperMarket> superMarkets = new ArrayList<>();
-    private DataBaseHandler dataBaseHandler;
+    private DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
     private FilterAndSorter filterAndSorter = new FilterAndSorter();
 
     @Override
@@ -44,11 +44,10 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
         // Start up the filter fragment
         initializeFragment();
 
-        // Create the database helper object
-        dataBaseHandler = new DataBaseHandler(this);
+        // Show loading spinner
+        findViewById(R.id.loadSpinnerAllDisc).setVisibility(View.VISIBLE);
 
         // parse HTML
-        htmlParser = new HtmlParser();
         JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
         jsoupAsyncTask.execute();
     }
@@ -164,6 +163,8 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
 
         @Override
         protected void onPostExecute(Void result) {
+            // Hide the loading spinner
+            findViewById(R.id.loadSpinnerAllDisc).setVisibility(View.GONE);
             // Fill the listView
             populateListView();
         }

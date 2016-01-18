@@ -1,6 +1,8 @@
 package nl.mprog.project.bieraanbiedingnotificatie;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,9 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 /**
@@ -32,6 +39,8 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String tag = "*C_NotifyFrag";
+    private ArrayList<String> favoritesList = new ArrayList<String>();
+    private ArrayAdapter<String> adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -67,6 +76,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -76,7 +86,35 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate( R.layout.fragment_notify, container, false);
+        View view = inflater.inflate(R.layout.fragment_notify, container, false);
+
+        // Set up the favorite beers listview
+        fillFavoListAndListen(view);
+
+        // Set the settings to what the user had previous
+        SharedPreferences prefs = getActivity().getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
+        Boolean previousSettingsDetected = prefs.getBoolean("previousSettingsDetected", false);
+        Log.d(tag, previousSettingsDetected + " Dit is bij pre.set.detc. in oncreate fragment");
+        // Only set if the user has saved his settings before
+        if (previousSettingsDetected){
+            String zipNumbers = prefs.getString("zipNumbers", "1657");
+            String zipLetters = prefs.getString("zipLettes", "LH");
+            String radius = prefs.getString("radius", "1000");
+            String maxPrice = prefs.getString("maxPrice", "12.10");
+            // TODO: add the beers
+
+            // Set the views to the saved settings
+            EditText zipCodeNumbersET = (EditText)view.findViewById(R.id.zipCodeNumbersET);
+            EditText zipCodeLettersET = (EditText)view.findViewById(R.id.zipCodeLettersET);
+            EditText radiusET = (EditText)view.findViewById(R.id.radiusET);
+            EditText maxPriceET = (EditText)view.findViewById(R.id.maxPriceNotifyET);
+
+            zipCodeLettersET.setText(zipLetters);
+            zipCodeNumbersET.setText(zipNumbers);
+            radiusET.setText(radius);
+            maxPriceET.setText(maxPrice);
+        }
+
 
         Button button = (Button) view.findViewById(R.id.saveNotifySettingsBtn);
         button.setOnClickListener(this);
@@ -84,11 +122,33 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    private void fillFavoListAndListen(View view) {
+        // create and set adapter to the list
+        favoritesList.add("yolo");
+        favoritesList.add("heinikjotum");
+        adapter = new ArrayAdapter<>(getActivity(), R.layout.favo_beer_listview, favoritesList);
+        ListView list = (ListView)view.findViewById(R.id.favoBeerList);
+        list.setAdapter(adapter);
+
+        // An item is removed by a long click
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int index, long id) {
+                favoritesList.remove(index);
+                // TODO: aanpassen in shared prefs dat de lijst veranderd is
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
+    }
+
     // When the settings are saved transfer the information to the Activity so that
     // it can update
     @Override
     public void onClick(View v) {
         if (mListener != null) {
+            SharedPreferences prefs = getActivity().getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
 
             EditText zipCodenumbersET = (EditText)getView().findViewById(R.id.zipCodeNumbersET);
             EditText zipCodeLettersET = (EditText)getView().findViewById(R.id.zipCodeLettersET);
@@ -103,13 +163,27 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(this.getActivity(), "Niet alle velden zijn ingevuld", Toast.LENGTH_SHORT).show();
                 return;
             }
+            // when this function is called and all fields are filled, that means new settings are
+            // saved. So the bool that keeps track of this is set to true
+            editor.putBoolean("previousSettingsDetected", true);
+
+            // TODO: fixen dat ie de favo beers opslaat
 
             String zipCodeNumbers = zipCodenumbersET.getText().toString();
             String zipCodeLetters = zipCodeLettersET.getText().toString();
             String zipCode = zipCodeNumbers + zipCodeLetters;
             int radius = Integer.parseInt(radiusET.getText().toString());
             Double maxPrice = Double.valueOf(maxPriceET.getText().toString());
-
+            // Save the settings to the sharedpreferences
+            editor.putString("zipNumbers", zipCodenumbersET.getText().toString());
+            editor.putString("zipLetters", zipCodeLettersET.getText().toString());
+            editor.putString("maxPrice", maxPriceET.getText().toString());
+            editor.putString("radius", radiusET.getText().toString());
+            // TODO: de bieren opslaan
+            // editor.putString()
+            editor.commit();
+            // Use the fragment activity communication interface object to give the relevant
+            // settings to the activity
             mListener.onFragmentInteraction(zipCode, radius, maxPrice);
             // Let the user now the settings are saved
             Toast.makeText(this.getActivity(), "Opgeslagen, aanbiediengen ophalen...", Toast.LENGTH_LONG).show();

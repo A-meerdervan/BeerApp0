@@ -2,6 +2,13 @@
 **Author** Alex van der Meer  
 **Start date:** 5-1-2016
 
+**Za 16-1-13**  
+Doelen van de dag:  
+Database verder in de app toepassen
+
+Gedaan:  
+
+
 **Vr 15-1-13**  
 Doelen van de dag:  
 Data base implementeren voor alle aanbiedingen, en daarmee de app een stuk sneller maken

@@ -17,6 +17,7 @@ public class SupportedSupermarketsMap extends HashMap {
         this.put("albert","albertheijn");
         this.put("AH","albertheijn");
         this.put("Albert","albertheijn");
+        this.put("ALBERT","albertheijn");
 
         this.put("DEEN","deen");
         this.put("Deen","deen");
@@ -24,12 +25,15 @@ public class SupportedSupermarketsMap extends HashMap {
 
         this.put("Aldi","aldi");
         this.put("aldi","aldi");
+        this.put("ALDI","aldi");
 
         this.put("Vomar","vomar");
         this.put("vomar","vomar");
+        this.put("VOMAR","vomar");
 
         this.put("Jumbo","jumbo");
         this.put("jumbo","jumbo");
+        this.put("JUMBO","jumbo");
 
         this.put("Coop","coop");
         this.put("COOP","coop");
@@ -37,6 +41,7 @@ public class SupportedSupermarketsMap extends HashMap {
 
         this.put("Linders","janlinders");
         this.put("linders","janlinders");
+        this.put("LINDERS","janlinders");
 
         this.put("MCD","mcd");
         this.put("mcd","mcd");
@@ -44,22 +49,27 @@ public class SupportedSupermarketsMap extends HashMap {
         this.put("Emte","emte");
         this.put("emte","emte");
         this.put("EMTÉ","emte");
+        this.put("EMTE","emte");
         
 
         this.put("Spar","spar");
         this.put("spar","spar");
+        this.put("SPAR","spar");
 
         this.put("Dirk","dirk");
         this.put("dirk","dirk");
+        this.put("DIRK","dirk");
 
         this.put("Super de boer","superdeboer");
         this.put("super de Boer","superdeboer");
 
         this.put("Edeka","edeka");
         this.put("edeka","edeka");
+        this.put("EDEKA","edeka");
 
         this.put("Penny","penny");
         this.put("penny","penny");
+        this.put("PENNY","penny");
 
         this.put("Lidl","lidl");
         this.put("LIDL","lidl");
@@ -67,6 +77,7 @@ public class SupportedSupermarketsMap extends HashMap {
 
         this.put("Plus","plus");
         this.put("plus","plus");
+        this.put("PLUS","plus");
 
 
         this.put("C1000","c1000");
@@ -74,6 +85,7 @@ public class SupportedSupermarketsMap extends HashMap {
 
         this.put("Hoogvliet","hoogvliet");
         this.put("hoogvliet","hoogvliet");
+        this.put("HOOGVLIET","hoogvliet");
 
         this.put("Deka","deka");
         this.put("deka","deka");
