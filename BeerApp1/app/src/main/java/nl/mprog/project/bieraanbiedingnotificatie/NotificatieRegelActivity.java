@@ -161,11 +161,13 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         private String zipCode;
         private int radius;
         private Double maxPrice;
+        private List<String> favoriteBeers;
 
-        public CustomAsyncTask(String zipCode, int radius, Double maxPrice){
+        public CustomAsyncTask(String zipCode, int radius, Double maxPrice, List <String> favoriteBeers) {
             this.zipCode = zipCode;
             this.radius = radius;
             this.maxPrice = maxPrice;
+            this.favoriteBeers = favoriteBeers;
         }
         @Override
         protected void onPreExecute() {
@@ -193,12 +195,13 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             // First empty the discountsNotifyArray for a fresh start
             discountsNotifyArray.clear();
             // Update the discountArray from the dataBase and set the notify flags to 1
-            discountArray = dataBaseHandler.getAllDiscounts();
             // for the newly found settings
+            discountArray = dataBaseHandler.getAllDiscounts();
             for (int i = 0; i< discountArray.size(); i++) {
-                if (bareSuperMarkets.contains(discountArray.get(i).superMarkt)
-                    && discountArray.get(i).price < maxPrice) {
-                    // TODO: hier toevoegen dat het biermerk ook hetzelfde moet zijn als de gebruiker zijn voorkeuren
+                Log.d(tag, discountArray.get(i).brandPrint + " Zit in favoBeers? " + favoriteBeers.contains(discountArray.get(i).brandPrint));
+                if ( bareSuperMarkets.contains(discountArray.get(i).superMarkt)
+                    && (discountArray.get(i).price < maxPrice )
+                    && (favoriteBeers.contains(discountArray.get(i).brandPrint)) ){
 
                     discountsNotifyArray.add(discountArray.get(i));
                     // Set the notify flag of the disount objects
@@ -219,7 +222,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
     // And updates the discount information
 
     @Override
-    public void onFragmentInteraction(String zipCode, int radius, Double maxPrice) {
+    public void onFragmentInteraction(String zipCode, int radius, Double maxPrice, List<String> favoriteBeers) {
         // Show the loading spinner
         findViewById(R.id.loadSpinnerNotify).setVisibility(View.VISIBLE);
 
@@ -228,7 +231,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         toggleFragment();
 
         // Get the supermarkets
-        CustomAsyncTask customAsyncTask = new CustomAsyncTask(zipCode, radius, maxPrice);
+        CustomAsyncTask customAsyncTask = new CustomAsyncTask(zipCode, radius, maxPrice, favoriteBeers);
         customAsyncTask.execute();
 
     }

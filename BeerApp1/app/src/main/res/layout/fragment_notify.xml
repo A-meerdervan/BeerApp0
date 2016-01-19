@@ -26,50 +26,6 @@ android:clickable="true">
 
             <!--Favorite beer selection -->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/faboBeerLinLay"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/MarginTopSmall"
-                    android:text="Uw postcode"
-                    android:textSize="@dimen/standardTextSize"
-                    android:textColor="@color/Black"
-                    android:id="@+id/favoBeerTV1"
-                    android:visibility="gone"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/MarginTopSmall"
-                    android:text="Uw postcode"
-                    android:textSize="@dimen/standardTextSize"
-                    android:textColor="@color/Black"
-                    android:id="@+id/favoBeerTV2"
-                    android:visibility="gone"
-
-                    />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/MarginTopSmall"
-                    android:text="Uw postcode"
-                    android:textSize="@dimen/standardTextSize"
-                    android:textColor="@color/Black"
-                    android:id="@+id/favoBeerTV3"
-                    android:visibility="gone"
-                    />
-
-            </LinearLayout>
-
             <TextView
                 android:layout_marginTop="@dimen/MarginTopSmall"
                 android:layout_width="wrap_content"
@@ -78,16 +34,14 @@ android:clickable="true">
                 android:textSize="@dimen/standardTextSize"
                 android:textColor="@color/Black"/>
 
-            <TextView
-                android:layout_marginTop="@dimen/MarginTopSmall"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Default beer1 \nDefault beer2 "
-                android:textSize="@dimen/standardTextSize"
-                android:textColor="@color/Black"
-                android:id="@+id/favoBeersTV"/>
+                android:orientation="vertical"
+                android:id="@+id/favoBeerLinLay"
+                >
 
-
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -97,7 +51,7 @@ android:clickable="true">
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="voeg toe: "/>
+                    android:text="Voeg toe: "/>
 
                 <Spinner
                     android:layout_width="wrap_content"

@@ -3,7 +3,6 @@ package nl.mprog.project.bieraanbiedingnotificatie;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -11,13 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -31,7 +36,7 @@ import java.util.ArrayList;
 
 //public class NotifyFragment extends android.support.v4.app.Fragment {
 // TODO: deze regel gebruiken en kijken of het ook chill werkt:
-public class NotifyFragment extends Fragment implements View.OnClickListener {
+public class NotifyFragment extends Fragment implements View.OnClickListener,OnItemSelectedListener {
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -39,8 +44,9 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String tag = "*C_NotifyFrag";
-    private ArrayList<String> favoritesList = new ArrayList<String>();
-    private ArrayAdapter<String> adapter;
+    private ArrayList<String> favoritesList = new ArrayList<>();
+    private List<String> beerOptionsList = new ArrayList<>();
+    private boolean notInOnCreate = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -88,8 +94,17 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.fragment_notify, container, false);
 
-        // Set up the favorite beers listview
-        fillFavoListAndListen(view);
+        // Fill the dropdown list spinner about the beer selection
+        // First fill the list of options that is possible:
+        fillBeerOptionsList();
+        Spinner beersDropDown = (Spinner) view.findViewById(R.id.favoBeerSpinner);
+        // Spinner click listener
+        beersDropDown.setOnItemSelectedListener(this);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(getActivity().getApplicationContext(), R.layout.beer_options_drop_down, beerOptionsList);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(R.layout.beer_options_drop_down); //(android.R.layout.simple_dropdown_item_1line);
+        beersDropDown.setAdapter(adapter);
 
         // Set the settings to what the user had previous
         SharedPreferences prefs = getActivity().getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
@@ -97,12 +112,16 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
         Log.d(tag, previousSettingsDetected + " Dit is bij pre.set.detc. in oncreate fragment");
         // Only set if the user has saved his settings before
         if (previousSettingsDetected){
-            String zipNumbers = prefs.getString("zipNumbers", "1657");
-            String zipLetters = prefs.getString("zipLettes", "LH");
-            String radius = prefs.getString("radius", "1000");
-            String maxPrice = prefs.getString("maxPrice", "12.10");
-            // TODO: add the beers
-
+            String zipNumbers = prefs.getString("zipNumbers", "default");
+            String zipLetters = prefs.getString("zipLetters", "default");
+            String radius = prefs.getString("radius", "-1");
+            String maxPrice = prefs.getString("maxPrice", "-1");
+            favoritesList = new ArrayList<>(prefs.getStringSet("favoBeersList", new HashSet<String>()));
+            if (favoritesList.size() == 0) {
+                // TODO: Iets zeggen miss?
+            }
+            // Set up the favorite beers listing
+            fillFavoListAndListen(view);
             // Set the views to the saved settings
             EditText zipCodeNumbersET = (EditText)view.findViewById(R.id.zipCodeNumbersET);
             EditText zipCodeLettersET = (EditText)view.findViewById(R.id.zipCodeLettersET);
@@ -122,28 +141,132 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void fillFavoListAndListen(View view) {
-        // create and set adapter to the list
-        favoritesList.add("yolo");
-        favoritesList.add("heinikjotum");
-        adapter = new ArrayAdapter<>(getActivity(), R.layout.favo_beer_listview, favoritesList);
-        ListView list = (ListView)view.findViewById(R.id.favoBeerList);
-        list.setAdapter(adapter);
 
-        // An item is removed by a long click
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int index, long id) {
-                favoritesList.remove(index);
-                // TODO: aanpassen in shared prefs dat de lijst veranderd is
-                adapter.notifyDataSetChanged();
+    // When a beer title is selected it should be added to the users favorites
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // When the fragment is created this method is called for the first item in the beer options
+        // list. To prevent this, this if statement is used.
+        if (notInOnCreate) {
+            // On selecting a spinner item add it to the favorites list and display it.
+            String item = parent.getItemAtPosition(position).toString();
+            // Only add if the item is not already chosen by the user
+            if (!favoritesList.contains(item)) {
+                favoritesList.add(item);
+                addFavoriteToLayout(item, getView());
+            }
+            else{ // show the user this is not possible
+                Toast.makeText(parent.getContext(), item + " heeft u al gekozen", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            notInOnCreate = true;
+        }
+    }
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+    }
+
+    private void addFavoriteToLayout(String beerTitle, View view){
+
+//        favoritesList.add(beerTitle);
+        // Create new LinearLayout view with one TextView
+        LinearLayout newLayout = new LinearLayout(getActivity().getApplicationContext());
+        newLayout.setOrientation(LinearLayout.HORIZONTAL);
+        newLayout.setClickable(true);
+        newLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.Gold));
+
+        TextView favoBeer = new TextView(getActivity().getApplicationContext());
+        newLayout.addView(favoBeer);
+
+        // Remove a beer after a long click
+        newLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                v.setVisibility(View.GONE);
+                Log.d(tag, "voor verwijderen " + favoritesList.size());
+                favoritesList.remove( ( (TextView)( ((LinearLayout) v).getChildAt(0)) ).getText().toString());
+                // TODO: ook verwijderen uit shared prefs en uit de array ?
+                Log.d(tag, "favorites list lengte is nu" + favoritesList.size());
                 return true;
             }
         });
+        // TODO: Dit stond hier om te hebben dat het item highlight zolang ie ingedrukt is, maar nu maakt ie m gewoon permanent grijs
+//            newLayout.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    v.setBackgroundColor(getActivity().getResources().getColor(R.color.MainBackgroundColor));
+//                }
+//            });
 
+        // fill the text of the new Textview and add it to the layout in the activity
+        favoBeer.setText(beerTitle);
+        favoBeer.setTextColor(getActivity().getResources().getColor(R.color.Black));
+        LinearLayout parentLayout = (LinearLayout) view.findViewById(R.id.favoBeerLinLay);
+        parentLayout.addView(newLayout);
     }
 
-    // When the settings are saved transfer the information to the Activity so that
-    // it can update
+    private void fillFavoListAndListen(View view) {
+        // create and set adapter to the list
+        for ( String favorite : favoritesList) {
+            addFavoriteToLayout(favorite, view);
+//            // Create new LinearLayout view with one TextView
+//            LinearLayout newLayout = new LinearLayout(getActivity().getApplicationContext());
+//            newLayout.setOrientation(LinearLayout.HORIZONTAL);
+//            newLayout.setClickable(true);
+//            newLayout.setTag("TV" + index);
+//            newLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.ActionBarColor));
+//
+//            TextView favoBeer = new TextView(getActivity().getApplicationContext());
+//            newLayout.addView(favoBeer);
+//
+//            // Remove a beer after a long click
+//            newLayout.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    v.setVisibility(View.GONE);
+//                    Log.d(tag, "voor verwijderen " + favoritesList.size());
+//                    favoritesList.remove( ( (TextView)( ((LinearLayout) v).getChildAt(0)) ).getText().toString());
+//                    // TODO: ook verwijderen uit shared prefs en uit de array ?
+//                    Log.d(tag, "favorites list lengte is nu" + favoritesList.size());
+//                    return true;
+//                }
+//            });
+//            // TODO: Dit stond hier om te hebben dat het item highlight zolang ie ingedrukt is, maar nu maakt ie m gewoon permanent grijs
+////            newLayout.setOnClickListener(new View.OnClickListener() {
+////                @Override
+////                public void onClick(View v) {
+////                    v.setBackgroundColor(getActivity().getResources().getColor(R.color.MainBackgroundColor));
+////                }
+////            });
+//
+//            // fill the text of the new Textview and add it to the layout in the activity
+//            favoBeer.setText(favoritesList.get(index));
+//            favoBeer.setTextColor(getActivity().getResources().getColor(R.color.Black));
+//            LinearLayout parentLayout = (LinearLayout) view.findViewById(R.id.favoBeerLinLay);
+//            parentLayout.addView(newLayout);
+        }
+
+//        for (int index = 1; index < favoritesList.size(); index++) {
+//
+//            int viewID = getActivity().getResources().getIdentifier("favoBeerTV" + index, "id", "nl.mprog.project.bieraanbiedingnotificatie");
+//            TextView TV = (TextView) view.findViewById(viewID);
+////            TV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+////                public boolean onItemLongClick(AdapterView<?> parent, View view, int index, long id) {
+////                    favoritesList.remove(index);
+////                    // TODO: aanpassen in shared prefs dat de lijst veranderd is
+////                    adapter.notifyDataSetChanged();
+////                    return true;
+////                }
+////            });
+//            TV.setVisibility(View.VISIBLE);
+//            TV.setText(favoritesList.get(index));
+//        }
+   //      An item is removed by a long click
+    }
+
+    // When the Save Settings button is clicked, settings are saved and transfered to the Activity
+    // so that it can update
     @Override
     public void onClick(View v) {
         if (mListener != null) {
@@ -167,7 +290,20 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
             // saved. So the bool that keeps track of this is set to true
             editor.putBoolean("previousSettingsDetected", true);
 
-            // TODO: fixen dat ie de favo beers opslaat
+            editor.putStringSet("favoBeersList", new HashSet(favoritesList));
+
+            // Save the favorite beers to a list and pass it to the activity
+            List<String> favoriteBeers = new ArrayList<>();
+            View favoBeerLinLayView = getView().findViewById(R.id.favoBeerLinLay);
+            LinearLayout favoBeerLinLay = (LinearLayout)favoBeerLinLayView;
+            for (int index = 0; index < favoBeerLinLay.getChildCount(); index++) {
+                // If the view is visible this means it was not deleted by the user
+                if (favoBeerLinLay.getChildAt(index).getVisibility() == View.VISIBLE) {
+                    // The linlay contains linlay's that contain one textview, get the textview
+                    // text and add it to the list of favorite beers
+                    favoriteBeers.add( ((TextView) ( ( (LinearLayout)(favoBeerLinLay.getChildAt(index)) ).getChildAt(0) ) ).getText().toString() );
+                }
+            }
 
             String zipCodeNumbers = zipCodenumbersET.getText().toString();
             String zipCodeLetters = zipCodeLettersET.getText().toString();
@@ -184,10 +320,18 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
             editor.commit();
             // Use the fragment activity communication interface object to give the relevant
             // settings to the activity
-            mListener.onFragmentInteraction(zipCode, radius, maxPrice);
+            mListener.onFragmentInteraction(zipCode, radius, maxPrice, favoriteBeers);
             // Let the user now the settings are saved
             Toast.makeText(this.getActivity(), "Opgeslagen, aanbiediengen ophalen...", Toast.LENGTH_LONG).show();
         }
+    }
+
+    // This function fills the spinner drop down option list from the supported brands class
+    private void fillBeerOptionsList() {
+        SupportedBrandsMap supportedBrandsMap = new SupportedBrandsMap();
+        for (Object key : supportedBrandsMap.keySet()) {
+                beerOptionsList.add((String)key);
+            }
     }
 
     @Override
@@ -219,7 +363,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String zipCode, int radius, Double maxPrice);
+        public void onFragmentInteraction(String zipCode, int radius, Double maxPrice, List<String> favoriteBeers);
 
         //TODO: meer methods toevoegen
     }
