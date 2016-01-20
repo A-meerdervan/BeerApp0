@@ -210,59 +210,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
         // create and set adapter to the list
         for ( String favorite : favoritesList) {
             addFavoriteToLayout(favorite, view);
-//            // Create new LinearLayout view with one TextView
-//            LinearLayout newLayout = new LinearLayout(getActivity().getApplicationContext());
-//            newLayout.setOrientation(LinearLayout.HORIZONTAL);
-//            newLayout.setClickable(true);
-//            newLayout.setTag("TV" + index);
-//            newLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.ActionBarColor));
-//
-//            TextView favoBeer = new TextView(getActivity().getApplicationContext());
-//            newLayout.addView(favoBeer);
-//
-//            // Remove a beer after a long click
-//            newLayout.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//                    v.setVisibility(View.GONE);
-//                    Log.d(tag, "voor verwijderen " + favoritesList.size());
-//                    favoritesList.remove( ( (TextView)( ((LinearLayout) v).getChildAt(0)) ).getText().toString());
-//                    // TODO: ook verwijderen uit shared prefs en uit de array ?
-//                    Log.d(tag, "favorites list lengte is nu" + favoritesList.size());
-//                    return true;
-//                }
-//            });
-//            // TODO: Dit stond hier om te hebben dat het item highlight zolang ie ingedrukt is, maar nu maakt ie m gewoon permanent grijs
-////            newLayout.setOnClickListener(new View.OnClickListener() {
-////                @Override
-////                public void onClick(View v) {
-////                    v.setBackgroundColor(getActivity().getResources().getColor(R.color.MainBackgroundColor));
-////                }
-////            });
-//
-//            // fill the text of the new Textview and add it to the layout in the activity
-//            favoBeer.setText(favoritesList.get(index));
-//            favoBeer.setTextColor(getActivity().getResources().getColor(R.color.Black));
-//            LinearLayout parentLayout = (LinearLayout) view.findViewById(R.id.favoBeerLinLay);
-//            parentLayout.addView(newLayout);
         }
-
-//        for (int index = 1; index < favoritesList.size(); index++) {
-//
-//            int viewID = getActivity().getResources().getIdentifier("favoBeerTV" + index, "id", "nl.mprog.project.bieraanbiedingnotificatie");
-//            TextView TV = (TextView) view.findViewById(viewID);
-////            TV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-////                public boolean onItemLongClick(AdapterView<?> parent, View view, int index, long id) {
-////                    favoritesList.remove(index);
-////                    // TODO: aanpassen in shared prefs dat de lijst veranderd is
-////                    adapter.notifyDataSetChanged();
-////                    return true;
-////                }
-////            });
-//            TV.setVisibility(View.VISIBLE);
-//            TV.setText(favoritesList.get(index));
-//        }
-   //      An item is removed by a long click
     }
 
     // When the Save Settings button is clicked, settings are saved and transfered to the Activity
@@ -289,7 +237,6 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
             // when this function is called and all fields are filled, that means new settings are
             // saved. So the bool that keeps track of this is set to true
             editor.putBoolean("previousSettingsDetected", true);
-
             editor.putStringSet("favoBeersList", new HashSet(favoritesList));
 
             // Save the favorite beers to a list and pass it to the activity

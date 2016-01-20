@@ -31,8 +31,6 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
     private static final String tag = "*C_AllDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
     private HtmlParser htmlParser = new HtmlParser();
-    private SuperMarketFinder superMarketFinder;
-    private List<SuperMarket> superMarkets = new ArrayList<>();
     private DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
     private FilterAndSorter filterAndSorter = new FilterAndSorter();
 

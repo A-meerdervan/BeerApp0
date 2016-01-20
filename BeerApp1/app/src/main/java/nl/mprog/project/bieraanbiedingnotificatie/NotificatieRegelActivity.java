@@ -3,11 +3,18 @@ package nl.mprog.project.bieraanbiedingnotificatie;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 //import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,6 +72,45 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         }
         introTV.setText("Deze aanbiedingen volgen uit uw voorkeuren");
         populateListView();
+
+        // Give notification
+
+        String tittle = "Tietel";
+        String subject = "Grolsch voor 10 eu";
+        String body = "Op 300m afstand een krat voor 10 eu tot za 25 jan";
+
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, NotificatieRegelActivity.class);
+
+// The stack builder object will contain an artificial back stack for the
+// started Activity.
+// This ensures that navigating backward from the Activity leads out of
+// your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+// Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(NotificatieRegelActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        Notification notification = new Notification.Builder(getApplicationContext())
+                .setContentTitle(subject)
+                .setContentText(body)
+                .setSmallIcon(android.R.drawable.stat_notify_more)
+                .setShowWhen(false)
+                .setContentIntent(resultPendingIntent)
+                .setOngoing(false)
+                .setAutoCancel(true)
+//                .setWhen(System.currentTimeMillis())
+//                .setLargeIcon(aBitmap)
+                .build();
+        notificationManager.notify(0, notification);
     }
 
     // this returns the resource integer id of a supermaket image
