@@ -12,10 +12,12 @@ import java.util.List;
 /**
  * Created by Alex on 14-1-2016.
  *
- * This class does operations on a database with all information on previous and current players
- * The database is query'd with SQL
+ * This class creates and maintaines two databases.
+ * One with all discount information and one with all supermarket information
+ * The database is query'd with SQLite
  *
- * It holds simple functions to add, delete, find and read players
+ * It holds simple functions to write lists of objects to the database and read lists of objects.
+ * It also has functionality to delete all entry's
  */
 
 public class DataBaseHandler extends SQLiteOpenHelper{
@@ -37,13 +39,21 @@ public class DataBaseHandler extends SQLiteOpenHelper{
     private static final String DISCOUNT_TYPE = "type";
     private static final String DISCOUNT_NOTIFY_FLAG = "notificationFlag";
 
-//    private static final String
-//    private static final String
-
-
     private static final String[] DISCOUNTS_COLUMNS = {DISCOUNT_ID, DISCOUNT_BRAND,
             DISCOUNT_BRAND_PRINT, DISCOUNT_FORMAT, DISCOUNT_PRICE, DISCOUNT_LITER_PRICE,
             DISCOUNT_SUPERMARKT, DISOCUNT_PERIOD, DISCOUNT_TYPE, DISCOUNT_NOTIFY_FLAG };
+
+    private static final String TABLE_SUPERMARKETS = "Supermarkets";
+    private static final String SUPERMARKET_ID = "id";
+    private static final String SUPERMARKET_CHAIN_NAME = "chainName";
+    private static final String SUPERMARKET_NAME = "individualName";
+    private static final String SUPERMARKET_ADRES = "adres";
+    private static final String SUPERMARKET_LATITUDE = "latitude";
+    private static final String SUPERMARKET_LONGITUDE = "longitude";
+    private static final String SUPERMARKET_DISTANCE = "distance";
+
+    private static final String[] SUPERMARKET_COLUMNS = {SUPERMARKET_ID, SUPERMARKET_CHAIN_NAME,
+            SUPERMARKET_NAME, SUPERMARKET_ADRES, SUPERMARKET_LATITUDE, SUPERMARKET_LONGITUDE, SUPERMARKET_DISTANCE };
 
     public DataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -64,13 +74,88 @@ public class DataBaseHandler extends SQLiteOpenHelper{
                 DISCOUNT_TYPE + " TEXT, " +
                 DISCOUNT_NOTIFY_FLAG + " INTEGER )";
         db.execSQL(Query);
+
+        String secondQuery = "CREATE TABLE " + TABLE_SUPERMARKETS +  " ( " +
+                SUPERMARKET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                SUPERMARKET_CHAIN_NAME + " TEXT, " +
+                SUPERMARKET_NAME + " TEXT, " +
+                SUPERMARKET_ADRES + " TEXT, " +
+                SUPERMARKET_LATITUDE + " DOUBLE, " +
+                SUPERMARKET_LONGITUDE + " DOUBLE, " +
+                SUPERMARKET_DISTANCE + " DOUBLE )";
+        db.execSQL(secondQuery);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // drop table if already exists
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DISCOUNTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUPERMARKETS);
         this.onCreate(db);
+    }
+
+    // This function takes a list of superMarket objects and saves it in the database
+    // The stored superMarkets are those that are close to the user
+    public void storeSuperMarkets(List<SuperMarket> superMarkets){
+
+        // Delete all previous entry's
+        deleteAllSuperMarkets();
+
+        // get reference of the database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        for ( SuperMarket superMarket : superMarkets) {
+
+            // make values to be inserted
+            ContentValues values = new ContentValues();
+            values.put(SUPERMARKET_CHAIN_NAME, superMarket.chainName);
+            values.put(SUPERMARKET_NAME, superMarket.individualName);
+            values.put(SUPERMARKET_ADRES, superMarket.adres);
+            values.put(SUPERMARKET_LATITUDE, superMarket.latitude);
+            values.put(SUPERMARKET_LONGITUDE, superMarket.longitude);
+            values.put(SUPERMARKET_DISTANCE, superMarket.distance);
+
+            // insert superMarket
+            db.insert(TABLE_SUPERMARKETS, null, values);
+        }
+        // close database transaction
+        db.close();
+    }
+
+    public List<SuperMarket> getNearbySuperMarkets() {
+        List<SuperMarket> superMarkets = new ArrayList<>();
+
+        // select  query
+        String query = "SELECT * FROM " + TABLE_SUPERMARKETS;
+
+        // get reference of the database
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // parse all results
+        SuperMarket superMarket;
+        if (cursor.moveToFirst()) {
+            do {
+                superMarket = new SuperMarket();
+                superMarket.id = Integer.parseInt(cursor.getString(0));
+                superMarket.chainName = cursor.getString(1);
+                superMarket.individualName = cursor.getString(2);
+                superMarket.adres = cursor.getString(3);
+                superMarket.latitude = cursor.getDouble(4);
+                superMarket.longitude = cursor.getDouble(5);
+                superMarket.distance = cursor.getDouble(6);
+                // Add object to the array
+                superMarkets.add(superMarket);
+            } while (cursor.moveToNext());
+        }
+        return superMarkets;
+    }
+
+    public void deleteAllSuperMarkets(){
+        // get reference of the database
+        SQLiteDatabase db = this.getWritableDatabase();
+        String Query = "DELETE FROM " + TABLE_SUPERMARKETS;
+        db.execSQL(Query);
     }
 
     // This function returns all discounts in the database in a list
@@ -116,7 +201,6 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery(query, null);
 
         // parse all results
-        // TODO: wellicht moet je elke keer opniew het discount object instantieren
         DiscountObject discountObject;
         if (cursor.moveToFirst()) {
             do {

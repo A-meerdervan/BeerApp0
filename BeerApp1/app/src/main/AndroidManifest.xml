@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--This is used to be able to set the reating alarm functionality to update the discounts, back-->
+    <!--in place-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <!--android.supp  android.support.PARENT_ACTIVITY-->
 
     <application
@@ -38,6 +42,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" />
         </activity>
+
+        <receiver android:name=".NightUpdate">
+
+        </receiver>
+
+        <receiver android:name=".ResetAlarmOnBoot"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

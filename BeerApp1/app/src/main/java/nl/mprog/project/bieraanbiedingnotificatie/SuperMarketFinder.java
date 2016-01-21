@@ -38,8 +38,9 @@ public class SuperMarketFinder {
 
     // Constructor
     public void SuperMarketFinder(){
-
     }
+
+
 
     // This function takes a radius and a zipCode and returns all superMarkets that are
     // near the entered zipCode.
@@ -101,7 +102,7 @@ public class SuperMarketFinder {
     }
 
     // Create a list with only the bare supermarket names, like: deen,albertheijn,coop
-    public List<String> getBareSupermarkets(){
+    public List<String> getBareSupermarkets(List<SuperMarket> superMarkets){
         List<String> bareSuperMarkets = new ArrayList<>();
         for (int i = 0; i < superMarkets.size(); i++) {
             // If it is not already stored, store it.

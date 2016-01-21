@@ -7,11 +7,13 @@ package nl.mprog.project.bieraanbiedingnotificatie;
  */
 public class SuperMarket {
 
+    public Integer id = 0;
     public String chainName = "Default Supermarket";
     public String individualName = "Default individual name";
     public String adres = "Default Adres";
     public Double latitude;
     public Double longitude;
+    public Double distance = 0.;
 
     public SuperMarket(String chainName, String individualName, String adres, Double latitude, Double longitude){
         this.chainName = chainName;
@@ -21,9 +23,13 @@ public class SuperMarket {
         this.longitude = longitude;
     }
 
+    // Empty constructor for use in the database
+    public SuperMarket(){
+    }
+
     public String toString(){
         String output = "";
-        output += ("\n" + chainName + "\n" + individualName + "\n" + adres + "\n"
+        output += ("\n" + chainName + "\n" + individualName + "\n" + adres + "\n" + distance + "\n"
         );
         return output;
     }

@@ -269,7 +269,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
             // settings to the activity
             mListener.onFragmentInteraction(zipCode, radius, maxPrice, favoriteBeers);
             // Let the user now the settings are saved
-            Toast.makeText(this.getActivity(), "Opgeslagen, aanbiediengen ophalen...", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity(), "Opgeslagen, aanbiedingen ophalen...", Toast.LENGTH_LONG).show();
         }
     }
 

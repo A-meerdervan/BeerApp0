@@ -44,10 +44,12 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
 
         // Show loading spinner
         findViewById(R.id.loadSpinnerAllDisc).setVisibility(View.VISIBLE);
-
+        // TODO: fixen dat de spinner in beeld komt tijdens het laden.  populateListVIew stond hier om te testen
+//        populateListView();
         // parse HTML
         JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
         jsoupAsyncTask.execute();
+        Log.d(tag, "Eind oncreate alldisc.");
     }
 
     private void populateListView() {
@@ -81,7 +83,6 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
 
     // This custom adapter class is made to fill the listview with discount information
     private class MyListAdapter extends ArrayAdapter<DiscountObject> {
-        private List<String> SortedArray;
 
         // constructor
         public MyListAdapter() {

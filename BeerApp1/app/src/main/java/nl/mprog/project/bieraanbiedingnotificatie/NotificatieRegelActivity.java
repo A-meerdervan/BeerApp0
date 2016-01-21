@@ -72,45 +72,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         }
         introTV.setText("Deze aanbiedingen volgen uit uw voorkeuren");
         populateListView();
-
-        // Give notification
-
-        String tittle = "Tietel";
-        String subject = "Grolsch voor 10 eu";
-        String body = "Op 300m afstand een krat voor 10 eu tot za 25 jan";
-
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, NotificatieRegelActivity.class);
-
-// The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-// Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(NotificatieRegelActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
-        Notification notification = new Notification.Builder(getApplicationContext())
-                .setContentTitle(subject)
-                .setContentText(body)
-                .setSmallIcon(android.R.drawable.stat_notify_more)
-                .setShowWhen(false)
-                .setContentIntent(resultPendingIntent)
-                .setOngoing(false)
-                .setAutoCancel(true)
-//                .setWhen(System.currentTimeMillis())
-//                .setLargeIcon(aBitmap)
-                .build();
-        notificationManager.notify(0, notification);
     }
 
     // this returns the resource integer id of a supermaket image
@@ -200,7 +161,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
     }
 
 
-    // TODO: this class is currently run from the oncreate function.
+    // TODO: this class is currently run from the save settings function.
     // It should be run every night or something, to update the database
     private class CustomAsyncTask extends AsyncTask<Void, Void, Void> {
 
@@ -225,8 +186,10 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
 
             // get the supermarkets nearby information
             superMarkets = superMarketFinder.getResults(radius, zipCode);
+            // Save to the database
+            dataBaseHandler.storeSuperMarkets(superMarkets);
             // get a list with only the bare supermarket names, like: deen,albertheijn,coop
-            bareSuperMarkets = superMarketFinder.getBareSupermarkets();
+            bareSuperMarkets = superMarketFinder.getBareSupermarkets(superMarkets);
             return null;
         }
 
@@ -261,12 +224,58 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             // Stop the loading spinner and fill the listview with results
             findViewById(R.id.loadSpinnerNotify).setVisibility(View.GONE);
             populateListView();
+            // TODO: Dit hier niet doen (notify)
+            // Send a notification to the user about the discounts.
+            sendNotification(discountsNotifyArray);
         }
+    }
+
+    public void sendNotification(List<DiscountObject> discountsNotifyArrayy){
+        // Give notification
+        // TODO: zorgen dat discountNotifyArray niet global is zodat ik hier geen Araayy hoef te gebruiken
+        // Code inspired by: http://developer.android.com/guide/topics/ui/notifiers/notifications.html#Removing
+        // Add the specific discount info to the notification title
+        String title = "";
+        for ( int i = 0; i < discountsNotifyArrayy.size(); i++) {
+            if (i == 0) { title += discountsNotifyArrayy.get(i).brandPrint + " krat €" + discountsNotifyArrayy.get(i).price;}
+            else { title += ", " + discountsNotifyArrayy.get(i).brandPrint + " krat €" + discountsNotifyArrayy.get(i).price;}
+        }
+        String body = "Nieuwe aanbieding(en) gevonden";
+
+        NotificationManager notificationManager = (NotificationManager)getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(getApplication(), NotificatieRegelActivity.class);
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(NotificatieRegelActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        Notification notification = new Notification.Builder(getApplicationContext())
+                .setContentTitle(title)
+                .setContentText(body)
+                .setSmallIcon(android.R.drawable.stat_notify_more)
+                .setShowWhen(false)
+                .setContentIntent(resultPendingIntent)
+                .setOngoing(false)
+                .setAutoCancel(true)
+//                .setWhen(System.currentTimeMillis())
+//                .setLargeIcon(aBitmap)
+                .build();
+        notificationManager.notify(0, notification);
     }
 
     // This method receives settings information from the fragment:
     // And updates the discount information
-
     @Override
     public void onFragmentInteraction(String zipCode, int radius, Double maxPrice, List<String> favoriteBeers) {
         // Show the loading spinner
@@ -276,7 +285,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         // Hide the fragment to show loading spinner
         toggleFragment();
 
-        // Get the supermarkets
+        // Get the supermarkets and matching discounts on a new thread
         CustomAsyncTask customAsyncTask = new CustomAsyncTask(zipCode, radius, maxPrice, favoriteBeers);
         customAsyncTask.execute();
 
