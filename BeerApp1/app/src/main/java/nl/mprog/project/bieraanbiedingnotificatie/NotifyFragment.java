@@ -100,7 +100,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
         Spinner beersDropDown = (Spinner) view.findViewById(R.id.favoBeerSpinner);
         // Spinner click listener
         beersDropDown.setOnItemSelectedListener(this);
-        // Create an ArrayAdapter using the string array and a default spinner layout
+        // Create an ArrayAdapter using the string array and a spinner layout
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter(getActivity().getApplicationContext(), R.layout.beer_options_drop_down, beerOptionsList);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.beer_options_drop_down); //(android.R.layout.simple_dropdown_item_1line);
@@ -147,20 +147,22 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // When the fragment is created this method is called for the first item in the beer options
         // list. To prevent this, this if statement is used.
-        if (notInOnCreate) {
+//        if (notInOnCreate) {
             // On selecting a spinner item add it to the favorites list and display it.
+        // But not the first item, since this is "choose a brand"
+        if (position != 0) {
             String item = parent.getItemAtPosition(position).toString();
             // Only add if the item is not already chosen by the user
             if (!favoritesList.contains(item)) {
                 favoritesList.add(item);
                 addFavoriteToLayout(item, getView());
-            }
-            else{ // show the user this is not possible
+            } else { // show the user this is not possible
                 Toast.makeText(parent.getContext(), item + " heeft u al gekozen", Toast.LENGTH_SHORT).show();
             }
-        }
-        else {
-            notInOnCreate = true;
+//        }
+//        else {
+//            notInOnCreate = true;
+//        }
         }
     }
     public void onNothingSelected(AdapterView<?> arg0) {
@@ -276,6 +278,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
     // This function fills the spinner drop down option list from the supported brands class
     private void fillBeerOptionsList() {
         SupportedBrandsMap supportedBrandsMap = new SupportedBrandsMap();
+        beerOptionsList.add("Kies een merk");
         for (Object key : supportedBrandsMap.keySet()) {
                 beerOptionsList.add((String)key);
             }

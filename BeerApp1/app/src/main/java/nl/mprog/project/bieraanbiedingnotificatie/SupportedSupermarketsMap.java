@@ -1,7 +1,9 @@
 package nl.mprog.project.bieraanbiedingnotificatie;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Alex on 12-1-2016.
@@ -13,11 +15,39 @@ import java.util.HashMap;
 
 public class SupportedSupermarketsMap extends HashMap {
 
+    public static String[] superMarketsList = {
+            "Albert Heijn",
+            "Aldi",
+            "Agrimarkt",
+            "Attent",
+            "Coop",
+            "C1000",
+            "Deen",
+            "DekaMarkt",
+            "Dirk van den Broek",
+            "Edeka",
+            "EMTÉ",
+            "Hoogvliet",
+            "Jan Linders",
+            "Jumbo",
+            "Lidl",
+            "MCD",
+            "Penny",
+            "Plus",
+            "Poiesz",
+            "Spar",
+            "Super de Boer",
+            "Vomar"
+    };
+
+    // The keys are possible names that come up in a google places API search
+    // and the values are the code name thats used in this app
     public SupportedSupermarketsMap() {
         this.put("albert","albertheijn");
         this.put("AH","albertheijn");
         this.put("Albert","albertheijn");
         this.put("ALBERT","albertheijn");
+        this.put("Albert Heijn","albertheijn");
 
         this.put("DEEN","deen");
         this.put("Deen","deen");
@@ -42,6 +72,7 @@ public class SupportedSupermarketsMap extends HashMap {
         this.put("Linders","janlinders");
         this.put("linders","janlinders");
         this.put("LINDERS","janlinders");
+        this.put("Jan Linders","janlinders");
 
         this.put("MCD","mcd");
         this.put("mcd","mcd");
@@ -59,9 +90,11 @@ public class SupportedSupermarketsMap extends HashMap {
         this.put("Dirk","dirk");
         this.put("dirk","dirk");
         this.put("DIRK","dirk");
+        this.put("Dirk van den Broek","dirk");
 
         this.put("Super de boer","superdeboer");
         this.put("super de Boer","superdeboer");
+        this.put("Super de Boer","superdeboer");
 
         this.put("Edeka","edeka");
         this.put("edeka","edeka");
@@ -89,6 +122,7 @@ public class SupportedSupermarketsMap extends HashMap {
 
         this.put("Deka","deka");
         this.put("deka","deka");
+        this.put("DekaMarkt","deka");
 
         this.put("Attent","attent");
         this.put("attent","attent");
@@ -102,7 +136,15 @@ public class SupportedSupermarketsMap extends HashMap {
 //        this.put("","");
 //        this.put("","");
 
+    }
 
+    // Get the list of supported chainnames
+    public List<String> getChainNames(){
+        List<String> chainNames = new ArrayList<>();
+        for (String name : superMarketsList){
+            chainNames.add((String)this.get(name));
+        }
+        return chainNames;
     }
 }
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--The supermarket checkbox id's-->
+<resources>
+    <item type="id" name="albertheijn" />
+    <item type="id" name="aldi" />
+    <item type="id" name="agrimarkt" />
+    <item type="id" name="attent" />
+    <item type="id" name="coop" />
+    <item type="id" name="c1000" />
+    <item type="id" name="deen" />
+    <item type="id" name="deka" />
+    <item type="id" name="dirk" />
+    <item type="id" name="edeka" />
+    <item type="id" name="emte" />
+    <item type="id" name="hoogvliet" />
+    <item type="id" name="janlinders" />
+    <item type="id" name="jumbo" />
+    <item type="id" name="lidl" />
+    <item type="id" name="mcd" />
+    <item type="id" name="penny" />
+    <item type="id" name="plus" />
+    <item type="id" name="poiesz" />
+    <item type="id" name="spar" />
+    <item type="id" name="superdeboer" />
+    <item type="id" name="vomar" />
+
+    <!--The beerbrands checkbox id's-->
+
+    <item type="id" name="alfa" />
+    <item type="id" name="amstel" />
+    <item type="id" name="bavaria" />
+    <item type="id" name="brand" />
+    <item type="id" name="grolsch" />
+    <item type="id" name="grolschbeugel" />
+    <item type="id" name="grolschradler" />
+    <item type="id" name="gulpener" />
+    <item type="id" name="hertogjan" />
+    <item type="id" name="heineken" />
+    <item type="id" name="jupiler" />
+    <item type="id" name="keizerskroon" />
+    <item type="id" name="palm" />
+    <item type="id" name="schutters" />
+    <item type="id" name="warsteiner" />
+
+</resources>

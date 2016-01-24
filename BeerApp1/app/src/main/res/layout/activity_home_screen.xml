@@ -5,7 +5,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".HomeScreenActivity">
 
+    <!--Standard android loading spinner taken from http://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff-->
+
+    <RelativeLayout
+        android:id="@+id/loadSpinnerHomeAct"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
     <Button
+        android:layout_below="@+id/loadSpinnerHomeAct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Notificatie voorwaarden"
@@ -29,6 +44,19 @@
         android:padding="5dp"
         android:focusableInTouchMode="false"
         android:layout_below="@+id/notificationScreenButton"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:padding="7dp"
+        android:layout_below="@+id/AllDiscountsButton"
+        android:layout_marginTop="@dimen/MarginTopSmall"
+        android:layout_marginBottom="@dimen/MarginTopSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="U kunt verder in de app wanneer u verbonden bent met internet en u de app herstart"
+        android:id="@+id/noConnectionTV"
+        android:visibility="gone"
+        android:background="@color/alarmRed"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -2,12 +2,87 @@
 **Author** Alex van der Meer  
 **Start date:** 5-1-2016
 
+**Za 21-1-13**
+Doelen van de dag:  
+Het filteren in de alle aanbiedingen activitie regelen.
+
+Gedaan:  
+Fixen dat op het moment dat je geen internet connectie hebt de eerste keer dat je de app opstart dat je dan niet door kunt klikken naar een volgend scherm en een textview met rode achtergrond te zien krijgt dat je eerst internet moet hebben.
+
+
+
+**Vr 21-1-13**
+Doelen van de dag:  
+De filter fragment werkend krijgen zodat het mogelijk word om alle aanbiedingen te filteren.
+
+Gedaan:  
+
+
+**Do 21-1-13**
+Doelen van de dag:  
+Proberen te regelen dat als een alarm om te updaten afgaat, maar er geen internet connectie is. Dat de app dan blijft proberen om de zoveel tijd totdat het wel lukt. 
+
+Gedaan:  
+Wanneer het niet lukt om de data binnen te halen op het moment dat snachts geplanned is. Dan word er een appart alarm ingeschakeld dat elke 20min opniew probeerd. Het is getest een "snachts alarm" van om de 1 minuut en een "retry alarm" van om de 10 seconden. Wanneer ik de vliegtuigstand aan doe en weer uit dan zag ik dat het werkt.  
+Toegevoegd dat alleen wanneer de app voor het eerst word geopend, er een update alarm word gezet.  
+Verder toegevoegd dat waneer de app voor het eerst word geopend en er geen internet connectie is, de app een dialog geeft. De dialog zegt de gebruiker dat er geen connectie is en dat hij kan proberen de app opniew op te starten. Wanneer de app opnieuw opstart dan word er weer geprobeerd om discount info te parsen. De dialog blijft komen todat het een keer wel gelukt is.
+
+**Wo 20-1-13**
+Doelen van de dag:  
+Notificaties sturen op de juiste plek met de juiste inhoud.
+Uitzoeken hoe ik processen op de achtergrond kan draaien om de app up te daten en notifcaties te sturen.
+
+Gedaan:  
+Notificaties laten sturen met de juiste inhoud. 
+Op deze pagina uitgevonden hoe je een class moet indelen die moet luisteren naar de broadcoast van een alarm en de
+bijbehorende taken moet uitvoeren (De class heet NightUpdate). De code was geinspireerd door deze tutorial:  
+http://www.sitepoint.com/scheduling-background-tasks-android/  
+Een process op de achtergrond weten aan te roepen die om een vastgestelde hoeveelheid tijd de discount info update. Dit gebeurd via een receiver alarm. Het alarm roept een class aan genaamt NightUpdate. Deze class extends BroadcoastReceiver om aangeroepen te kunnen worden door android. Het alarm word uitgeschakelt op het moment dat de telefoon uit gaat. Ik heb een andere class gemaakt genaamt ResetAlarmOnBoot, die luisterd naar een broadcoast bericht dat de telefoon is aangedaan en dat het periodieke alarm opniew inschakeld. 
+Ik heb functionaliteit toegevoegd om erachter te komen welke aanbiedingen nieuw zijn en waar nog geen notificatie van is geweest. Nu stuurt de app niet meerdere malen een notificatie over dezelfde aanbieding. 
+
+**Di 19-1-13**  
+Bijzonderheden:  
+Deze dag ging ik naar een Master voorlichting in Enschede.  
+Daardoor heb ik weinig kunnen doen.
+
+Doelen van de dag:  
+Notificaties uitzoeken  
+
+Gedaan:  
+De app een simpele notificatie laten sturen maar nog niet met de juiste inhoud en op het juiste moment. 
+Code geinspireerd door:  
+http://developer.android.com/guide/topics/ui/notifiers/notifications.html#Removing  
+
+**Ma 18-1-13**  
+Doelen van de dag:  
+Regelen dat de gebruiker zijn favoriete bier in kan vullen middels een drop down spinner
+Notificaties sturen regelen
+
+Gedaan:  
+Dropdown van bieren gefixt, door via java textviews toetevoegen aan de layout. En erop laten filteren in het resultaat en
+ op te slaan voor de volgende keer dat de app opent.
+
+
 **Za 16-1-13**  
 Doelen van de dag:  
 Database verder in de app toepassen
 
 Gedaan:  
-
+Erachter gekomen dat een aantal supermarkten niet werden opgepikt door mijn code omdat ze anders gespeld waren
+dan ik had verwacht. Zoals de appostrof bij de Emte, en een plus die soms helemaal in hoofdletters word geschreven.
+Dit gold ook voor de spar. Inmiddels zijn de All-caps versies van alle supermarkten toegevoegd om dit probleem te
+voorkomen in bij andere supermarkten.
+Er is toegevoegd dat de app de notificatie instellingen van de gebruiker onthoud middels sharedprefferences. De gebruiker
+zijn vorige instellingen zijn al ingevuld wanneer de gebruiker nu naar de instellingen pagina gaat. 
+In het notificatie overzicht is toegevoegd dat er middels een textview een bericht aan de gebruiker getoond word,
+op het moment dat de aanbiedingen database leeg is, en waneer de gebruiker op dit moment geen aanbiedingen heeft
+die aan zijn voorkeuren voldoen.
+De manier van invoeren van de postcode bij de instellingen is intuitiever gemaakt na een test met een gebruiker. 
+Bron gevonden om naar notificaties te kijken:  
+http://www.tutorialspoint.com/android/android_push_notification.html  
+Tijdens het laden van data van de API's en het HTML parsen is een load spinner toegevoegd.
+De code is geinspireerd door de volgende link:  
+http://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff  
 
 **Vr 15-1-13**  
 Doelen van de dag:  

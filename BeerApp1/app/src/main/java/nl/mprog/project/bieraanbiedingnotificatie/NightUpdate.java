@@ -1,5 +1,6 @@
 package nl.mprog.project.bieraanbiedingnotificatie;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,11 +11,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
@@ -29,13 +28,16 @@ public class NightUpdate extends BroadcastReceiver{
     private DataBaseHandler dataBaseHandler;
     private Context appContext;
     private String tag = "*C_NightUpdt";
+    private static final Integer RETRY_ID = 1;
+    // The retry interval is every 20 minutes
+    private static final Integer RETRY_INTERVAL = 20 * 60 * 1000;
 
     @Override
     public void onReceive(Context appContext, Intent arg1) {
         this.appContext = appContext;
         dataBaseHandler = new DataBaseHandler(appContext);
 
-        // Get the supermarkets and matching discounts on a new thread
+        // Get the discounts on a new thread
         CustomAsyncTask customAsyncTask = new CustomAsyncTask();
         customAsyncTask.execute();
     }
@@ -54,10 +56,19 @@ public class NightUpdate extends BroadcastReceiver{
         @Override
         protected Void doInBackground(Void... params) {
 
-            // Get the current discounts online by parsing html
+            // TODO Add random time jitter to prevent Denial of service from the website
+            // Try to get the current discounts online by parsing html
             List<DiscountObject> newDiscountArray = htmlParser.getDiscountsArray();
 
-            // TODO Add random time jitter to prevent Denial of service from the website and google API servers
+            // htmlParser failed to get the discount information (maybe no internet connection)
+            // So set an alarm to try again every 20 min
+            if (newDiscountArray == null) {
+                setAlarmToRetry(true);
+                return null;
+            }
+            // The information was retreived succesful so cancel the repeating alarm to try every
+            // 20 min if it was set.
+            setAlarmToRetry(false);
 
             // Get the settings of the user
             SharedPreferences prefs = appContext.getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
@@ -84,6 +95,28 @@ public class NightUpdate extends BroadcastReceiver{
         }
         @Override
         protected void onPostExecute(Void result) {
+        }
+    }
+
+    public void setAlarmToRetry(Boolean setAlarm){
+
+        // Get the alarm system service and create a pending intent to open this class
+        AlarmManager alarmManager;
+        PendingIntent retryPendingIntent;
+
+        alarmManager = (AlarmManager)appContext.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(appContext, NightUpdate.class);
+        retryPendingIntent = PendingIntent.getBroadcast(appContext, RETRY_ID, intent, 0);
+
+        if (setAlarm){
+            // set the alarm
+            alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() + RETRY_INTERVAL, RETRY_INTERVAL, retryPendingIntent);
+            Log.d(tag, "Update failed, Retry alarm was set!");
+        }
+        else {
+            // cancel the alarm
+            Log.d(tag, "Update was succesful, Retry alarm was canceld.");
+            alarmManager.cancel(retryPendingIntent);
         }
     }
 
@@ -179,8 +212,6 @@ public class NightUpdate extends BroadcastReceiver{
                     .setContentIntent(resultPendingIntent)
                     .setOngoing(false)
                     .setAutoCancel(true)
-//                .setWhen(System.currentTimeMillis())
-//                .setLargeIcon(aBitmap)
                     .build();
             notificationManager.notify(0, notification);
         }

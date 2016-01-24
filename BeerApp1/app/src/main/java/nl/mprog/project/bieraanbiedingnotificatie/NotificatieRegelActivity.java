@@ -3,18 +3,10 @@ package nl.mprog.project.bieraanbiedingnotificatie;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-//import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -224,54 +216,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             // Stop the loading spinner and fill the listview with results
             findViewById(R.id.loadSpinnerNotify).setVisibility(View.GONE);
             populateListView();
-            // TODO: Dit hier niet doen (notify)
-            // Send a notification to the user about the discounts.
-            sendNotification(discountsNotifyArray);
         }
-    }
-
-    public void sendNotification(List<DiscountObject> discountsNotifyArrayy){
-        // Give notification
-        // TODO: zorgen dat discountNotifyArray niet global is zodat ik hier geen Araayy hoef te gebruiken
-        // Code inspired by: http://developer.android.com/guide/topics/ui/notifiers/notifications.html#Removing
-        // Add the specific discount info to the notification title
-        String title = "";
-        for ( int i = 0; i < discountsNotifyArrayy.size(); i++) {
-            if (i == 0) { title += discountsNotifyArrayy.get(i).brandPrint + " krat €" + discountsNotifyArrayy.get(i).price;}
-            else { title += ", " + discountsNotifyArrayy.get(i).brandPrint + " krat €" + discountsNotifyArrayy.get(i).price;}
-        }
-        String body = "Nieuwe aanbieding(en) gevonden";
-
-        NotificationManager notificationManager = (NotificationManager)getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
-        // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(getApplication(), NotificatieRegelActivity.class);
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-        // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(NotificatieRegelActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
-        Notification notification = new Notification.Builder(getApplicationContext())
-                .setContentTitle(title)
-                .setContentText(body)
-                .setSmallIcon(android.R.drawable.stat_notify_more)
-                .setShowWhen(false)
-                .setContentIntent(resultPendingIntent)
-                .setOngoing(false)
-                .setAutoCancel(true)
-//                .setWhen(System.currentTimeMillis())
-//                .setLargeIcon(aBitmap)
-                .build();
-        notificationManager.notify(0, notification);
     }
 
     // This method receives settings information from the fragment:
@@ -321,7 +266,8 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             getSupportFragmentManager().popBackStack();
         } else {
             transaction
-                    .setCustomAnimations(android.R.animator.fade_in, android.R.anim.fade_out)
+                    // TODO: checken of dit wel goed gaat, ik heb net van ani of anim -> animator gemaakt bij fade out.
+                    .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                     .show(fragment)
                     .addToBackStack("notifySettings")
                     .commit();
@@ -339,7 +285,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -347,6 +292,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         return true;
     }
 
+    // Open ore close the fragment by a click on a menu bar field
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -358,7 +304,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             toggleFragment();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

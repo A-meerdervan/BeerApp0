@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 /**
  * Created by Alex on 21-1-2016.
  *
@@ -15,6 +17,10 @@ import android.widget.Toast;
  * again
  */
 public class ResetAlarmOnBoot extends BroadcastReceiver{
+
+    // The refresf interval is every TODO: zeg de juiste, nu 2 min maar graag 1 dag
+    private static final Integer INTERVAL = 2 * 60 * 1000;
+
     @Override
     public void onReceive(Context appContext, Intent intent) {
         Toast.makeText(appContext, "In onreceive after boot", Toast.LENGTH_SHORT).show();
@@ -34,21 +40,18 @@ public class ResetAlarmOnBoot extends BroadcastReceiver{
         Intent intent = new Intent(appContext, NightUpdate.class);
         alarmPendingIntent = PendingIntent.getBroadcast(appContext, 0, intent, 0);
 
-//        // Set the alarm to start at 8:30 a.m.
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        calendar.set(Calendar.HOUR_OF_DAY, 8);
-//        calendar.set(Calendar.MINUTE, 30);
+        // Set the alarm to start at 4:30 a.m.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 4);
+        calendar.set(Calendar.MINUTE, 30);
 
-//// setRepeating() lets you specify a precise custom interval--in this case,
-//// 20 minutes.
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-//                1000 * 60 * 20, alarmPendingIntent);
-
-        // 10 seconds
-        int interval = 20 * 1000;
-
-        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), interval, alarmPendingIntent);
+        // Make the alarm fire once, now that the device has booted
+        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis(), alarmPendingIntent);
+        // Set the alarm to fire comming night and then repeat after an interval of one day
+        // This commented line will set the alarm for now and then repeat, with an interval of 2 min
+//        alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), INTERVAL, alarmPendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);
         Toast.makeText(appContext, "Alarm Set, end of SetupdateAndNotifyAlarm", Toast.LENGTH_SHORT).show();
     }
 }

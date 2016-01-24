@@ -90,12 +90,13 @@ public class HtmlParser {
                 DiscountObject currentDiscount = new DiscountObject(brandPrint,brand,format,price,pricePerLiter,superMarket,discountPeriod,type);
                 discountArray.add(currentDiscount);
             }
+            return discountArray;
 
         } catch (IOException e) {
+            // The connection probably failed, to indicate this, return null
             e.printStackTrace();
+            return null;
         }
-
-        return discountArray;
     }
 
     private String getBrand(String brandRaw) {
