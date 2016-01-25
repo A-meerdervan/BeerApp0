@@ -29,7 +29,8 @@
 
     <item type="id" name="alfa" />
     <item type="id" name="amstel" />
-    <item type="id" name="bavaria" />
+    <!--TODO: bavaria 12 staat hier nu in maar daar moet nog wat mee-->
+    <item type="id" name="bavaria12" />
     <item type="id" name="brand" />
     <item type="id" name="grolsch" />
     <item type="id" name="grolschbeugel" />
@@ -38,7 +39,8 @@
     <item type="id" name="hertogjan" />
     <item type="id" name="heineken" />
     <item type="id" name="jupiler" />
-    <item type="id" name="keizerskroon" />
+    <!--TODO: hetzelfde geld voor keizerskroon-->
+    <item type="id" name="keizerskroon24" />
     <item type="id" name="palm" />
     <item type="id" name="schutters" />
     <item type="id" name="warsteiner" />

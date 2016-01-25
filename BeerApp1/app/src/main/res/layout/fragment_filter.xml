@@ -20,7 +20,7 @@
             <TextView
                 android:layout_marginTop="@dimen/MarginTop"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="Sorteer en of filter de aanbiedingen: "
+                android:text="Sorteer en filter de aanbiedingen: "
                 android:id="@+id/filterIntroTV"/>
 
             <Button
@@ -49,10 +49,13 @@
                     android:orientation="horizontal"
                     android:id="@+id/sortLinLayout">
 
-                    <TextView android:layout_width="100dp"
+                    <TextView
+                        android:layout_marginEnd="10dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
+                        android:textStyle="bold"
                         android:text="Sorteer op: "
-                        android:textSize="14sp"
+                        android:textSize="@dimen/editTextSize"
                         android:textColor="@color/Black"/>
                     <Spinner
                         android:layout_width="wrap_content"
@@ -69,7 +72,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Filter opties: "
-                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/editTextSize"
                     android:textColor="@color/Black"/>
 
                 <!--Max price lin layout-->
@@ -81,9 +85,9 @@
 
                     <TextView
                         android:paddingBottom="@dimen/MarginTopSmall"
-                        android:layout_width="100dp"
+                        android:layout_width="150dp"
                         android:layout_height="60dp"
-                        android:text="Maximum prijs:  "
+                        android:text="Maximum prijs per krat"
                         android:textSize="14sp"
                         android:textColor="@color/Black"/>
 
@@ -92,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
                         android:ems="10"
-                        android:hint=" .. €"
+                        android:hint=" €"
                         android:id="@+id/maxPriceFilterET" />
 
                 </LinearLayout>
@@ -120,6 +124,7 @@
                 <!--</LinearLayout>-->
 
                 <TextView
+                    android:textStyle="bold"
                     android:layout_marginTop="@dimen/MarginTop"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
@@ -206,6 +211,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:text="Supermarkt selectie  "
+                    android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="@color/Black"/>
 

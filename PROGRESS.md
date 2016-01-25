@@ -2,12 +2,53 @@
 **Author** Alex van der Meer  
 **Start date:** 5-1-2016
 
+**Vr 25-1-13**  
+Doelen van de dag:  
+Gedaan: 
+**Do 25-1-13**  
+Doelen van de dag:  
+Verslag inleveren.
+Gedaan: 
+**Wo 25-1-13**  
+Doelen van de dag:  
+Verslag maken, beetje code kwaliteit
+Gedaan: 
+
+**Di 25-1-13**  
+Doelen van de dag:  
+Het werkend krijgen van het kaartje met de dichtbijzijnde supermarkt.  
+Een walkthrough van de app geven aan de gebruiker wanneer deze voor het eerst de app opstart.
+Allerlei bugs fixen.  
+Werken aan de opmaak van de app.
+
+Gedaan: 
+
+**Ma 25-1-13**  
+Doelen van de dag:  
+Regelen dat de app uitrekent welk filiaal het dichts bij jou in de buurt is, en dat dit weergegeven word in een activity wanneer je klikt op een voor notificatie geschikt item.  
+Een begin maken aan het op een kaartje afbeelden waar de supermarkt is en waar jij bent in diezelfde activity.
+
+Gedaan:  
+
+
+**Zo 24-1-13**  
+Doelen van de dag:  
+Paar bugs fixen
+
+Gedaan:  
+Na een user test bleek dat het misleidend was dat de listview over alle aanbieidingen highlight als je op een item klikt,
+terwijl er niets gebeurd. Ik heb deze feature uitgezet. Verder bleek dat i.p.v. maximum prijs maximum prijs per krat duidelijker zo zijn. Dit is aangepast. 
+
 **Za 21-1-13**
 Doelen van de dag:  
-Het filteren in de alle aanbiedingen activitie regelen.
+Het filteren in de alle aanbiedingen activity regelen.
 
 Gedaan:  
 Fixen dat op het moment dat je geen internet connectie hebt de eerste keer dat je de app opstart dat je dan niet door kunt klikken naar een volgend scherm en een textview met rode achtergrond te zien krijgt dat je eerst internet moet hebben.
+Custom checkboxen programmatisch toegevoegd aan de filter fragment. Ze worden uitgelezen en een list word geproduceerd met aangefinkte boxes. Deze lists worden dan doorgestuurd naar de activity die zijn listview met aanbiedingen hierop kan filteren. Het filteren gebeurd in de FilterAndSorter class.  
+In deze class is er een functie gemaakt genaamd filterAndSort. Deze functie filtered op alle mogelijke filter opties.
+Voor het sorteren op alfabetische volgorde van supermarkten en aanbiedingen is deze bron van pas gekomen:  
+http://stackoverflow.com/questions/19471005/sorting-an-arraylist-of-objects-alphabetically  
 
 
 

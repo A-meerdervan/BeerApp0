@@ -37,7 +37,8 @@ public class SupportedBrandsMap extends HashMap {
 
         this.put("Alfa","alfa");
         this.put("Amstel","amstel");
-        this.put("Bavaria","bavaria");
+        // TODO: fixen van bavaria12 en keizerkroon12 en ....24
+        this.put("Bavaria","bavaria12");
         this.put("Brand","brand");
         this.put("Grolsch","grolsch");
         this.put("Grolsch Beugel", "grolschbeugel");
@@ -46,7 +47,8 @@ public class SupportedBrandsMap extends HashMap {
         this.put("Hertog Jan","hertogjan");
         this.put("Heineken","heineken");
         this.put("Jupiler","jupiler");
-        this.put("Keizerskroon","keizerskroon");
+        // TODO: zie boven
+        this.put("Keizerskroon","keizerskroon24");
         this.put("Palm","palm");
         this.put("Schutters","schutters");
         this.put("Warsteiner","warsteiner");

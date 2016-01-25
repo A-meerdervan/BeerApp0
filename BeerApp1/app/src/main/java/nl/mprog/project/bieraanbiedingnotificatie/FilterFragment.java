@@ -178,7 +178,6 @@ public class FilterFragment extends Fragment implements View.OnClickListener,Ada
 //            // filter and sort options to the activity
             mListener.onFragmentInteraction(sortOptionSelected, maxPrice, checkedBeerOptions, checkedSuperMarkets);
 //            // Let the user now the settings are saved
-            Toast.makeText(this.getActivity(), "Aanbiedingen filteren...", Toast.LENGTH_LONG).show();
 //        }
         }
     }

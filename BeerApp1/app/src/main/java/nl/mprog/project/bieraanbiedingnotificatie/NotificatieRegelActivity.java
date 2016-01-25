@@ -3,6 +3,8 @@ package nl.mprog.project.bieraanbiedingnotificatie;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -43,26 +45,9 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         // Hide the loading spinner
         findViewById(R.id.loadSpinnerNotify).setVisibility(View.GONE);
 
-        // Get the discount information from the database
-        discountArray = dataBaseHandler.getAllDiscounts();
-
-        // If there are no discounts in the database then the data was not downloaded yet, this
-        // could be caused by a lack of internet connection for example. A message is shown to the
-        // user
-        TextView introTV = (TextView)findViewById(R.id.introNotificationsTV);
-        if (discountArray.size() == 0) {
-            introTV.setText("Er is geen aanbieding informatie gevonden, wellicht heeft u geen " +
-                    "internet verbinding");
-            return;
-        }
-
         // if there are already discounts flagged for notifying, display them
         discountsNotifyArray = dataBaseHandler.getNotifyFlaggedDiscounts();
-        if (discountsNotifyArray.size() == 0){
-            introTV.setText("Er zijn op dit moment geen aanbiedingen die aan uw eisen voldoen");
-            return;
-        }
-        introTV.setText("Deze aanbiedingen volgen uit uw voorkeuren");
+        setTopMessageToUser();
         populateListView();
     }
 
@@ -154,7 +139,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
 
 
     // TODO: this class is currently run from the save settings function.
-    // It should be run every night or something, to update the database
     private class CustomAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private String zipCode;
@@ -213,10 +197,31 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             // TODO: per id een update doen in plaats van de hele DB te verwijderen en weer op te bouwen (dan kun je de discountarr = .getAllDIscounts regel hierboven ook weghalen)
             dataBaseHandler.storeDiscounts(discountArray);
 
-            // Stop the loading spinner and fill the listview with results
+            // Stop the loading spinner, fill the listview with results and update the top message
             findViewById(R.id.loadSpinnerNotify).setVisibility(View.GONE);
             populateListView();
+            setTopMessageToUser();
         }
+    }
+
+    private void setTopMessageToUser(){
+        SharedPreferences prefs = getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
+        Boolean previousSettingsDetected = prefs.getBoolean("previousSettingsDetected", false);
+        TextView introTV = (TextView)findViewById(R.id.introNotificationsTV);
+        if (previousSettingsDetected == false){
+            introTV.setText("Als u op NOTIFY SETTINGS klikt kunt u uw bier voorkeuren instellen.");
+//            TODO: kleur veranderen
+            introTV.setBackgroundColor(getResources().getColor(R.color.Gold));
+            return;
+        }
+        if (discountsNotifyArray.size() == 0){
+            introTV.setText("Op dit moment hebben de supermarkten niet wat u wilt,\n" +
+                    "U kijgt een notificatie zodra dit wel zo is!");
+            introTV.setBackgroundColor(getResources().getColor(R.color.BlueButtonColor));
+            return;
+        }
+        introTV.setText("Er zijn supermarkten die hebben wat u wilt!");
+        introTV.setBackgroundColor(getResources().getColor(R.color.Gold));
     }
 
     // This method receives settings information from the fragment:
