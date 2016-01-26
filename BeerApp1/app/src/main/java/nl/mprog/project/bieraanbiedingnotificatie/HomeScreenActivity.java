@@ -24,14 +24,16 @@ public class HomeScreenActivity extends AppCompatActivity {
     private static final String tag = "*C_HomeAct";
     // The refresh interval is one day, it refreshes each night at 4:30 AM
     private static final long INTERVAL = AlarmManager.INTERVAL_DAY;
-    private DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
-    private HtmlParser htmlParser = new HtmlParser();
+    private DataBaseHandler dataBaseHandler;
+    private HtmlParser htmlParser;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        htmlParser = new HtmlParser(getApplicationContext());
+        dataBaseHandler = new DataBaseHandler(getApplicationContext());
 
         // Hide the loading spinner
         findViewById(R.id.loadSpinnerHomeAct).setVisibility(View.GONE);

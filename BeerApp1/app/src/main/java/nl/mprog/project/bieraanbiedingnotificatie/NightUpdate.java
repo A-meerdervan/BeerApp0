@@ -45,7 +45,7 @@ public class NightUpdate extends BroadcastReceiver{
     // Http requests have to be run on a sepparate thread. This is used to update the discount
     // information by parsing html. It can then send a notification when there are updates
     private class CustomAsyncTask extends AsyncTask<Void, Void, Void> {
-        private HtmlParser htmlParser = new HtmlParser();
+        private HtmlParser htmlParser = new HtmlParser(appContext);
 
         @Override
         protected void onPreExecute() {
@@ -80,7 +80,7 @@ public class NightUpdate extends BroadcastReceiver{
                 List<String> favoriteBeers = new ArrayList<>(prefs.getStringSet("favoBeersList", new HashSet<String>()));
 
                 // Get the specific Nearby superMarkets from the database
-                SuperMarketFinder superMarketFinder= new SuperMarketFinder();
+                SuperMarketFinder superMarketFinder= new SuperMarketFinder(appContext);
                 // Transform it to a list of only the chainname's of the supermarkets
                 List<String> bareSuperMarkets = superMarketFinder.getBareSupermarkets(dataBaseHandler.getNearbySuperMarkets());
 

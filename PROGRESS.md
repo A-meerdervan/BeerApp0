@@ -29,6 +29,11 @@ Regelen dat de app uitrekent welk filiaal het dichts bij jou in de buurt is, en 
 Een begin maken aan het op een kaartje afbeelden waar de supermarkt is en waar jij bent in diezelfde activity.
 
 Gedaan:  
+Julian wou een demo. Waar moest het bier voor de borrel van daan halen?. Top, ik dit laten zien, bleek dat de aanbiedingen niet actueel waren. Na wat uitzoekwerk bleek dat de makers van de site die ik parse, een regel code hadden veranderd, daardoor eindigde de nachtelijke update in een error. Dit gebeurde in mijn mobiel dus merkte ik niets van de error. Het is aangepast dus nu is de site weer een stapje robuuster.  
+Het volgende toegevoegd; Van alle supermarkt resultaten in de buurt word de afstand tot de gebruiker berekend. Dan word per keten de dichtsbijzijnde gevonden en gemarkeerd in de database met een closestFlag eigenschap. Op het moment dat een gebruiker op een list item van de resultaten voor notificatie lijst klikt, dan opent er een nieuwer activity. In deze activity zijn de gegevens van de supermarkt zichtbaar, en de huidige aanbiedingen van die supermarkt die voldoen aan de voorkeuren van de gebruiker. Er moet ook een kaartje te zien zijn met de locatie van de winkel op een kaartje via google maps.  
+Zojuist heb ik daar de volgende API key voor aangevraagd:  AIzaSyDD513nMZmEMyg_dPZBSiiFs3lS7K7_rGg.  
+In verassend weinig tijd is het gelukt om de map view werkend te krijgen.   
+
 
 
 **Zo 24-1-13**  

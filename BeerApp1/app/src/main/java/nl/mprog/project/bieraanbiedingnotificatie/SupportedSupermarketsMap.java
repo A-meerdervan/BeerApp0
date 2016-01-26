@@ -39,6 +39,7 @@ public class SupportedSupermarketsMap extends HashMap {
             "Super de Boer",
             "Vomar"
     };
+    public HashMap<String,String> backwardsSuperMarketMap;
 
     // The keys are possible names that come up in a google places API search
     // and the values are the code name thats used in this app
@@ -135,7 +136,30 @@ public class SupportedSupermarketsMap extends HashMap {
 
 //        this.put("","");
 //        this.put("","");
-
+        // now create a backwards mapping
+        backwardsSuperMarketMap = new HashMap<>();
+        backwardsSuperMarketMap.put("albertheijn","Albert Heijn");
+        backwardsSuperMarketMap.put("aldi","ALDI supermarkten");
+        backwardsSuperMarketMap.put("agrimarkt","Agrimarkt");
+        backwardsSuperMarketMap.put("attent","Attent");
+        backwardsSuperMarketMap.put("coop","Coop supermarkten");
+        backwardsSuperMarketMap.put("c1000","C1000");
+        backwardsSuperMarketMap.put("deen","DEEN supermarkten");
+        backwardsSuperMarketMap.put("deka","DekaMarkt");
+        backwardsSuperMarketMap.put("dirk","Dirk van den Broek");
+        backwardsSuperMarketMap.put("edeka","Edeka");
+        backwardsSuperMarketMap.put("emte","EMTÉ supermarkt");
+        backwardsSuperMarketMap.put("hoogvliet","Hoogvliet");
+        backwardsSuperMarketMap.put("janlinders","Jan Linders");
+        backwardsSuperMarketMap.put("jumbo","Jumbo");
+        backwardsSuperMarketMap.put("lidl","Lidl");
+        backwardsSuperMarketMap.put("mcd","MCD supermarkt");
+        backwardsSuperMarketMap.put("penny","PENNY-Markt Discounter");
+        backwardsSuperMarketMap.put("plus","Plus");
+        backwardsSuperMarketMap.put("poiesz","Poiesz Supermarkten");
+        backwardsSuperMarketMap.put("spar", "Spar");
+        backwardsSuperMarketMap.put("superdeboer", "Super de Boer");
+        backwardsSuperMarketMap.put("vomar", "Vomar Voordeelmarkt");
     }
 
     // Get the list of supported chainnames

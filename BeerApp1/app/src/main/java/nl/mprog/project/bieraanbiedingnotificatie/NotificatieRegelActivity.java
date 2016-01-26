@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
@@ -14,11 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +31,18 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
     private static final String tag = "*C_NotifDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
     private List<DiscountObject> discountsNotifyArray = new ArrayList<>();
-    private SuperMarketFinder superMarketFinder = new SuperMarketFinder();
+    private SuperMarketFinder superMarketFinder;
     private List<SuperMarket> superMarkets = new ArrayList<>();
     private List<String> bareSuperMarkets = new ArrayList<>();
     private FilterAndSorter filterAndSorter = new FilterAndSorter();
-    private DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
+    private DataBaseHandler dataBaseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificatie_regel);
+        superMarketFinder = new SuperMarketFinder(getApplicationContext());
+        dataBaseHandler = new DataBaseHandler(this);
 
         // Start up the settings fragment
         initializeFragment();
@@ -51,94 +56,30 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         populateListView();
     }
 
-    // this returns the resource integer id of a supermaket image
-    // Code inspired by: http://stackoverflow.com/questions/5576156/dynamically-set-source-of-the-imageview
-    private int getSuperImageResource(String superMarket) {
-        int resId = getApplicationContext().getResources().getIdentifier(superMarket, "drawable", "nl.mprog.project.bieraanbiedingnotificatie");
-        if (resId != 0) {
-            return resId;
-        }
-        // If image is not found:
-        return R.drawable.hertogjan;
-    }
-
-    // this returns the resource integer id of a brand image
-    // Code inspired by: http://stackoverflow.com/questions/5576156/dynamically-set-source-of-the-imageview
-    private int getBeerImageResource(String brand) {
-        int resId = getApplicationContext().getResources().getIdentifier(brand, "drawable", "nl.mprog.project.bieraanbiedingnotificatie");
-        if (resId != 0) {
-            return resId;
-        }
-        // If image is not found:
-        return R.drawable.imagenotfound;
-    }
-
     private void populateListView() {
         // Sort the entry's on price
         discountsNotifyArray = filterAndSorter.sortOnPrice(discountsNotifyArray);
-
         // Fill the listview list
-        ArrayAdapter<DiscountObject> adapter = new MyListAdapter();
+        ArrayAdapter<DiscountObject> adapter = new MyListAdapter(discountsNotifyArray, this);
         ListView list = (ListView) findViewById(R.id.notifcationsItemsList);
         list.setAdapter(adapter);
-    }
+        // When an item is clicked, open an activity that shows the location of the nearest superMarket
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
 
-
-    // This custom adapter class is made to fill the listview with discount information
-    private class MyListAdapter extends ArrayAdapter<DiscountObject> {
-
-        // constructor
-        public MyListAdapter() {
-            super(NotificatieRegelActivity.this, R.layout.listview, discountsNotifyArray);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // Make sure we have a view to work with (may have been given null)
-            View itemView = convertView;
-            if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.listview, parent, false);
+                DiscountObject discountObject = (DiscountObject)parent.getItemAtPosition(position);
+                SuperMarket superMarket = dataBaseHandler.getClosestStore(discountObject.superMarkt);
+                Toast.makeText(getBaseContext(), superMarket.distance + "\n" +
+                        superMarket.adres , Toast.LENGTH_SHORT).show();
+                // Go to the activity with information on the closest store
+                Intent intent = new Intent(getApplicationContext(), ClosestSuperMarketActivity.class);
+                intent.putExtra("chainName",discountObject.superMarkt);
+                startActivity(intent);
             }
-
-            // Get the discount object
-            DiscountObject discountObject = discountsNotifyArray.get(position);
-
-            // Fill the views
-
-            // Fill the brand
-            TextView brand = (TextView) itemView.findViewById(R.id.brand);
-            brand.setText(discountObject.brandPrint);
-
-            // Fill the format
-            TextView format = (TextView) itemView.findViewById(R.id.format);
-            format.setText(discountObject.format);
-
-            // Fill the period
-            TextView period = (TextView) itemView.findViewById(R.id.period);
-            period.setText(discountObject.discountPeriod);
-
-            // Fill the price
-            TextView price = (TextView) itemView.findViewById(R.id.price);
-            price.setText("€" + discountObject.price);
-
-            // Fill the literPrice
-            TextView literPrice = (TextView) itemView.findViewById(R.id.literPrice);
-            literPrice.setText("€" + discountObject.pricePerLiter + " p/lr");
-
-            // Set the supermarkt image
-            ImageView superMarkt = (ImageView) itemView.findViewById(R.id.imgSuper);
-            superMarkt.setImageResource(getSuperImageResource(discountObject.superMarkt));
-
-
-            // Set the item image
-            ImageView itemImg = (ImageView) itemView.findViewById(R.id.img);
-            itemImg.setImageResource(getBeerImageResource(discountObject.brand));
-            return itemView;
-        }
+        });
     }
 
-
-    // TODO: this class is currently run from the save settings function.
     private class CustomAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private String zipCode;
@@ -162,8 +103,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
 
             // get the supermarkets nearby information
             superMarkets = superMarketFinder.getResults(radius, zipCode);
-            // Save to the database
-            dataBaseHandler.storeSuperMarkets(superMarkets);
             // get a list with only the bare supermarket names, like: deen,albertheijn,coop
             bareSuperMarkets = superMarketFinder.getBareSupermarkets(superMarkets);
             return null;

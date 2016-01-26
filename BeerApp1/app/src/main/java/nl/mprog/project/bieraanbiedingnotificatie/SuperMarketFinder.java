@@ -10,6 +10,8 @@ package nl.mprog.project.bieraanbiedingnotificatie;
 
 
 // Imports for the Google places API
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -32,22 +34,26 @@ import java.util.HashMap;
 public class SuperMarketFinder {
 
     private static final String tag = "*C_SuperFndr";
+    private Context appContext;
     private static final HashMap supportedSupermarketsMap = new SupportedSupermarketsMap();
-    private AdresToLocation adresToLocation = new AdresToLocation();
+    private AdresToLocation adresToLocation;
     private List<SuperMarket> superMarkets = new ArrayList<>();
+    private String[] location;
+    private DataBaseHandler dataBaseHandler;
 
     // Constructor
-    public void SuperMarketFinder(){
+    public SuperMarketFinder(Context context){
+        this.appContext = context;
+        this.dataBaseHandler = new DataBaseHandler(context);
+        this.adresToLocation = new AdresToLocation(context);
     }
-
-
 
     // This function takes a radius and a zipCode and returns all superMarkets that are
     // near the entered zipCode.
     // Some HTTP request code was taken from http://developer.android.com/reference/java/net/HttpURLConnection.html
     public List<SuperMarket> getResults(int radius, String zipCode){
 
-        String[] location = adresToLocation.getLocationFromAdres(zipCode);
+        location = adresToLocation.getLocationFromAdres(zipCode);
         // Print the coordinates
         Log.d(tag, location[0]);
         Log.d(tag, location[1]);
@@ -96,8 +102,12 @@ public class SuperMarketFinder {
         }
         String JSONreturned = placesBuilder.toString();
 
-        // Return the parsed JSON input
+        // The JSON is converted to a list of supermarktet objects.
         superMarkets = parseJSONsupermarketInfo(JSONreturned);
+        // Set the distance between the supermarkets and the adres of the user, then find out the
+        // wich stores are nearest to the user and mark that in the database
+        setDistancesToUser();
+        markNearestStores();
         return superMarkets;
     }
 
@@ -204,6 +214,60 @@ public class SuperMarketFinder {
         resultArray[0] = "false";
         resultArray[1] = "";
         return resultArray;
+    }
+
+    // This function marks the supermarket, that per supermarket chain, is closest to the user, by
+    // setting the closestFlag property to 1.
+    private void markNearestStores(){
+        // Loop the unique superMarket chain names (even if 2 AH are close, this list only contains
+        // "albertheijn" once.
+        List<String> bareSuperMarkets = getBareSupermarkets(superMarkets);
+        for(int j = 0; j < bareSuperMarkets.size(); j++){
+            // This is the circumference of the earth to ensure that it is further then any supermarket
+            Double closestDistance = 40000.;
+            int closestSuperMarketIndex = 1000; // this ensures an error when this is not rewritten
+            // loop all supermarket objects to find the closest one of this chain
+            for (int index = 0; index < superMarkets.size(); index++){
+                if (bareSuperMarkets.get(j).equals(superMarkets.get(index).chainName)){
+                    // if the current super market is closer save it.
+                    if (superMarkets.get(index).distance < closestDistance){
+                        closestDistance = superMarkets.get(index).distance;
+                        closestSuperMarketIndex = index;
+                    }
+                }
+            }
+            superMarkets.get(closestSuperMarketIndex).closestFlag = 1;
+        }
+        // Store the changes to the database
+        dataBaseHandler.storeSuperMarkets(superMarkets);
+    }
+
+    private void setDistancesToUser(){
+        for (int i = 0; i < superMarkets.size(); i++){
+            Double distance = calculateDistance(Double.valueOf(location[0]),
+                    Double.valueOf(location[1]), superMarkets.get(i).latitude,
+                    superMarkets.get(i).longitude);
+            superMarkets.get(i).distance = distance;
+        }
+    }
+
+    // This function aproximates the distance in km between to points on the earth
+    // acurately for small distances. This is done using pythogoras.
+    // The function was inspired by: http://www.movable-type.co.uk/scripts/latlong.html
+    public static Double calculateDistance(Double latitudeA, Double longitudeA, Double latitudeB, Double longitudeB){
+
+        Integer R = 6371000; // radius of the earth in metres
+        Double latInRadA = latitudeA * Math.PI / 180;
+        Double latInRadB = latitudeB * Math.PI / 180;
+        Double lngInRadA = longitudeA * Math.PI / 180;
+        Double lngInRadB = longitudeB * Math.PI / 180;
+
+        Double x = (lngInRadB - lngInRadA) * Math.cos((latInRadA + latInRadB)/2);
+        Double y = (latInRadB - latInRadA);
+        Double distance = Math.sqrt(x*x + y*y) * R;
+
+        // return the distance in km
+        return distance/1000;
     }
 }
 

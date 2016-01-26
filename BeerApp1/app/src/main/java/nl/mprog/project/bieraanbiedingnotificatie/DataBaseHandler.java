@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,9 @@ import java.util.List;
  */
 
 public class DataBaseHandler extends SQLiteOpenHelper{
+
+    // for debugging
+    private static final String tag = "*C_DataBHdlr";
 
     // database version
     private static final int DATABASE_VERSION = 1;
@@ -51,9 +55,10 @@ public class DataBaseHandler extends SQLiteOpenHelper{
     private static final String SUPERMARKET_LATITUDE = "latitude";
     private static final String SUPERMARKET_LONGITUDE = "longitude";
     private static final String SUPERMARKET_DISTANCE = "distance";
+    private static final String SUPERMARKET_CLOSEST_FLAG = "closestFlag";
 
     private static final String[] SUPERMARKET_COLUMNS = {SUPERMARKET_ID, SUPERMARKET_CHAIN_NAME,
-            SUPERMARKET_NAME, SUPERMARKET_ADRES, SUPERMARKET_LATITUDE, SUPERMARKET_LONGITUDE, SUPERMARKET_DISTANCE };
+            SUPERMARKET_NAME, SUPERMARKET_ADRES, SUPERMARKET_LATITUDE, SUPERMARKET_LONGITUDE, SUPERMARKET_DISTANCE, SUPERMARKET_CLOSEST_FLAG };
 
     public DataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -82,7 +87,8 @@ public class DataBaseHandler extends SQLiteOpenHelper{
                 SUPERMARKET_ADRES + " TEXT, " +
                 SUPERMARKET_LATITUDE + " DOUBLE, " +
                 SUPERMARKET_LONGITUDE + " DOUBLE, " +
-                SUPERMARKET_DISTANCE + " DOUBLE )";
+                SUPERMARKET_DISTANCE + " DOUBLE, " +
+                SUPERMARKET_CLOSEST_FLAG + " INTEGER )";
         db.execSQL(secondQuery);
     }
 
@@ -114,6 +120,7 @@ public class DataBaseHandler extends SQLiteOpenHelper{
             values.put(SUPERMARKET_LATITUDE, superMarket.latitude);
             values.put(SUPERMARKET_LONGITUDE, superMarket.longitude);
             values.put(SUPERMARKET_DISTANCE, superMarket.distance);
+            values.put(SUPERMARKET_CLOSEST_FLAG, superMarket.closestFlag);
 
             // insert superMarket
             db.insert(TABLE_SUPERMARKETS, null, values);
@@ -144,15 +151,19 @@ public class DataBaseHandler extends SQLiteOpenHelper{
                 superMarket.latitude = cursor.getDouble(4);
                 superMarket.longitude = cursor.getDouble(5);
                 superMarket.distance = cursor.getDouble(6);
+                superMarket.closestFlag = cursor.getInt(7);
                 // Add object to the array
                 superMarkets.add(superMarket);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return superMarkets;
     }
 
     public void deleteAllSuperMarkets(){
         // get reference of the database
+        System.out.println("HIERNA!");
+        System.out.println(this);
         SQLiteDatabase db = this.getWritableDatabase();
         String Query = "DELETE FROM " + TABLE_SUPERMARKETS;
         db.execSQL(Query);
@@ -219,6 +230,7 @@ public class DataBaseHandler extends SQLiteOpenHelper{
                 discountsArray.add(discountObject);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return discountsArray;
     }
 
@@ -257,6 +269,8 @@ public class DataBaseHandler extends SQLiteOpenHelper{
                 notifyFLaggedArray.add(discountObject);
             } while (cursor.moveToNext());
         }
+        db.close();
+        cursor.close();
         return notifyFLaggedArray;
     }
 
@@ -283,54 +297,73 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         db.execSQL(Query);
     }
 
+    // This function gets the closest store of a store chain. The closest one has its flag set to 1.
+    public SuperMarket getClosestStore(String chainName){
+        // get reference of the database
+        SQLiteDatabase db = this.getReadableDatabase();
+        // select  query
+        String query = "SELECT * FROM " + TABLE_SUPERMARKETS + " WHERE " +
+                SUPERMARKET_CHAIN_NAME + " = " + "'" + chainName + "'" +
+                " AND " + SUPERMARKET_CLOSEST_FLAG + " = " + Integer.toString(1);
+        Cursor cursor = db.rawQuery(query, null);
+        // parse result
+        SuperMarket superMarket;
+        if (cursor.moveToFirst()) {
+                superMarket = new SuperMarket();
+                superMarket.id = Integer.parseInt(cursor.getString(0));
+                superMarket.chainName = cursor.getString(1);
+                superMarket.individualName = cursor.getString(2);
+                superMarket.adres = cursor.getString(3);
+                superMarket.latitude = cursor.getDouble(4);
+                superMarket.longitude = cursor.getDouble(5);
+                superMarket.distance = cursor.getDouble(6);
+                superMarket.closestFlag = cursor.getInt(7);
+        }
+        else {
+            Log.d(tag, "SOMETHING WENT WRONG, the database did not find a closest supermarket for " + chainName);
+            return null;
+        }
+        db.close();
+        close();
+        return superMarket;
+    }
 
-//    public DiscountObject readDiscount(int id) {
-//        // get reference of the database
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        // get discount query
-//        Cursor cursor = db.query(TABLE_DISCOUNTS, // a. table
-//                DISCOUNTS_COLUMNS, " id = ?", new String[]{String.valueOf(id)}, null, null, null, null);
-//
-//        // if results !=null, parse the first one
-//        if (cursor != null)
-//            cursor.moveToFirst();
-//
-//        DiscountObject discountObject = new DiscountObject();
-//        discountObject.id = Integer.parseInt(cursor.getString(0));
-//        discountObject.brand = cursor.getString(1);
-//        discountObject.brandPrint = cursor.getString(2);
-//        discountObject.format = cursor.getString(3);
-//        discountObject.price = cursor.getFloat(4);
-//        discountObject.pricePerLiter = cursor.getFloat(5);
-//        discountObject.superMarkt = cursor.getString(6);
-//        discountObject.discountPeriod = cursor.getString(7);
-//        discountObject.type = cursor.getString(8);
-//        discountObject.notificationFlag = cursor.getInt(9);
-//
-//        return discountObject;
-//    }
+    public List<DiscountObject> getDiscountsByStore(String chainName){
+        List<DiscountObject> discountsArray = new ArrayList<>();
 
-//    public Player readPlayerByName(String Name) {
-//        // get reference of the database
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        // get player query
-//        Cursor cursor = db.query(TABLE_DISCOUNTS, // a. table
-//                DISCOUNTS_COLUMNS, " " + PLAYER_NAME + " = ?", new String[]{Name}, null, null, null, null);
-//
-//        // if results !=null, parse the first one
-//        if ( cursor.moveToFirst() ) {
-//            // start activity a
-//            Player player = new Player();
-//            player.Id = Integer.parseInt(cursor.getString(0));
-//            player.Name = cursor.getString(1);
-//            player.Score = Integer.parseInt(cursor.getString(2));
-//            return player;
-//        } else {
-//            return null;
-//        }
-//    }
+        // select query
+        String query = "SELECT * FROM " + TABLE_DISCOUNTS + " WHERE " +
+                DISCOUNT_SUPERMARKT + " = " + "'" + chainName + "'" +
+                " AND " + DISCOUNT_NOTIFY_FLAG + " = " + Integer.toString(1);
+
+        // get reference of the database
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // parse all results
+        DiscountObject discountObject;
+        if (cursor.moveToFirst()) {
+            do {
+                discountObject = new DiscountObject();
+                discountObject.id = Integer.parseInt(cursor.getString(0));
+                discountObject.brand = cursor.getString(1);
+                discountObject.brandPrint = cursor.getString(2);
+                discountObject.format = cursor.getString(3);
+                discountObject.price = cursor.getDouble(4);
+                discountObject.pricePerLiter = cursor.getDouble(5);
+                discountObject.superMarkt = cursor.getString(6);
+                discountObject.discountPeriod = cursor.getString(7);
+                discountObject.type = cursor.getString(8);
+                discountObject.notificationFlag = cursor.getInt(9);
+                // Add object to the array
+                discountsArray.add(discountObject);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        cursor.close();
+        return discountsArray;
+    }
+
 
 
 //    public int updatePlayer(Player player) {

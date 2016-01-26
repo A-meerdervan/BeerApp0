@@ -9,6 +9,8 @@
     <dimen name="MarginLine">18dp</dimen>
     <dimen name="editTextSize">16sp</dimen>
     <dimen name="standardTextSize">14sp</dimen>
+    <dimen name="superMarketTitleText">17sp</dimen>
+
 
 
 

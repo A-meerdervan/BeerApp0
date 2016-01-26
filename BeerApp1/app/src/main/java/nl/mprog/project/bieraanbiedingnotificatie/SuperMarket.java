@@ -14,6 +14,7 @@ public class SuperMarket {
     public Double latitude;
     public Double longitude;
     public Double distance = 0.;
+    public Integer closestFlag = 0;
 
     public SuperMarket(String chainName, String individualName, String adres, Double latitude, Double longitude){
         this.chainName = chainName;

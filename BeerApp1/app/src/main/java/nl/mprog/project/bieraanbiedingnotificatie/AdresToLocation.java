@@ -1,5 +1,7 @@
 package nl.mprog.project.bieraanbiedingnotificatie;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -24,10 +26,11 @@ import java.net.URL;
 public class AdresToLocation {
 
     private static final String tag = "*C_AdresToL";
+    private Context appContext;
 
     // Constructor
-    public AdresToLocation(){
-
+    public AdresToLocation(Context context){
+        this.appContext = context;
     }
     private String[] location;
 
@@ -116,7 +119,13 @@ public class AdresToLocation {
             Log.d(tag, "Json parsen is mislukt");
             e.printStackTrace();
         }
-
+        // Save the users location to the shared prefferences. (it will be used later to show on
+        // a map
+        SharedPreferences prefs = appContext.getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("userLatitude",location[0]);
+        editor.putString("userLongitude",location[1]);
+        editor.apply();
         return location;
     }
 

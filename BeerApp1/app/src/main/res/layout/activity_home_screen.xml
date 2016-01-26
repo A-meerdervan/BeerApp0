@@ -53,7 +53,7 @@
         android:layout_marginBottom="@dimen/MarginTopSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="U kunt verder in de app wanneer u verbonden bent met internet en u de app herstart"
+        android:text="U kunt verder in de app wanneer u verbonden bent met internet en u de app herstart\nAls u wel internet heeft stuur dan alstublieft een bug report op Google play"
         android:id="@+id/noConnectionTV"
         android:visibility="gone"
         android:background="@color/alarmRed"

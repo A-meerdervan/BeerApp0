@@ -4,12 +4,18 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!--This is used to be able to set the reating alarm functionality to update the discounts, back-->
-    <!--in place-->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
-    <!--android.supp  android.support.PARENT_ACTIVITY-->
-
+    <!-- This is used to be able to set the reating alarm functionality to update the discounts, back -->
+    <!-- in place -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!--
+ The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but are recommended.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- android.supp  android.support.PARENT_ACTIVITY -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,42 +24,70 @@
         <activity
             android:name=".HomeScreenActivity"
             android:label="@string/app_name" >
+
+        </activity>
+        <activity
+            android:name=".NotificatieRegelActivity"
+            android:label="@string/title_activity_notificatie_regel"
+            android:parentActivityName=".HomeScreenActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" />\
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".NotificatieRegelActivity"
-            android:label="@string/title_activity_notificatie_regel"
-            android:parentActivityName="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" >
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" />
+
         </activity>
         <activity
             android:name=".AlleAanbiedingenActivity"
             android:label="@string/title_activity_alle_aanbiedingen"
-            android:parentActivityName="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" >
+            android:parentActivityName=".HomeScreenActivity" >
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" />
         </activity>
 
-        <receiver android:name=".NightUpdate">
-
+        <receiver android:name=".NightUpdate" >
         </receiver>
-
-        <receiver android:name=".ResetAlarmOnBoot"
-            android:enabled="true">
+        <receiver
+            android:name=".ResetAlarmOnBoot"
+            android:enabled="true" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".NearestSuperMarketActivity"
+            android:label="@string/title_activity_nearest_super_market"
+            android:parentActivityName=".NotificatieRegelActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.mprog.project.bieraanbiedingnotificatie.NotificatieRegelActivity" />
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".ClosestSuperMarketActivity"
+            android:label="@string/title_activity_closest_super_market" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.mprog.project.bieraanbiedingnotificatie.NotificatieRegelActivity" />
+
+        </activity>
     </application>
 
 </manifest>

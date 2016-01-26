@@ -18,4 +18,7 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="NotificationWhenSiteChanged">De app update niet meer, stuur bug report in G.Play</string>
+    <string name="title_activity_nearest_super_market">filiaal informatie</string>
+    <string name="title_activity_closest_super_market">Map</string>
 </resources>
