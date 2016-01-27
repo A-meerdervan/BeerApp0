@@ -47,7 +47,7 @@
             android:text="default text"
             android:id="@+id/period"
             android:textColor="@color/Black"
-            android:textSize="14sp"/>
+            android:textSize="13sp"/>
     </LinearLayout>
 
     <LinearLayout

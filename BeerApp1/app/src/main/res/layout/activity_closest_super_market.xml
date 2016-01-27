@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="Default Supermarket"
             android:id="@+id/storeNameTV"
-            android:textColor="@color/Black"
+            android:textAppearance="@android:style/TextAppearance.Large"
             android:textSize="@dimen/superMarketTitleText"/>
 
         <RelativeLayout
@@ -56,14 +56,15 @@
                 android:layout_height="wrap_content"
                 android:text="Afstand hemelsbreed"
                 android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 />
             <TextView
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0.89 km"
-                android:textColor="@color/Black"
                 android:id="@+id/distanceToStoreTV"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="16sp"/>
 
         </RelativeLayout>
@@ -74,7 +75,7 @@
             android:layout_height="wrap_content"
             android:text="defaultstraat, 126, Amsterdam"
             android:id="@+id/storeAddressTV"
-            android:textColor="@color/Black"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="14sp"/>
     </LinearLayout>
 

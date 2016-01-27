@@ -11,5 +11,32 @@
     <color name="Gold">#F0EC75</color>
     <color name="alarmRed">#FFADAD</color>
     <color name="almostWhite">#EBF0F0</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!--this colors are used in multiple places to style the app-->
+    <color name="lightestBlue">#1CECFF</color>
+    <color name="lightBlue">#00C2D4</color>
+    <color name="superLightBlue">#DBFFFF</color>
+    <color name="primaryTextColor">#FF0084A7</color>
+    <color name="superLightGrey">#F5F5F5</color>
+    <color name="backgroundColor">#ffffff</color>
+    <color name="highLightColor">#00C2D4</color>
+    <color name="buttonGradient1">#00ACCB</color>
+    <color name="buttonGradient2">#2CDEFF</color>
+
+    <!--These two are for the navigation bar-->
+    <color name="primary_material_dark">#ff9800</color>
+    <color name="navigation_bar_main">#ff9800</color>
+
+    <!--This is the main background color-->
+    <color name="background_material_light">#ffffff</color>
+
+    <color name="black">#212121</color>
+    <color name="accent_material_light">#008db2</color>
+    <color name="primary_text_default_material_light">#0084a7</color>
+    <color name="secondary_text_default_material_dark">#b3aeaeae</color>
+
+
+
 
 </resources>

@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_height="match_parent"
     tools:context="nl.mprog.project.bieraanbiedingnotificatie.NotificatieRegelActivity">
 
     <FrameLayout
@@ -12,25 +12,26 @@
         android:foregroundGravity="right">
     </FrameLayout>
 
+    <TextView
+        android:layout_marginBottom="@dimen/MarginTopSmall"
+        android:layout_marginTop="@dimen/MarginTopSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/notify_activityTopTV"
+        android:text="Default"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:id="@+id/introNotificationsTV"
+        android:layout_centerHorizontal="true" />
+
     <RelativeLayout
+        android:layout_below="@+id/introNotificationsTV"
         android:id="@+id/secondRelLay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_marginBottom="@dimen/MarginTopSmall"
-            android:layout_marginTop="@dimen/MarginTopSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/MarginTop"
-            android:text="Default"
-            android:id="@+id/introNotificationsTV"
-            android:layout_centerHorizontal="true" />
-
-        <!--Standard android loading spinner taken from http://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff-->
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin">
+    <!--Standard android loading spinner taken from http://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff-->
 
         <RelativeLayout
-            android:layout_below="@+id/introNotificationsTV"
             android:id="@+id/loadSpinnerNotify"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

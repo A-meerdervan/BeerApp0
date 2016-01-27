@@ -23,28 +23,23 @@
         android:layout_below="@+id/loadSpinnerHomeAct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/customButtonStyle"
         android:text="Notificatie voorwaarden"
         android:id="@+id/notificationScreenButton"
         android:layout_marginTop="46dp"
         android:onClick="onClickNotificationButton"
-        android:background="@color/MainButtonColor"
-        android:padding="5dp"
-        android:focusableInTouchMode="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="@dimen/MarginTopSmall"/>
 
     <Button
+        style="@style/customButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Alle aanbiedingen"
         android:id="@+id/AllDiscountsButton"
         android:onClick="onClickDiscountsButton"
-        android:background="@color/MainButtonColor"
-        android:padding="5dp"
-        android:focusableInTouchMode="false"
-        android:layout_below="@+id/notificationScreenButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/notificationScreenButton" />
 
     <TextView
         android:padding="7dp"
@@ -56,6 +51,7 @@
         android:text="U kunt verder in de app wanneer u verbonden bent met internet en u de app herstart\nAls u wel internet heeft stuur dan alstublieft een bug report op Google play"
         android:id="@+id/noConnectionTV"
         android:visibility="gone"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:background="@color/alarmRed"
         android:layout_centerHorizontal="true" />
 

@@ -6,5 +6,8 @@
     <dimen name="DpFromSide">120dp</dimen>
     <dimen name="MarginTop">120dp</dimen>
     <dimen name="MarginTopSmall">20dp</dimen>
+    <dimen name="textSmall2">13sp</dimen>
+    <dimen name="textMedium1">16dp</dimen>
+    <dimen name="textSmall1">14sp</dimen>
 
 </resources>

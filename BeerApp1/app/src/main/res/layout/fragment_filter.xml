@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="nl.mprog.project.bieraanbiedingnotificatie.FilterFragment"
-    android:background="@color/MainButtonColor"
+    style="@style/fragmentStyle"
     android:clickable="true">
 
     <ScrollView android:id="@+id/ScrlView"
@@ -21,18 +21,16 @@
                 android:layout_marginTop="@dimen/MarginTop"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:text="Sorteer en filter de aanbiedingen: "
+                android:textAppearance="@android:style/TextAppearance.Small"
                 android:id="@+id/filterIntroTV"/>
 
             <Button
-                android:paddingRight="4dp"
-                android:paddingLeft="4dp"
+                style="@style/customButtonStyle"
                 android:layout_marginTop="@dimen/MarginTopSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:background="@color/BlueButtonColor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Filter en sorteer"
-                android:textSize="@dimen/editTextSize"
-                android:textAllCaps="false"
+                android:textSize="@dimen/textMedium1"
                 android:textStyle="normal"
                 android:id="@+id/filterAndSortBtn" />
 
@@ -55,8 +53,9 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:text="Sorteer op: "
-                        android:textSize="@dimen/editTextSize"
-                        android:textColor="@color/Black"/>
+                        android:textSize="@dimen/textMedium1"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        />
                     <Spinner
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,8 +72,9 @@
                     android:layout_height="wrap_content"
                     android:text="Filter opties: "
                     android:textStyle="bold"
-                    android:textSize="@dimen/editTextSize"
-                    android:textColor="@color/Black"/>
+                    android:textSize="@dimen/textMedium1"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    />
 
                 <!--Max price lin layout-->
                 <LinearLayout
@@ -88,49 +88,32 @@
                         android:layout_width="150dp"
                         android:layout_height="60dp"
                         android:text="Maximum prijs per krat"
-                        android:textSize="14sp"
-                        android:textColor="@color/Black"/>
+                        android:textSize="@dimen/textSmall2"
+                        android:textAppearance="@android:style/TextAppearance.Small"
+                        />
 
                     <EditText
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="@dimen/textMedium1"
                         android:ems="10"
                         android:hint=" €"
                         android:id="@+id/maxPriceFilterET" />
 
                 </LinearLayout>
 
-                <!--&lt;!&ndash;max afstand lin layout&ndash;&gt;-->
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:id="@+id/maxDistanceLinLayout">-->
-
-                    <!--<TextView android:layout_width="100dp"-->
-                        <!--android:layout_height="60dp"-->
-                        <!--android:text="Maximum aftstand:  "-->
-                        <!--android:textSize="14sp"-->
-                        <!--android:textColor="@color/Black"/>-->
-
-                    <!--<EditText-->
-                        <!--android:layout_width="40dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:inputType="numberDecimal"-->
-                        <!--android:ems="10"-->
-                        <!--android:id="@+id/maxDistanceET" />-->
-
-                <!--</LinearLayout>-->
 
                 <TextView
-                    android:textStyle="bold"
                     android:layout_marginTop="@dimen/MarginTop"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:text="Bier selectie  "
-                    android:textSize="16sp"
-                    android:textColor="@color/Black"/>
+                    android:textSize="@dimen/textMedium1"
+                    android:textStyle="bold"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -138,72 +121,7 @@
                     android:orientation="vertical"
                     android:id="@+id/beerCheckBoxLinLay">
 
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox1" />-->
 
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox2" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox3" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox6" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox7" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox8" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox9" />-->
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox10" />-->
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox11" />-->
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox12" />-->
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox13" />-->
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/checkBox14" />-->
                 </LinearLayout>
 
                 <TextView
@@ -212,103 +130,15 @@
                     android:layout_height="wrap_content"
                     android:text="Supermarkt selectie  "
                     android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:textColor="@color/Black"/>
+                    android:textSize="@dimen/textMedium1"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:id="@+id/superMarketCheckBoxLinLay">
-
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="default"-->
-                        <!--android:id="@+id/check0" />-->
 
                 </LinearLayout>
 

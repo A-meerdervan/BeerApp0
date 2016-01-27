@@ -173,10 +173,12 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
 
 //        favoritesList.add(beerTitle);
         // Create new LinearLayout view with one TextView
-        LinearLayout newLayout = new LinearLayout(getActivity().getApplicationContext());
-        newLayout.setOrientation(LinearLayout.HORIZONTAL);
-        newLayout.setClickable(true);
-        newLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.Gold));
+        LinearLayout newLayout = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.favoritebeer_template, null);
+//        LinearLayout newLayout = new LinearLayout(getActivity().getApplicationContext());
+//        newLayout.setOrientation(LinearLayout.HORIZONTAL);
+//        newLayout.setClickable(true);
+
+//        newLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.Gold));
 
         TextView favoBeer = new TextView(getActivity().getApplicationContext());
         newLayout.addView(favoBeer);

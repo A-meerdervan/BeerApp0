@@ -52,6 +52,10 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
 
         // if there are already discounts flagged for notifying, display them
         discountsNotifyArray = dataBaseHandler.getNotifyFlaggedDiscounts();
+        // TODO: dit geprint weghalen
+        for (DiscountObject discountObject : discountsNotifyArray){
+            Log.d(tag, discountObject.brandPrint + " " + discountObject.brand);
+        }
         setTopMessageToUser();
         populateListView();
     }
@@ -69,9 +73,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
                                     int position, long id) {
 
                 DiscountObject discountObject = (DiscountObject)parent.getItemAtPosition(position);
-                SuperMarket superMarket = dataBaseHandler.getClosestStore(discountObject.superMarkt);
-                Toast.makeText(getBaseContext(), superMarket.distance + "\n" +
-                        superMarket.adres , Toast.LENGTH_SHORT).show();
                 // Go to the activity with information on the closest store
                 Intent intent = new Intent(getApplicationContext(), ClosestSuperMarketActivity.class);
                 intent.putExtra("chainName",discountObject.superMarkt);
@@ -147,20 +148,24 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         SharedPreferences prefs = getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
         Boolean previousSettingsDetected = prefs.getBoolean("previousSettingsDetected", false);
         TextView introTV = (TextView)findViewById(R.id.introNotificationsTV);
+        // TODO: Dit verwijderen als je het niet nodig vind.
+//        ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) introTV.getLayoutParams();
+//        p.setMargins(0, 0, 100, 0);
+//        introTV.requestLayout();
         if (previousSettingsDetected == false){
             introTV.setText("Als u op NOTIFY SETTINGS klikt kunt u uw bier voorkeuren instellen.");
 //            TODO: kleur veranderen
-            introTV.setBackgroundColor(getResources().getColor(R.color.Gold));
+//            introTV.setBackgroundColor(getResources().getColor(R.color.Gold));
             return;
         }
         if (discountsNotifyArray.size() == 0){
             introTV.setText("Op dit moment hebben de supermarkten niet wat u wilt,\n" +
                     "U kijgt een notificatie zodra dit wel zo is!");
-            introTV.setBackgroundColor(getResources().getColor(R.color.BlueButtonColor));
+//            introTV.setBackgroundColor(getResources().getColor(R.color.BlueButtonColor));
             return;
         }
         introTV.setText("Er zijn supermarkten die hebben wat u wilt!");
-        introTV.setBackgroundColor(getResources().getColor(R.color.Gold));
+//        introTV.setBackgroundColor(getResources().getColor(R.color.Gold));
     }
 
     // This method receives settings information from the fragment:

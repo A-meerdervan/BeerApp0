@@ -25,6 +25,12 @@
             android:name=".HomeScreenActivity"
             android:label="@string/app_name" >
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".NotificatieRegelActivity"
@@ -35,12 +41,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.mprog.project.bieraanbiedingnotificatie.HomeScreenActivity" />\
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity
@@ -64,14 +64,6 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".NearestSuperMarketActivity"
-            android:label="@string/title_activity_nearest_super_market"
-            android:parentActivityName=".NotificatieRegelActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="nl.mprog.project.bieraanbiedingnotificatie.NotificatieRegelActivity" />
-        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
