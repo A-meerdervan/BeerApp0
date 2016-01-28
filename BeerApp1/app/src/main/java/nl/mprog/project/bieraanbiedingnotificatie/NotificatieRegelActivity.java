@@ -11,15 +11,19 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +40,9 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
     private List<String> bareSuperMarkets = new ArrayList<>();
     private FilterAndSorter filterAndSorter = new FilterAndSorter();
     private DataBaseHandler dataBaseHandler;
+    private AdapterView.OnItemClickListener onListClickListener;
+    private AdapterView.OnItemClickListener onListClickHideFragment;
+    private ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +59,12 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
 
         // if there are already discounts flagged for notifying, display them
         discountsNotifyArray = dataBaseHandler.getNotifyFlaggedDiscounts();
-        // TODO: dit geprint weghalen
-        for (DiscountObject discountObject : discountsNotifyArray){
-            Log.d(tag, discountObject.brandPrint + " " + discountObject.brand);
-        }
         setTopMessageToUser();
         populateListView();
+
+        // TODO: dit weghalen
+//        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.notifyActivityTopRelLay);
+//        relativeLayout.setClickable(false);
     }
 
     private void populateListView() {
@@ -65,20 +72,29 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         discountsNotifyArray = filterAndSorter.sortOnPrice(discountsNotifyArray);
         // Fill the listview list
         ArrayAdapter<DiscountObject> adapter = new MyListAdapter(discountsNotifyArray, this);
-        ListView list = (ListView) findViewById(R.id.notifcationsItemsList);
+        list = (ListView) findViewById(R.id.notifcationsItemsList);
         list.setAdapter(adapter);
         // When an item is clicked, open an activity that shows the location of the nearest superMarket
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        onListClickListener = new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                DiscountObject discountObject = (DiscountObject)parent.getItemAtPosition(position);
+                DiscountObject discountObject = (DiscountObject) parent.getItemAtPosition(position);
                 // Go to the activity with information on the closest store
                 Intent intent = new Intent(getApplicationContext(), ClosestSuperMarketActivity.class);
-                intent.putExtra("chainName",discountObject.superMarkt);
+                intent.putExtra("chainName", discountObject.superMarkt);
                 startActivity(intent);
             }
-        });
+        };
+        list.setOnItemClickListener(onListClickListener);
+        // When the fragment is shown and the user clicks outside of it on the list, the fragment
+        // should hide
+        onListClickHideFragment = new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                toggleFragment();
+            }
+        };
     }
 
     private class CustomAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -123,7 +139,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             // for the newly found settings
             discountArray = dataBaseHandler.getAllDiscounts();
             for (int i = 0; i< discountArray.size(); i++) {
-                Log.d(tag, discountArray.get(i).brandPrint + " Zit in favoBeers? " + favoriteBeers.contains(discountArray.get(i).brandPrint));
                 if ( bareSuperMarkets.contains(discountArray.get(i).superMarkt)
                     && (discountArray.get(i).price < maxPrice )
                     && (favoriteBeers.contains(discountArray.get(i).brandPrint)) ){
@@ -148,24 +163,29 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         SharedPreferences prefs = getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
         Boolean previousSettingsDetected = prefs.getBoolean("previousSettingsDetected", false);
         TextView introTV = (TextView)findViewById(R.id.introNotificationsTV);
-        // TODO: Dit verwijderen als je het niet nodig vind.
-//        ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) introTV.getLayoutParams();
-//        p.setMargins(0, 0, 100, 0);
-//        introTV.requestLayout();
+        introTV.setVisibility(View.VISIBLE);
+
+//        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+//        RelativeLayout topLayout = (RelativeLayout)findViewById(R.id.notifyActivityTopRelLay);
         if (previousSettingsDetected == false){
+//            TextView introTV = (TextView) inflater.inflate(R.layout.top_message_positive, null, false);
+            introTV.setBackground(getResources().getDrawable(R.drawable.notify_top_positive));
             introTV.setText("Als u op NOTIFY SETTINGS klikt kunt u uw bier voorkeuren instellen.");
-//            TODO: kleur veranderen
-//            introTV.setBackgroundColor(getResources().getColor(R.color.Gold));
+//            topLayout.addView(introTV);
             return;
         }
         if (discountsNotifyArray.size() == 0){
+//            TextView introTV = (TextView) inflater.inflate(R.layout.top_message_negative, null, false);
+            introTV.setBackground(getResources().getDrawable(R.drawable.notify_top_negative));
             introTV.setText("Op dit moment hebben de supermarkten niet wat u wilt,\n" +
                     "U kijgt een notificatie zodra dit wel zo is!");
-//            introTV.setBackgroundColor(getResources().getColor(R.color.BlueButtonColor));
+//            topLayout.addView(introTV);
             return;
         }
+//        TextView introTV = (TextView) inflater.inflate(R.layout.top_message_positive, null, false);
+        introTV.setBackground(getResources().getDrawable(R.drawable.notify_top_positive));
         introTV.setText("Er zijn supermarkten die hebben wat u wilt!");
-//        introTV.setBackgroundColor(getResources().getColor(R.color.Gold));
+//        topLayout.addView(introTV);
     }
 
     // This method receives settings information from the fragment:
@@ -174,6 +194,8 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
     public void onFragmentInteraction(String zipCode, int radius, Double maxPrice, List<String> favoriteBeers) {
         // Show the loading spinner
         findViewById(R.id.loadSpinnerNotify).setVisibility(View.VISIBLE);
+        // hide the top status textview
+        findViewById(R.id.introNotificationsTV).setVisibility(View.GONE);
 
         // TODO: Zorgen dat de fragment nice opzij swiped
         // Hide the fragment to show loading spinner
@@ -213,6 +235,8 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
                     .hide(fragment)
                     .commit();
             getSupportFragmentManager().popBackStack();
+            // When the fragment is gone the list can be clickable again
+            list.setOnItemClickListener(onListClickListener);
         } else {
             transaction
                     // TODO: checken of dit wel goed gaat, ik heb net van ani of anim -> animator gemaakt bij fade out.
@@ -220,6 +244,9 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
                     .show(fragment)
                     .addToBackStack("notifySettings")
                     .commit();
+            // When the user clicks outside the fragment, the user clicks on the list, this listener
+            // then hides the fragment
+            list.setOnItemClickListener(onListClickHideFragment);
         }
     }
 

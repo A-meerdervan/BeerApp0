@@ -52,6 +52,6 @@ public class ResetAlarmOnBoot extends BroadcastReceiver{
         // This commented line will set the alarm for now and then repeat, with an interval of 2 min
 //        alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), INTERVAL, alarmPendingIntent);
         alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);
-        Toast.makeText(appContext, "Alarm Set, end of SetupdateAndNotifyAlarm", Toast.LENGTH_SHORT).show();
+        Toast.makeText(appContext, "Alarm set again after boot.", Toast.LENGTH_SHORT).show();
     }
 }

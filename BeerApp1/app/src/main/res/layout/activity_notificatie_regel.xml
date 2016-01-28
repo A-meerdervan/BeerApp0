@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.mprog.project.bieraanbiedingnotificatie.NotificatieRegelActivity">
+    tools:context="nl.mprog.project.bieraanbiedingnotificatie.NotificatieRegelActivity"
+    android:id="@+id/notifyActivityTopRelLay">
 
     <FrameLayout
         android:layout_alignParentEnd="true"
@@ -17,7 +18,7 @@
         android:layout_marginTop="@dimen/MarginTopSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/notify_activityTopTV"
+        style="@style/notify_activityTopTVpos"
         android:text="Default"
         android:textAppearance="@android:style/TextAppearance.Small"
         android:id="@+id/introNotificationsTV"

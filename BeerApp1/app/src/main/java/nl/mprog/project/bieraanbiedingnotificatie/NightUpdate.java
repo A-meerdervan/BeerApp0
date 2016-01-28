@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -31,12 +33,17 @@ public class NightUpdate extends BroadcastReceiver{
     private static final Integer RETRY_ID = 1;
     // The retry interval is every 20 minutes
     private static final Integer RETRY_INTERVAL = 20 * 60 * 1000;
+    private List<DiscountObject> oldDiscountArray;
+    private List<DiscountObject> newDiscountArray;
+
+
 
     @Override
     public void onReceive(Context appContext, Intent arg1) {
         this.appContext = appContext;
         dataBaseHandler = new DataBaseHandler(appContext);
-
+        // TODO: Deze regel weghalen:
+        sendNotification(new ArrayList<DiscountObject>());
         // Get the discounts on a new thread
         CustomAsyncTask customAsyncTask = new CustomAsyncTask();
         customAsyncTask.execute();
@@ -50,15 +57,17 @@ public class NightUpdate extends BroadcastReceiver{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(appContext, "I'm running", Toast.LENGTH_SHORT).show();
+            Toast.makeText(appContext, "I'm updating", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
 
+            // save the previous discountArray to determine wich discount is new
+            oldDiscountArray = dataBaseHandler.getAllDiscounts();
             // TODO Add random time jitter to prevent Denial of service from the website
             // Try to get the current discounts online by parsing html
-            List<DiscountObject> newDiscountArray = htmlParser.getDiscountsArray();
+            newDiscountArray = htmlParser.getDiscountsArray();
 
             // htmlParser failed to get the discount information (maybe no internet connection)
             // So set an alarm to try again every 20 min
@@ -69,6 +78,7 @@ public class NightUpdate extends BroadcastReceiver{
             // The information was retreived succesful so cancel the repeating alarm to try every
             // 20 min if it was set.
             setAlarmToRetry(false);
+            dataBaseHandler.storeDiscounts(newDiscountArray);
 
             // Get the settings of the user
             SharedPreferences prefs = appContext.getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
@@ -86,7 +96,7 @@ public class NightUpdate extends BroadcastReceiver{
 
                 // Get the discounts that qualify for notification and have not already been notified
                 // in the past
-                List<DiscountObject> discountsNotifyArray = getDiscountsToNotifyAndUpdateDB(newDiscountArray, bareSuperMarkets, maxPrice, favoriteBeers);
+                List<DiscountObject> discountsNotifyArray = getDiscountsToNotifyAndUpdateDB(bareSuperMarkets, maxPrice, favoriteBeers);
 
                 // Send a notification to the user about the discounts.
                 sendNotification(discountsNotifyArray);
@@ -120,15 +130,14 @@ public class NightUpdate extends BroadcastReceiver{
         }
     }
 
-    public List<DiscountObject> getDiscountsToNotifyAndUpdateDB(List<DiscountObject> newDiscountArray, List<String> bareSuperMarkets, Double maxPrice, List<String> favoriteBeers){
+    public List<DiscountObject> getDiscountsToNotifyAndUpdateDB(List<String> bareSuperMarkets, Double maxPrice, List<String> favoriteBeers){
 
         List<DiscountObject> discountsNotifyArray = new ArrayList<>();
         // Set all notify flags to 0 in the database
         dataBaseHandler.resetNotifyFlags();
+        newDiscountArray = dataBaseHandler.getAllDiscounts();
 
         // Filter the discounts on nearby supermarkets
-        // First empty the discountsNotifyArray for a fresh start
-        discountsNotifyArray.clear();
         // Loop the discountArray and set the notify flags to 1 for all discounts that match
         // the user's criteria
         for (int i = 0; i< newDiscountArray.size(); i++) {
@@ -146,7 +155,7 @@ public class NightUpdate extends BroadcastReceiver{
                     Log.d(tag, "New Discount: " + newDiscount.brandPrint + " " + newDiscount.superMarkt);
                 }
                 else{
-                    Log.d(tag, "no new discounts");
+                    Log.d(tag, "Not new:   " + newDiscount.brandPrint + " " + newDiscount.superMarkt);
                 }
             }
         }
@@ -160,10 +169,10 @@ public class NightUpdate extends BroadcastReceiver{
     // Discounts, if it is new than a notifaction can be sent about it. If it is not new,
     // a notification has already been sent in the past.
     private boolean discountIsNew(DiscountObject newDiscount){
-        List<DiscountObject> oldDiscountArray = dataBaseHandler.getAllDiscounts();
         Boolean discountIsNew = true;
         for (DiscountObject oldDiscount : oldDiscountArray) {
-            if ( oldDiscount.brand.equals(newDiscount.brand) && oldDiscount.superMarkt.equals(newDiscount.superMarkt) ){
+            if ( oldDiscount.brand.equals(newDiscount.brand) && oldDiscount.superMarkt.equals(newDiscount.superMarkt)
+                    && oldDiscount.discountPeriod.equals(newDiscount.discountPeriod)){
                 discountIsNew = false;
                 break;
             }
@@ -174,7 +183,9 @@ public class NightUpdate extends BroadcastReceiver{
     // This notification takes an array of discounts, and then sends a notification to the user
     public void sendNotification(List<DiscountObject> discountsNotifyArray){
         // Only if the array has elements there is new information for the user
-        if ( ! (discountsNotifyArray.size() == 0) ) {
+        // TODO: de if statement in commenten:!
+
+//        if ( ! (discountsNotifyArray.size() == 0) ) {
             // Give notification
             // Code inspired by: http://developer.android.com/guide/topics/ui/notifiers/notifications.html#Removing
             // Add the specific discount info to the notification title
@@ -204,17 +215,20 @@ public class NightUpdate extends BroadcastReceiver{
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
 
+            Bitmap largeIcon = BitmapFactory.decodeResource(appContext.getResources(), R.drawable.bredergrijspngsmallicon);
             Notification notification = new Notification.Builder(appContext)
                     .setContentTitle(title)
                     .setContentText(body)
-                    .setSmallIcon(android.R.drawable.stat_notify_more)
+                            .setSmallIcon(R.drawable.bredergrijspngsmallicon)
+                                    .setLargeIcon(largeIcon)
+//                    .setSmallIcon(android.R.drawable.stat_notify_more)
                     .setShowWhen(false)
                     .setContentIntent(resultPendingIntent)
                     .setOngoing(false)
                     .setAutoCancel(true)
                     .build();
             notificationManager.notify(0, notification);
-        }
+//        }
 
     }
 }

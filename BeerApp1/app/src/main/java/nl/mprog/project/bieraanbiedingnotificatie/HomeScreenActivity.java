@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
@@ -23,7 +24,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private static final String tag = "*C_HomeAct";
     // The refresh interval is one day, it refreshes each night at 4:30 AM
-    private static final long INTERVAL = AlarmManager.INTERVAL_DAY;
+    private static final long INTERVAL = 10 * 1000;
     private DataBaseHandler dataBaseHandler;
     private HtmlParser htmlParser;
 
@@ -44,17 +45,17 @@ public class HomeScreenActivity extends AppCompatActivity {
         Boolean firstAppBoot = prefs.getBoolean("firstAppBoot", true);
         Boolean noSuccesfulUpdateYet = prefs.getBoolean("noSuccesfulUpdateYet", true);
         // Only set update alarm if it has not been set before
-        // TODO: deze regel hieronder verwijderen
-//        firstAppBoot = true;
+        // TODO: deze regel hieronder verwijderen en het zootje hieronder incommenten
+        firstAppBoot = true;
         if (firstAppBoot){
-            // prevent the user from going to the next activities.
-            Log.d(tag, "make buttons NOT clickable");
-            makeButtonsClickable(false);
-            // Show loading spinner
-            findViewById(R.id.loadSpinnerHomeAct).setVisibility(View.VISIBLE);
-            // Get the discount data for the first time (on a separate thread)
-            HtmlParseAsyncTask htmlParseAsyncTask = new HtmlParseAsyncTask();
-            htmlParseAsyncTask.execute();
+//            // prevent the user from going to the next activities.
+//            Log.d(tag, "make buttons NOT clickable");
+//            makeButtonsClickable(false);
+//            // Show loading spinner
+//            findViewById(R.id.loadSpinnerHomeAct).setVisibility(View.VISIBLE);
+//            // Get the discount data for the first time (on a separate thread)
+//            HtmlParseAsyncTask htmlParseAsyncTask = new HtmlParseAsyncTask();
+//            htmlParseAsyncTask.execute();
             // This sets the task to update discount info every night
             setUpdateAndNotifyAlarm();
             // let the app now that next boot will not be the first
@@ -137,7 +138,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, 30);
 
         // Set the alarm to fire comming night and then repeat after an interval of one day
-        // This commented line will set the alarm in 2 min, with an interval of 2 min
+        // This commented line will set the alarm in 10 s, with an interval of 10 s
 //        alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() + INTERVAL, INTERVAL, alarmPendingIntent);
         alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);
 //        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();

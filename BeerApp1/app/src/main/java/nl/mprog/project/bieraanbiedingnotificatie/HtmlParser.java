@@ -70,6 +70,14 @@ public class HtmlParser {
 
                 // Get the format
                 String format = tableRows.get(1).child(0).html();
+
+                // Grolsch beugel krates have as brand on the page only "Grolsch", they can be
+                // recognized to be a beugel krate by the format "16 bottles"
+                if ( (brand.equals("grolsch")) && (format.contains("16")) ){
+                    brandPrint = "Grolsch Beugel";
+                    brand = getBrand(brandPrint);
+                }
+
                 // Get the price
                 double price = 0;
                 Elements priceH2 = tableRows.get(3).child(1).child(0).children();

@@ -32,9 +32,10 @@ android:clickable="true">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Favoriete bieren: "
-                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textStyle="bold"
                 android:textSize="@dimen/textSmall1"
-                android:textColor="@color/Black"/>
+                />
 
             <LinearLayout
                 android:layout_width="150dp"
@@ -71,9 +72,9 @@ android:clickable="true">
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/MarginTopSmall"
                 android:text="Uw postcode"
-                android:textSize="@dimen/textSmall1"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@color/Black"
+                android:textSize="@dimen/textMedium1"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textStyle="bold"
                 />
 
             
@@ -90,6 +91,8 @@ android:clickable="true">
                     android:id="@+id/zipCodeNumbersET"
                     android:layout_marginRight="@dimen/MarginTopSmall"
                     android:hint="   .... "
+                    android:textColor="@color/Black"
+                    android:textColorHint="@color/primaryTextColor"
                     android:textSize="@dimen/textMedium1"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     />
@@ -101,6 +104,8 @@ android:clickable="true">
                     android:ems="10"
                     android:id="@+id/zipCodeLettersET"
                     android:hint=" .. "
+                    android:textColor="@color/Black"
+                    android:textColorHint="@color/primaryTextColor"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textSize="@dimen/textMedium1"
                     />
@@ -128,8 +133,9 @@ android:clickable="true">
                     android:layout_marginRight="20dp"
                     android:layout_width="130dp"
                     android:layout_height="50dp"
-                    android:text="Maximum afstand\n(in m)"
+                    android:text="Maximum afstand\n(in km)"
                     android:textSize="@dimen/textSmall1"
+                    android:textColor="@color/Black"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     />
 
@@ -139,7 +145,9 @@ android:clickable="true">
                     android:inputType="numberDecimal"
                     android:ems="10"
                     android:id="@+id/radiusET"
-                    android:hint="   ... m"
+                    android:hint="   ... km"
+                    android:textColorHint="@color/primaryTextColor"
+                    android:textColor="@color/Black"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textSize="@dimen/textMedium1"
                     />
@@ -169,6 +177,7 @@ android:clickable="true">
                     android:layout_height="50dp"
                     android:text="Maximale prijs\n(per krat)"
                     android:textSize="@dimen/textSmall1"
+                    android:textColor="@color/Black"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     />
 
@@ -179,6 +188,8 @@ android:clickable="true">
                     android:ems="10"
                     android:id="@+id/maxPriceNotifyET"
                     android:hint="   ... €"
+                    android:textColor="@color/Black"
+                    android:textColorHint="@color/primaryTextColor"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textSize="@dimen/textMedium1"
                     />

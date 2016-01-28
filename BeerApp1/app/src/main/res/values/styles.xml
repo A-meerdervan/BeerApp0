@@ -15,8 +15,19 @@
 
     </style>
 
-    <style name="notify_activityTopTV" >
+    <style name="notify_activityTopTVpos" >
         <item name="android:background">@drawable/notify_top_positive</item>
+        <!--<item name="android:textColor">#FFFF</item>-->
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <!--<item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>-->
+
+
+    </style>
+
+    <style name="notify_activityTopTVneg" >
+        <item name="android:background">@drawable/notify_top_negative</item>
         <!--<item name="android:textColor">#FFFF</item>-->
         <item name="android:textColor">@color/Black</item>
         <item name="android:gravity">center</item>

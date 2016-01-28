@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_height="match_parent"
     tools:context="nl.mprog.project.bieraanbiedingnotificatie.AlleAanbiedingenActivity">
 
     <FrameLayout
@@ -12,23 +12,27 @@
         android:foregroundGravity="right">
     </FrameLayout>
 
-    <RelativeLayout
+    <TextView
+        android:layout_marginBottom="@dimen/MarginTopSmall"
+        android:layout_marginTop="@dimen/MarginTopSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/notify_activityTopTVpos"
+        android:text="Dit is het huidige aanbod"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:id="@+id/introAllDiscountsTV"
+        android:layout_centerHorizontal="true" />
 
-        <TextView
-            android:layout_marginTop="@dimen/MarginTopSmall"
-            android:layout_marginBottom="@dimen/MarginTopSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dit is het huidige aanbod"
-            android:id="@+id/introAllDiscountsTV"
-            android:layout_centerHorizontal="true" />
+    <RelativeLayout
+        android:layout_below="@+id/introAllDiscountsTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:id="@+id/allDiscountsSubRelLay">
 
         <!--Standard android loading spinner taken from http://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff-->
 
         <RelativeLayout
-            android:layout_below="@+id/introAllDiscountsTV"
             android:id="@+id/loadSpinnerAllDisc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -46,8 +50,7 @@
             android:listSelector="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
             android:id="@+id/AllDiscountsList"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/introAllDiscountsTV"/>
+            android:layout_alignParentLeft="true" />
 
     </RelativeLayout>
 

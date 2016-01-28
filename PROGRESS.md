@@ -21,7 +21,9 @@ Een walkthrough van de app geven aan de gebruiker wanneer deze voor het eerst de
 Allerlei bugs fixen.  
 Werken aan de opmaak van de app.
 
-Gedaan: 
+Gedaan:
+De hele dag ben ik bezig geweest met het stylen van de app. Ik heb naar andere apps op mijn telefoon gekeken en proberen na te doen hoe zij kleuren gebruiken. Het blijkt dat zo'n beetje alle professionele apps het volgende doen; Een witte tot grijze achtergrond, een navigation bar in een bepaalde kleur. Daarnaast wat grotere text, knoppen en highlights in een andere kleur of in dezelfde als de navigation bar. Als hulp heb ik deze site gebruikt om kleuren te kiezen:  
+https://color.adobe.com/nl/create/color-wheel/?base=2&rule=Complementary&selected=4&name=Mijn%20Color-thema&mode=rgb&rgbvalues=0.5659474690579943,0.7,0.6056493332131362,1,0.657184212716933,0.37074156432223626,1,0.4552066879900849,0,0,0.6728781805825123,0.796078431372549,0.17382961954088505,0.8721427511955415,1&swatchOrder=0,1,2,3,4  
 
 **Ma 25-1-13**  
 Doelen van de dag:  

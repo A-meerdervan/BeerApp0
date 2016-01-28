@@ -118,7 +118,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
             String maxPrice = prefs.getString("maxPrice", "-1");
             favoritesList = new ArrayList<>(prefs.getStringSet("favoBeersList", new HashSet<String>()));
             if (favoritesList.size() == 0) {
-                // TODO: Iets zeggen miss?
+                Log.d(tag, "!!! The pervious save settings there were no favorite beers selected");
             }
             // Set up the favorite beers listing
             fillFavoListAndListen(view);
@@ -130,7 +130,8 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
 
             zipCodeLettersET.setText(zipLetters);
             zipCodeNumbersET.setText(zipNumbers);
-            radiusET.setText(radius);
+            Double radiusKM = (Double.parseDouble(radius))/1000;
+            radiusET.setText(String.format("%.2f", radiusKM));
             maxPriceET.setText(maxPrice);
         }
 
@@ -232,10 +233,16 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
 
             // Check whether all fields are filled
             if (zipCodeLettersET.getText().toString().equals("") ||
-                    zipCodenumbersET.getText().toString().equals("") ||
-                    radiusET.getText().toString().equals("") ||
-                    maxPriceET.getText().toString().equals("")) {
-                Toast.makeText(this.getActivity(), "Niet alle velden zijn ingevuld", Toast.LENGTH_SHORT).show();
+                    zipCodenumbersET.getText().toString().equals("") ){
+                Toast.makeText(this.getActivity(), "De postcode is nog niet ingevuld", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if ( radiusET.getText().toString().equals("") ) {
+                Toast.makeText(this.getActivity(), "De maximale afstand tot supermarkt is nog niet ingevuld", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (favoritesList.size() == 0){
+                Toast.makeText(this.getActivity(), "U heeft nog geen favoriete biersoort(en) gekozen", Toast.LENGTH_SHORT).show();
                 return;
             }
             // when this function is called and all fields are filled, that means new settings are
@@ -259,13 +266,22 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
             String zipCodeNumbers = zipCodenumbersET.getText().toString();
             String zipCodeLetters = zipCodeLettersET.getText().toString();
             String zipCode = zipCodeNumbers + zipCodeLetters;
-            int radius = Integer.parseInt(radiusET.getText().toString());
-            Double maxPrice = Double.valueOf(maxPriceET.getText().toString());
+            // Convert from km to m (the google api wants an integer in m.)
+            Double radiusDouble = 1000 * Double.parseDouble(radiusET.getText().toString());
+            int radius = radiusDouble.intValue();
+            // If the maximum price is not set, this is fine so set it to 100 because no beer discount
+            // will be more expensive then 100 euros.
+            Double maxPrice;
+            if(maxPriceET.getText().toString().equals("")){
+                maxPrice = 100.;
+            }else {
+                maxPrice = Double.valueOf(maxPriceET.getText().toString());
+            }
             // Save the settings to the sharedpreferences
             editor.putString("zipNumbers", zipCodenumbersET.getText().toString());
             editor.putString("zipLetters", zipCodeLettersET.getText().toString());
-            editor.putString("maxPrice", maxPriceET.getText().toString());
-            editor.putString("radius", radiusET.getText().toString());
+            editor.putString("maxPrice", maxPrice.toString());
+            editor.putString("radius", String.valueOf(radius));
             // TODO: de bieren opslaan
             // editor.putString()
             editor.commit();

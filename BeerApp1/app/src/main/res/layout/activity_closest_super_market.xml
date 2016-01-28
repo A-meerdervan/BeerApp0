@@ -10,9 +10,10 @@
     tools:context="nl.mprog.project.bieraanbiedingnotificatie.ClosestSuperMarketActivity">
 
 <RelativeLayout
+    android:background="@drawable/supermarket_details"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="0dp"
+    android:padding="2dp"
     android:id="@+id/storeInfromationRelLay"
     >
 

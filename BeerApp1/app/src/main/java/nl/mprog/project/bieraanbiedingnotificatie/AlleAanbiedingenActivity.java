@@ -76,6 +76,8 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
 
         // Show loading spinner:
         findViewById(R.id.loadSpinnerAllDisc).setVisibility(View.VISIBLE);
+        TextView topTV = (TextView)findViewById(R.id.introAllDiscountsTV);
+        topTV.setVisibility(View.GONE);
 
         // Filter and sort
         sortedAndFilteredList = filterAndSorter.filterAndSort(sortOption, maxPrice, checkedBeerOptions, checkedSuperMarkets, discountArray);
@@ -85,8 +87,24 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
         // Show the filtered list on screen
         populateListView(sortedAndFilteredList);
 
-        // Hide the loading spinner:
+        // Hide the loading spinner and show top message:
         findViewById(R.id.loadSpinnerAllDisc).setVisibility(View.GONE);
+        findViewById(R.id.introAllDiscountsTV).setVisibility(View.VISIBLE);
+
+        // Show the appropriate message:
+        // if the filter button was pressed but no parameters were put in:
+        if (maxPrice == null && checkedBeerOptions.size() == 0 && checkedSuperMarkets.size() == 0){
+            topTV.setText("Dit is het huidige aanbod");
+            topTV.setBackground(getResources().getDrawable(R.drawable.notify_top_positive));
+            return;
+        }
+        if (sortedAndFilteredList.size() == 0) {
+            topTV.setText("Geen resultaten, probeer misschien een ander filter?");
+            topTV.setBackground(getResources().getDrawable(R.drawable.notify_top_negative));
+            return;
+        }
+        topTV.setText("De resultaten met uw filter:");
+        topTV.setBackground(getResources().getDrawable(R.drawable.notify_top_positive));
     }
 
     public void initializeFragment() {

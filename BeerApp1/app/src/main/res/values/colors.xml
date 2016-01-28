@@ -27,6 +27,8 @@
     <!--These two are for the navigation bar-->
     <color name="primary_material_dark">#ff9800</color>
     <color name="navigation_bar_main">#ff9800</color>
+    <color name="navigation_bar_main_low_opacity">#33ff9800</color>
+
 
     <!--This is the main background color-->
     <color name="background_material_light">#ffffff</color>

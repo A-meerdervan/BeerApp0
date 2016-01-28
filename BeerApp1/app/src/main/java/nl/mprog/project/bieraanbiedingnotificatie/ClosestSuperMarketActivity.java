@@ -35,6 +35,7 @@ public class ClosestSuperMarketActivity extends FragmentActivity {
         // Get the superMarket where this activity is about
         Bundle extras = getIntent().getExtras();
         String chainName = extras.getString("chainName");
+//        String chainName = "deen";
 
         // Get the superMarket which is the subject of this activity
         superMarket = dataBaseHandler.getClosestStore(chainName);
