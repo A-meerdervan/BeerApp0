@@ -11,13 +11,10 @@ package nl.mprog.project.bieraanbiedingnotificatie;
 
 // Imports for the Google places API
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,11 +27,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
+/**
+ * Created by Alex on 12-1-2016.
+ *
+ * This class is responsible for finding nearby supermarkets using the google places API.
+ */
 
 public class SuperMarketFinder {
 
     private static final String tag = "*C_SuperFndr";
-    private Context appContext;
     private static final HashMap supportedSupermarketsMap = new SupportedSupermarketsMap();
     private AdresToLocation adresToLocation;
     private List<SuperMarket> superMarkets = new ArrayList<>();
@@ -43,7 +44,6 @@ public class SuperMarketFinder {
 
     // Constructor
     public SuperMarketFinder(Context context){
-        this.appContext = context;
         this.dataBaseHandler = new DataBaseHandler(context);
         this.adresToLocation = new AdresToLocation(context);
     }
@@ -64,7 +64,7 @@ public class SuperMarketFinder {
         // Create the string builder that will receive the supermarket data from the google places API
         // And the required HTTP connection.
         StringBuilder placesBuilder = new StringBuilder();
-        URL url = null;
+        URL url;
         HttpURLConnection urlConnection = null;
 
         try {
@@ -79,7 +79,6 @@ public class SuperMarketFinder {
                 String lineIn;
                 while ((lineIn = placesReader.readLine()) != null) {
                     placesBuilder.append(lineIn);
-//                    Log.d(tag, lineIn);
                 }
             }
             else {
@@ -130,32 +129,27 @@ public class SuperMarketFinder {
 
     // Some code was taken from
     // http://code.tutsplus.com/tutorials/android-sdk-working-with-google-maps-google-places-integration--mobile-16054
-    public String createAPIsearchURL(int radius, String latitude, String longitude){
+    private String createAPIsearchURL(int radius, String latitude, String longitude){
 
         boolean sensorBool = false;
-//        String types = "grocery_or_supermarket";
         String APIdoorOpener = "AIzaSyDN4NL_3RZ7JFWhjW707eJ3I12omMxDt2Y";
         String languageCode = "nl";
         String keyWord = "supermarkt";
-//        String supportedSupermarkets = "spar|albert|vomar";
-//        String supportedSupermarkets = "aldi|deen|spar|coop|linders|agrimarkt|MCD|emte|Vomar|Jumbo|Broek|Boer|Edeka|penny|lidl|plus|C1000|hoogvliet|deka";
 
-        String placesSearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/" +
+        return  "https://maps.googleapis.com/maps/api/place/nearbysearch/" +
                 "json?location=" + latitude + "," + longitude +
                 "&radius=" + radius +
                 "&sensor=" + sensorBool +
-//                "&types=" + types +
                 "&key=" + APIdoorOpener +
                 "&language=" + languageCode +
-//                "&name=" + supportedSupermarkets +
                 "&keyword=" + keyWord +
                 "&rankby=prominence"
                 ;
-        return placesSearchURL;
     }
 
-    public List<SuperMarket> parseJSONsupermarketInfo(String JSONreturned){
-        JSONObject obj = null;
+    // This function transforms the JSON input intro a list of SuperMarket objects
+    private List<SuperMarket> parseJSONsupermarketInfo(String JSONreturned){
+        JSONObject obj;
         List<SuperMarket> superMarkets = new ArrayList<>();
         try {
             obj = new JSONObject(JSONreturned);
@@ -244,17 +238,16 @@ public class SuperMarketFinder {
 
     private void setDistancesToUser(){
         for (int i = 0; i < superMarkets.size(); i++){
-            Double distance = calculateDistance(Double.valueOf(location[0]),
+            superMarkets.get(i).distance = calculateDistance(Double.valueOf(location[0]),
                     Double.valueOf(location[1]), superMarkets.get(i).latitude,
                     superMarkets.get(i).longitude);
-            superMarkets.get(i).distance = distance;
         }
     }
 
     // This function aproximates the distance in km between to points on the earth
     // acurately for small distances. This is done using pythogoras.
     // The function was inspired by: http://www.movable-type.co.uk/scripts/latlong.html
-    public static Double calculateDistance(Double latitudeA, Double longitudeA, Double latitudeB, Double longitudeB){
+    private static Double calculateDistance(Double latitudeA, Double longitudeA, Double latitudeB, Double longitudeB){
 
         Integer R = 6371000; // radius of the earth in metres
         Double latInRadA = latitudeA * Math.PI / 180;

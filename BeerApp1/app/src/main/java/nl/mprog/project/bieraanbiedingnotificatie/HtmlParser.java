@@ -1,19 +1,9 @@
 package nl.mprog.project.bieraanbiedingnotificatie;
 
-/**
- * Created by Alex on 5-1-2016.
- * This class gets the dicount information from a site
- * and is able to return a list of DiscountObject's
- */
-
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-
 // Jsoup imports
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,13 +15,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Created by Alex on 5-1-2016.
+ * This class gets the dicount information from a site
+ * and is able to return a list of DiscountObject's. It does this by a Http request and parsing
+ * using the JSOUP library.
+ */
+
+
 public class HtmlParser {
 
     private static final String tag = "*C_htmlParse";
     private Context appContext;
     private Document doc;
     private String htmlURL = "http://www.bierindeaanbieding.nl/krattenindeaanbieding.html";
-    public List<DiscountObject> discountArray = new ArrayList<>();
+    private List<DiscountObject> discountArray = new ArrayList<>();
     private SuperMarketFinder superMarketFinder = new SuperMarketFinder(appContext);
     private static final HashMap supportedBrandsMap = new SupportedBrandsMap();
 
@@ -79,7 +77,7 @@ public class HtmlParser {
                 }
 
                 // Get the price
-                double price = 0;
+                double price;
                 Elements priceH2 = tableRows.get(3).child(1).child(0).children();
 
                 if (priceH2.size() == 2) {

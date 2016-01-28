@@ -1,33 +1,33 @@
 package nl.mprog.project.bieraanbiedingnotificatie;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
-import android.os.AsyncTask;
+
+/**
+ * Created by Alex on 6-1-2016.
+ *
+ * This is the screen that shows all currently known discounts. It has a fragment that the user
+ * can use to filter the discounts.
+ */
 
 public class AlleAanbiedingenActivity extends AppCompatActivity implements FilterFragment.OnFragmentInteractionListener {
 
     private static final String tag = "*C_AllDisc";
     private List<DiscountObject> discountArray = new ArrayList<>();
-    private List<DiscountObject> sortedAndFilteredList = new ArrayList<>();
 //    private HtmlParser htmlParser = new HtmlParser();
     private DataBaseHandler dataBaseHandler;
     private FilterAndSorter filterAndSorter = new FilterAndSorter();
@@ -80,7 +80,7 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
         topTV.setVisibility(View.GONE);
 
         // Filter and sort
-        sortedAndFilteredList = filterAndSorter.filterAndSort(sortOption, maxPrice, checkedBeerOptions, checkedSuperMarkets, discountArray);
+        List<DiscountObject> sortedAndFilteredList = filterAndSorter.filterAndSort(sortOption, maxPrice, checkedBeerOptions, checkedSuperMarkets, discountArray);
 
         Log.d(tag, "Lengte resultlist " + sortedAndFilteredList.size());
 
@@ -107,7 +107,7 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
         topTV.setBackground(getResources().getDrawable(R.drawable.notify_top_positive));
     }
 
-    public void initializeFragment() {
+    private void initializeFragment() {
         // Replace the empty holder in the layout file with the fragment, and hide it
         FilterFragment filterFragment = new FilterFragment();
         FragmentManager fragmentManager = getFragmentManager();
@@ -121,7 +121,7 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
         container.bringToFront();
     }
 
-    public void toggleFragment() {
+    private void toggleFragment() {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 

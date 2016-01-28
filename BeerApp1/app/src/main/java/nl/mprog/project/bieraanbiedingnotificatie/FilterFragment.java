@@ -1,9 +1,6 @@
 package nl.mprog.project.bieraanbiedingnotificatie;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -17,17 +14,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
-
 /**
+ * Created by Alex on 15-1-2016.
+ *
  * This is the fragment with filter options to filter the content of the allDiscounts activity
  */
+
 public class FilterFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemSelectedListener {
     private static final String tag = "*C_FilterFrag";
 
@@ -83,6 +78,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener,Ada
     public void onNothingSelected(AdapterView<?> arg0) {
     }
 
+    // This function transforms s string id into the correct int id
     private int getViewId(String id) {
         int resId = getActivity().getApplicationContext().getResources().getIdentifier(id, "id", "nl.mprog.project.bieraanbiedingnotificatie");
         if (resId != 0) {
@@ -131,21 +127,11 @@ public class FilterFragment extends Fragment implements View.OnClickListener,Ada
                 Log.d(tag, item);
             }
 
-//                Toast.makeText(this.getActivity(), "Niet alle velden zijn ingevuld", Toast.LENGTH_SHORT).show();
-//                return;
-//            editor.putBoolean("previousSettingsDetected", true);
-//            editor.putStringSet("favoBeersList", new HashSet(favoritesList));
-//            editor.putString("zipNumbers", zipCodenumbersET.getText().toString());
-//            editor.commit();
-
-//            // Use the fragment activity communication interface object to give the relevant
-//            // filter and sort options to the activity
             mListener.onFragmentInteraction(sortOptionSelected, maxPrice, checkedBeerOptions, checkedSuperMarkets);
-//            // Let the user now the settings are saved
-//        }
         }
     }
 
+    // This function inflates checkboxes and adds them to the layout
     private void addCheckboxesToLayout(View view) {
         SupportedSupermarketsMap supportedSupermarketsMap = new SupportedSupermarketsMap();
         List<String> chainNames = supportedSupermarketsMap.getChainNames();
@@ -169,7 +155,6 @@ public class FilterFragment extends Fragment implements View.OnClickListener,Ada
     private void addCheckBoxToLayout(LinearLayout targetLayout, String name, String id, View view){
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
         CheckBox checkBox = (CheckBox) inflater.inflate(R.layout.checkbox, null, false);
-//        CheckBox checkBox = new CheckBox(getActivity().getApplicationContext());
         checkBox.setText(name);
         checkBox.setId(getViewId(id));
         targetLayout.addView(checkBox);
@@ -192,18 +177,9 @@ public class FilterFragment extends Fragment implements View.OnClickListener,Ada
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    // This interface allows for communication with the Activity.
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(String sortOption, Double maxPrice, List<String> checkedBeerOptions, List<String> checkedSupermarkets);
+        void onFragmentInteraction(String sortOption, Double maxPrice, List<String> checkedBeerOptions, List<String> checkedSupermarkets);
     }
 
 }

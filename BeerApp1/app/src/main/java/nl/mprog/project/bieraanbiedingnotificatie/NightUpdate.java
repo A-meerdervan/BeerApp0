@@ -9,8 +9,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,7 +20,8 @@ import java.util.List;
 /**
  * Created by Alex on 20-1-2016.
  *
- * This class will update the discount information and send the user a notification when there is a new discount
+ * This class will update the discount information and send the user a notification when there is a new discount.
+ * It updates every night at 4:30. When the update failes it retries every 20 minutes.
  * code inspired by: http://www.sitepoint.com/scheduling-background-tasks-android/
  */
 public class NightUpdate extends BroadcastReceiver{
@@ -106,7 +105,8 @@ public class NightUpdate extends BroadcastReceiver{
         }
     }
 
-    public void setAlarmToRetry(Boolean setAlarm){
+    // This function sets the alarm to retry every 20 minutes, or it cancels that alarm
+    private void setAlarmToRetry(Boolean setAlarm){
 
         // Get the alarm system service and create a pending intent to open this class
         AlarmManager alarmManager;
@@ -128,7 +128,9 @@ public class NightUpdate extends BroadcastReceiver{
         }
     }
 
-    public List<DiscountObject> getDiscountsToNotifyAndUpdateDB(List<String> bareSuperMarkets, Double maxPrice, List<String> favoriteBeers){
+    // This function checks what discounts are new and have not been notified to the user yet.
+    // It then sends a notification about these.
+    private List<DiscountObject> getDiscountsToNotifyAndUpdateDB(List<String> bareSuperMarkets, Double maxPrice, List<String> favoriteBeers){
 
         List<DiscountObject> discountsNotifyArray = new ArrayList<>();
         // Set all notify flags to 0 in the database
@@ -177,7 +179,7 @@ public class NightUpdate extends BroadcastReceiver{
     }
 
     // This notification takes an array of discounts, and then sends a notification to the user
-    public void sendNotification(List<DiscountObject> discountsNotifyArray){
+    private void sendNotification(List<DiscountObject> discountsNotifyArray){
 
         // Only if the array has elements there is new information for the user
         if ( ! (discountsNotifyArray.size() == 0) ) {

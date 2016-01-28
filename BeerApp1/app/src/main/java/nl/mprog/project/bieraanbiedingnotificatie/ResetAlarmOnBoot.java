@@ -46,9 +46,6 @@ public class ResetAlarmOnBoot extends BroadcastReceiver{
         // Make the alarm fire once, now that the device has booted
         alarmManager.set(AlarmManager.RTC, System.currentTimeMillis(), alarmPendingIntent);
         // Set the alarm to fire comming night and then repeat after an interval of one day
-        // This commented line will set the alarm for now and then repeat, with an interval of 2 min
-//        alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), INTERVAL, alarmPendingIntent);
         alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);
-        Toast.makeText(appContext, "Alarm set again after boot.", Toast.LENGTH_SHORT).show();
     }
 }

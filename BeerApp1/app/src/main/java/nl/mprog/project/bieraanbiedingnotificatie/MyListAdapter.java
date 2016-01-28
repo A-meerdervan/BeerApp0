@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * Created by Alex on 25-1-2016.
+ * This class holds a custom ListView adapter that displays discount information, it is used in
+ * 3 activities
  */
 
 // This custom adapter class is made to fill the listview with discount information
@@ -22,7 +24,6 @@ import java.util.List;
         // constructor
         public MyListAdapter(List<DiscountObject> discountArray, Activity activity) {
             super(activity, R.layout.listview, discountArray);
-//            super(AlleAanbiedingenActivity.this, R.layout.listview, discountArray);
             this.discountArray = discountArray;
             this.activity = activity;
         }

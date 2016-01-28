@@ -11,24 +11,23 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Created by Alex on 20-1-2016.
+ *
+ * This Class holds a fragment that allows the user to set the settings that determine when a
+ * discoutn qualifies for a notification.
+ */
 
 public class NotificatieRegelActivity extends AppCompatActivity implements NotifyFragment.OnFragmentInteractionListener {
 
@@ -94,6 +93,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         };
     }
 
+    // This class gets the nearby supermarket and location information.
     private class CustomAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private String zipCode;
@@ -155,33 +155,26 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         }
     }
 
+    // There are multiple scenerio's where different messages are appropriate
     private void setTopMessageToUser(){
         SharedPreferences prefs = getSharedPreferences("NotifySettings", Context.MODE_PRIVATE);
         Boolean previousSettingsDetected = prefs.getBoolean("previousSettingsDetected", false);
         TextView introTV = (TextView)findViewById(R.id.introNotificationsTV);
         introTV.setVisibility(View.VISIBLE);
 
-//        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-//        RelativeLayout topLayout = (RelativeLayout)findViewById(R.id.notifyActivityTopRelLay);
-        if (previousSettingsDetected == false){
-//            TextView introTV = (TextView) inflater.inflate(R.layout.top_message_positive, null, false);
+        if ( ! previousSettingsDetected){
             introTV.setBackground(getResources().getDrawable(R.drawable.notify_top_positive));
-            introTV.setText("Als u op NOTIFY SETTINGS klikt kunt u uw bier voorkeuren instellen.");
-//            topLayout.addView(introTV);
+            introTV.setText("Als u op VOORKEUREN klikt kunt u instellen voor welke aanbieding u een notificatie wilt ontvangen.");
             return;
         }
         if (discountsNotifyArray.size() == 0){
-//            TextView introTV = (TextView) inflater.inflate(R.layout.top_message_negative, null, false);
             introTV.setBackground(getResources().getDrawable(R.drawable.notify_top_negative));
             introTV.setText("Op dit moment hebben de supermarkten niet wat u wilt,\n" +
                     "U kijgt een notificatie zodra dit wel zo is!");
-//            topLayout.addView(introTV);
             return;
         }
-//        TextView introTV = (TextView) inflater.inflate(R.layout.top_message_positive, null, false);
         introTV.setBackground(getResources().getDrawable(R.drawable.notify_top_positive));
         introTV.setText("Er zijn supermarkten die hebben wat u wilt!");
-//        topLayout.addView(introTV);
     }
 
     // This method receives settings information from the fragment:
@@ -205,7 +198,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
 
 // fragment related functions:
     // setup the fragment
-    public void initializeFragment() {
+    private void initializeFragment() {
         // Replace the empty holder in the layout file with the fragment, and hide it
         NotifyFragment notifyFragment = new NotifyFragment();
         FragmentManager fragmentManager = getFragmentManager();
@@ -220,7 +213,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
     }
 
     // This function toggle's the fragment with a fade in transition
-    public void toggleFragment() {
+    private void toggleFragment() {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -247,6 +240,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         }
     }
 
+    // AUTO GENERATED
     @Override
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();

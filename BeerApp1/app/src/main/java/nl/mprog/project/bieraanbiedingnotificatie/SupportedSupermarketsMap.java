@@ -134,8 +134,6 @@ public class SupportedSupermarketsMap extends HashMap {
         this.put("poiesz","poiesz");
         this.put("Poiesz","poiesz");
 
-//        this.put("","");
-//        this.put("","");
         // now create a backwards mapping
         backwardsSuperMarketMap = new HashMap<>();
         backwardsSuperMarketMap.put("albertheijn","Albert Heijn");

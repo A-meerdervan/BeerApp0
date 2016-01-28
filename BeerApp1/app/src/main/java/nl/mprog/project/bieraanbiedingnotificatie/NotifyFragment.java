@@ -22,8 +22,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 
 /**
  * This class creates a fragment in wich the user can specify about wich discounts he wants to
@@ -37,8 +35,6 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
     private static final String tag = "*C_NotifyFrag";
     private ArrayList<String> favoritesList = new ArrayList<>();
     private List<String> beerOptionsList = new ArrayList<>();
-    private boolean notInOnCreate = false;
-
     private OnFragmentInteractionListener mListener;
 
     public NotifyFragment() {
@@ -286,7 +282,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(String zipCode, int radius, Double maxPrice, List<String> favoriteBeers);
+        void onFragmentInteraction(String zipCode, int radius, Double maxPrice, List<String> favoriteBeers);
     }
 
 }

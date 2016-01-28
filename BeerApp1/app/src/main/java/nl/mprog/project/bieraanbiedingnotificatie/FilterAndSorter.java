@@ -87,7 +87,6 @@ public class FilterAndSorter {
     // This function sorts the the discounts on price, the cheapest come first
     public List<DiscountObject> sortOnPrice(List<DiscountObject> discountArray){
         int arraySize = discountArray.size();
-        DiscountObject discountObject;
         DiscountObject tempDiscount;
 
         for( int i = 0; i < arraySize; i++){

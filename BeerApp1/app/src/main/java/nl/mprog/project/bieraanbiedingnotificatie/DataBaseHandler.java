@@ -284,19 +284,6 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         db.execSQL(Query);
     }
 
-
-    // This function sets the notify flag of all the discounts from one supermarket to 1.
-    public void setFlagsBySuperMarket(String superMarket){
-        // get reference of the database
-        SQLiteDatabase db = this.getWritableDatabase();
-        String Query = "UPDATE " + TABLE_DISCOUNTS +
-                " SET " + DISCOUNT_NOTIFY_FLAG +
-                " = " + String.valueOf(1) +
-                " WHERE " + DISCOUNT_SUPERMARKT +
-                " = " + superMarket;
-        db.execSQL(Query);
-    }
-
     // This function gets the closest store of a store chain. The closest one has its flag set to 1.
     public SuperMarket getClosestStore(String chainName){
         // get reference of the database
@@ -363,35 +350,5 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         cursor.close();
         return discountsArray;
     }
-
-
-
-//    public int updatePlayer(Player player) {
-//
-//        // get reference of the BookDB database
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        // make values to be inserted
-//        ContentValues values = new ContentValues();
-//        values.put(PLAYER_NAME, player.Name); // get Name
-//        values.put(PLAYER_SCORE, player.Score); // get Score
-//
-//        // update
-//        int i = db.update(TABLE_DISCOUNTS, values, DISCOUNT_ID + " = ?", new String[] { String.valueOf(player.Id) });
-//
-//        db.close();
-//        return i;
-//    }
-
-//    // Deleting single player
-//    public void deletePlayer(Player player) {
-//        // get reference of the database
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        // delete player
-//        db.delete(TABLE_DISCOUNTS, DISCOUNT_ID + " = ?", new String[] { String.valueOf(player.Id)});
-//        db.close();
-//    }
-
 }
 

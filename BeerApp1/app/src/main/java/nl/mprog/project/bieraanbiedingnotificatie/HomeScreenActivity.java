@@ -15,16 +15,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Calendar;
 import java.util.List;
+
+/**
+ * Created by Alex on 15-1-2016.
+ *
+ * This class holds the homescreen. It has two buttons to navigate to the rest of the app.
+ * When it is fist started it sets a periodic alarm to update the app every night.
+ * If the user has not internet the first time this is app is started, no further navigation is
+ * possible and the user is asked to get an internet connection and then try again.
+ */
 
 public class HomeScreenActivity extends AppCompatActivity {
 
     private static final String tag = "*C_HomeAct";
-    // The refresh interval is one day, it refreshes each night at 4:30 AM
-    private static final long INTERVAL = 10 * 1000;
     private DataBaseHandler dataBaseHandler;
     private HtmlParser htmlParser;
 
@@ -45,8 +50,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         Boolean firstAppBoot = prefs.getBoolean("firstAppBoot", true);
         Boolean noSuccesfulUpdateYet = prefs.getBoolean("noSuccesfulUpdateYet", true);
         // Only set update alarm if it has not been set before
-        // TODO: Remove this line when done debugging
-//        firstAppBoot = true;
         if (firstAppBoot){
             // prevent the user from going to the next activities.
             Log.d(tag, "make buttons NOT clickable");
@@ -93,14 +96,12 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void onClickDiscountsButton(View view){
         // Go to the activity with all discounts
-        Log.d(tag, "voorrrrrr");
         startActivity(new Intent(getApplicationContext(), AlleAanbiedingenActivity.class));
-        Log.d(tag, "NAAAAAA");
     }
 
     // This function hides or shows a message that there is no internet, it also
     // enables or disables further navigation
-    public void showUserNoConnectionMessage(boolean show){
+    private void showUserNoConnectionMessage(boolean show){
         TextView TV = (TextView)findViewById(R.id.noConnectionTV);
         if (show){
             makeButtonsClickable(false);
@@ -138,14 +139,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, 30);
 
         // Set the alarm to fire comming night and then repeat after an interval of one day
-        // This commented line will set the alarm in 10 s, with an interval of 10 s
-//        alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() + INTERVAL, INTERVAL, alarmPendingIntent);
         alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmPendingIntent);
-//        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
         Log.d(tag, "FIRST BOOT, Periodic update alarm set!");
     }
 
-    public void showDialog(){
+    private void showDialog(){
         final AlertDialog.Builder winAlertBuilder = new AlertDialog.Builder(this);
         winAlertBuilder.setTitle("Oeps");
         winAlertBuilder.setMessage("Mogelijk heb je geen internet.\nStart de app opnieuw met internet aan");

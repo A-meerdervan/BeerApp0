@@ -20,7 +20,8 @@ import java.net.URL;
 /**
  * Created by Alex on 14-1-2016.
  *
- * This class transforms a Zipcode to a location in latitude and longitude.
+ * This class transforms a Zipcode to a location in latitude and longitude using the
+ * google geocoding API
  */
 
 public class AdresToLocation {
@@ -32,7 +33,6 @@ public class AdresToLocation {
     public AdresToLocation(Context context){
         this.appContext = context;
     }
-    private String[] location;
 
     // This function returns the location in lat, lng with a zipcode as input.
     // It does this using a HTTPS request to the google GeoCoding API
@@ -42,7 +42,7 @@ public class AdresToLocation {
 
         StringBuilder locationJSONBuilder = new StringBuilder();
 
-        URL url = null;
+        URL url;
         HttpURLConnection urlConnection = null;
 
         // Try to astablish a connection with google and request the location data
@@ -92,21 +92,20 @@ public class AdresToLocation {
 
 //        1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
 
-        String locationSearchURL = "https://maps.googleapis.com/maps/api/geocode/" +
+        return "https://maps.googleapis.com/maps/api/geocode/" +
                 "json?address=" + zipCode +
                 "&components=" + "country:" + countryCode +
                 "&key=" + APIdoorOpener +
                 "&language=" + languageCode
                 ;
-        return locationSearchURL;
     }
 
     // This function gets the Double latitude and longitude information from the JSON that google has sent.
-    public String[] parseJSONlocationInfo(String JSONreturned){
+    private String[] parseJSONlocationInfo(String JSONreturned){
         String[] location = new String[2];
         location[0] = "default";
         location[1] = "default2";
-        JSONObject obj = null;
+        JSONObject obj;
         try {
             obj = new JSONObject(JSONreturned);
             JSONArray subArray = obj.getJSONArray("results");
