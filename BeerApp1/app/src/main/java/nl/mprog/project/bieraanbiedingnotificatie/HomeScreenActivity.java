@@ -45,17 +45,17 @@ public class HomeScreenActivity extends AppCompatActivity {
         Boolean firstAppBoot = prefs.getBoolean("firstAppBoot", true);
         Boolean noSuccesfulUpdateYet = prefs.getBoolean("noSuccesfulUpdateYet", true);
         // Only set update alarm if it has not been set before
-        // TODO: deze regel hieronder verwijderen en het zootje hieronder incommenten
-        firstAppBoot = true;
+        // TODO: Remove this line when done debugging
+//        firstAppBoot = true;
         if (firstAppBoot){
-//            // prevent the user from going to the next activities.
-//            Log.d(tag, "make buttons NOT clickable");
-//            makeButtonsClickable(false);
-//            // Show loading spinner
-//            findViewById(R.id.loadSpinnerHomeAct).setVisibility(View.VISIBLE);
-//            // Get the discount data for the first time (on a separate thread)
-//            HtmlParseAsyncTask htmlParseAsyncTask = new HtmlParseAsyncTask();
-//            htmlParseAsyncTask.execute();
+            // prevent the user from going to the next activities.
+            Log.d(tag, "make buttons NOT clickable");
+            makeButtonsClickable(false);
+            // Show loading spinner
+            findViewById(R.id.loadSpinnerHomeAct).setVisibility(View.VISIBLE);
+            // Get the discount data for the first time (on a separate thread)
+            HtmlParseAsyncTask htmlParseAsyncTask = new HtmlParseAsyncTask();
+            htmlParseAsyncTask.execute();
             // This sets the task to update discount info every night
             setUpdateAndNotifyAlarm();
             // let the app now that next boot will not be the first
@@ -150,21 +150,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         winAlertBuilder.setTitle("Oeps");
         winAlertBuilder.setMessage("Mogelijk heb je geen internet.\nStart de app opnieuw met internet aan");
 
-//        // Create button to close the app
-//        winAlertBuilder.setNegativeButton("Sluit app", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                Log.d(tag, "CLick close app");
-//                ((Activity) getApplicationContext() ).finish();
-//            }
-//        });
-
-//        // sets an ok button that starts a new game without saving the score
-//        winAlertBuilder.setPositiveButton("Probeer opniew", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                Log.d(tag, "Click retry update");
-//
-//            }
-//        });
         AlertDialog winAlertDialog = winAlertBuilder.create();
         winAlertDialog.show();
     }
@@ -189,10 +174,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             } else {
                 dataBaseHandler.storeDiscounts(discountArray);
                 Log.d(tag, "first ever Update was SUCCESFUL");
-//                SharedPreferences prefs = getApplicationContext().getSharedPreferences();
-//                SharedPreferences.Editor editor = prefs.edit();
-//                editor.putBoolean("noSuccesfulUpdateYet", false);
-//                editor.commit();
             }
             return null;
         }

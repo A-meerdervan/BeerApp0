@@ -83,7 +83,7 @@ public class SuperMarketFinder {
                 }
             }
             else {
-                //TODO: Verzinnen wat er moet gebeuren als de connectie met places API niet werkt
+                //TODO: Take action when the connection with the google Places API does not work.
                 Log.d(tag, "De places API connectie had niet de Ok code van 200 dus is er geen data binnengehaald");
                 Log.d(tag, urlConnection.getResponseCode() + "");
             }

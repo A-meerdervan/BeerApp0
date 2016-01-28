@@ -61,19 +61,19 @@ public class AdresToLocation {
                 }
             }
             else {
-                //TODO: Verzinnen wat er moet gebeuren als de connectie met places API niet werkt
+                //TODO: Do something when the google places API is not working
                 Log.d(tag, "De places API connectie had niet de Ok code van 200 dus is er geen data binnengehaald");
                 Log.d(tag, urlConnection.getResponseCode() + "");
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            Log.d(tag, "De url klopt sws niet");
+            Log.d(tag, "The url is wrongly formatted");
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d(tag, "connectie wou niet openen");
-            // TODO: regel een toast ofzo dat ze geen internet hebben miss?
+            Log.d(tag, "The connection to the google Geolocation API would not open");
+            // TODO: Show the user something to let them now there is an internet problem
         } catch (Exception e){
-            Log.d(tag, "Er ging iets mis in de input lezen");
+            Log.d(tag, "Something went wrong when reading the input");
             Log.d(tag, e.toString());
         }
         finally {
@@ -100,8 +100,6 @@ public class AdresToLocation {
                 ;
         return locationSearchURL;
     }
-
-    // TODO: iets inbouwen voor wanneer google het geen goed adres vind, of de internet connectie niet werkt ofzo
 
     // This function gets the Double latitude and longitude information from the JSON that google has sent.
     public String[] parseJSONlocationInfo(String JSONreturned){

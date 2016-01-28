@@ -5,14 +5,21 @@
 **Vr 25-1-13**  
 Doelen van de dag:  
 Gedaan: 
+
 **Do 25-1-13**  
 Doelen van de dag:  
 Verslag inleveren.
 Gedaan: 
+Erachter gekomen dat de app snachts zichzelf niet heeft geupdate. Ik ben nu bezig de bug te proberen te vinden.
+
+
+
 **Wo 25-1-13**  
 Doelen van de dag:  
-Verslag maken, beetje code kwaliteit
+De app mooier maken, en de gebruikers ervaring meer gestroomlijnd. App laten testen door mensen en feedback verkrijgen. Deze feedback vervolgens verwerken.
+
 Gedaan: 
+Verder gewerkt aan het UI design van de app, de juiste text berichten sturen in de juiste gevallen, zoals dat het filter geen resultaten heeft opgeleverd. Na aandringen van mensen het invoeren van de afstand tot een supermarkt in meters veranderd naar kilometers. 
 
 **Di 25-1-13**  
 Doelen van de dag:  

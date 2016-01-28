@@ -43,7 +43,7 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
 
         // Show loading spinner
         findViewById(R.id.loadSpinnerAllDisc).setVisibility(View.VISIBLE);
-        // TODO: fixen dat de spinner in beeld komt tijdens het laden.  populateListVIew stond hier om te testen
+        // TODO: The spinner is not shown while loading, this should be resolved.
 
         // Get the discounts from the database and sort the discounts on price
         discountArray = dataBaseHandler.getAllDiscounts();
@@ -70,7 +70,7 @@ public class AlleAanbiedingenActivity extends AppCompatActivity implements Filte
     // And filters the discounts and then updates the listview.
     @Override
     public void onFragmentInteraction(String sortOption, Double maxPrice, List<String> checkedBeerOptions, List<String> checkedSuperMarkets) {
-        // TODO: Zorgen dat de fragment nice opzij swiped
+        // TODO: have the fragment swipe away and in
         // Hide the fragment to show loading spinner
         toggleFragment();
 

@@ -100,7 +100,6 @@ public class HtmlParser {
                 // get the discount period
                 String discountPeriod = tableRows.get(5 + possibleOfset).child(0).html();
                 // get the price per liter
-                // TODO: FIX THE ERROR HERE
                 String pricePerLiterString = tableRows.get(6 + possibleOfset).child(1).html().substring(2);
                 String[] priceParts = pricePerLiterString.split(",");
                 pricePerLiterString = priceParts[0] + "." + priceParts[1];
@@ -147,28 +146,12 @@ public class HtmlParser {
         // Creates an explicit intent for an Activity in your app
         // TODO: send an intent to the activity where the user is asked to go to the google play
         // TODO: page and send a bugreport
-//            Intent resultIntent = new Intent(appContext, NotificatieRegelActivity.class);
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
-//            TaskStackBuilder stackBuilder = TaskStackBuilder.create(appContext);
-        // Adds the back stack for the Intent (but not the Intent itself)
-//            stackBuilder.addParentStack(NotificatieRegelActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-//            stackBuilder.addNextIntent(resultIntent);
-//            PendingIntent resultPendingIntent =
-//                    stackBuilder.getPendingIntent(
-//                            0,
-//                            PendingIntent.FLAG_UPDATE_CURRENT
-//                    );
 
         Notification notification = new Notification.Builder(appContext)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setSmallIcon(android.R.drawable.stat_notify_more)
                 .setShowWhen(false)
-//                    .setContentIntent(resultPendingIntent)
                 .setOngoing(false)
                 .setAutoCancel(true)
                 .build();

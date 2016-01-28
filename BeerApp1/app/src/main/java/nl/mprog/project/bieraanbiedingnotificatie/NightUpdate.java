@@ -42,8 +42,6 @@ public class NightUpdate extends BroadcastReceiver{
     public void onReceive(Context appContext, Intent arg1) {
         this.appContext = appContext;
         dataBaseHandler = new DataBaseHandler(appContext);
-        // TODO: Deze regel weghalen:
-        sendNotification(new ArrayList<DiscountObject>());
         // Get the discounts on a new thread
         CustomAsyncTask customAsyncTask = new CustomAsyncTask();
         customAsyncTask.execute();
@@ -147,7 +145,6 @@ public class NightUpdate extends BroadcastReceiver{
                     && (newDiscount.price < maxPrice )
                     && (favoriteBeers.contains(newDiscount.brandPrint)) ){
                 // Set the notify flag of the disount objects
-                // TODO: checken of dit werkt, eerst was het newDiscountArray.get(i)
                 newDiscount.notificationFlag = 1;
                 // If the discount is new; add to notify array to inform user
                 if (discountIsNew(newDiscount)){
@@ -160,7 +157,6 @@ public class NightUpdate extends BroadcastReceiver{
             }
         }
         // Udate de dataBase with the newly flagged discounts
-        // TODO: per id een update doen in plaats van de hele DB te verwijderen en weer op te bouwen (dan kun je de discountarr = .getAllDIscounts regel hierboven ook weghalen)
         dataBaseHandler.storeDiscounts(newDiscountArray);
         return discountsNotifyArray;
     }
@@ -182,10 +178,9 @@ public class NightUpdate extends BroadcastReceiver{
 
     // This notification takes an array of discounts, and then sends a notification to the user
     public void sendNotification(List<DiscountObject> discountsNotifyArray){
-        // Only if the array has elements there is new information for the user
-        // TODO: de if statement in commenten:!
 
-//        if ( ! (discountsNotifyArray.size() == 0) ) {
+        // Only if the array has elements there is new information for the user
+        if ( ! (discountsNotifyArray.size() == 0) ) {
             // Give notification
             // Code inspired by: http://developer.android.com/guide/topics/ui/notifiers/notifications.html#Removing
             // Add the specific discount info to the notification title
@@ -215,20 +210,17 @@ public class NightUpdate extends BroadcastReceiver{
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
 
-            Bitmap largeIcon = BitmapFactory.decodeResource(appContext.getResources(), R.drawable.bredergrijspngsmallicon);
             Notification notification = new Notification.Builder(appContext)
                     .setContentTitle(title)
                     .setContentText(body)
-                            .setSmallIcon(R.drawable.bredergrijspngsmallicon)
-                                    .setLargeIcon(largeIcon)
-//                    .setSmallIcon(android.R.drawable.stat_notify_more)
+                            .setSmallIcon(R.drawable.notifyicon)
                     .setShowWhen(false)
                     .setContentIntent(resultPendingIntent)
                     .setOngoing(false)
                     .setAutoCancel(true)
                     .build();
             notificationManager.notify(0, notification);
-//        }
+        }
 
     }
 }

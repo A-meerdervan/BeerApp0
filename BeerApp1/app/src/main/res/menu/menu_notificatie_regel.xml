@@ -4,7 +4,7 @@
     tools:context="nl.mprog.project.bieraanbiedingnotificatie.NotificatieRegelActivity">
 
     <item android:id="@+id/notifyOption"
-        android:title="Notify settings"
+        android:title="Voorkeuren"
         android:orderInCategory="100"
         app:showAsAction="always"
         android:textAllCaps="false">

@@ -62,9 +62,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         setTopMessageToUser();
         populateListView();
 
-        // TODO: dit weghalen
-//        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.notifyActivityTopRelLay);
-//        relativeLayout.setClickable(false);
     }
 
     private void populateListView() {
@@ -149,7 +146,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
                 }
             }
             // Udate de dataBase with the newly flagged discounts
-            // TODO: per id een update doen in plaats van de hele DB te verwijderen en weer op te bouwen (dan kun je de discountarr = .getAllDIscounts regel hierboven ook weghalen)
             dataBaseHandler.storeDiscounts(discountArray);
 
             // Stop the loading spinner, fill the listview with results and update the top message
@@ -197,7 +193,7 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         // hide the top status textview
         findViewById(R.id.introNotificationsTV).setVisibility(View.GONE);
 
-        // TODO: Zorgen dat de fragment nice opzij swiped
+        // TODO: Make the fragment swipe away and in
         // Hide the fragment to show loading spinner
         toggleFragment();
 
@@ -230,6 +226,8 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         Fragment fragment = fragmentManager.findFragmentByTag("notifySettings");
+        // TODO: For some reason the fragment does not fade in or out, while it uses the same
+        // code as the other FilterFragment class.
         if (fragment.isVisible()) {
             transaction
                     .hide(fragment)
@@ -239,7 +237,6 @@ public class NotificatieRegelActivity extends AppCompatActivity implements Notif
             list.setOnItemClickListener(onListClickListener);
         } else {
             transaction
-                    // TODO: checken of dit wel goed gaat, ik heb net van ani of anim -> animator gemaakt bij fade out.
                     .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                     .show(fragment)
                     .addToBackStack("notifySettings")

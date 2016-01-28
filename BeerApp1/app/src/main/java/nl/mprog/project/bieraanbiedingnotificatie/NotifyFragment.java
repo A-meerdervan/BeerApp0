@@ -26,51 +26,20 @@ import java.util.Set;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NotifyFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NotifyFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * This class creates a fragment in wich the user can specify about wich discounts he wants to
+ * notified. The user can specify his favorite beers, his location by means of a zipcode,
+ * maximum distance to a supermarket and the maximum price for a krate.
  */
 
-//public class NotifyFragment extends android.support.v4.app.Fragment {
-// TODO: deze regel gebruiken en kijken of het ook chill werkt:
 public class NotifyFragment extends Fragment implements View.OnClickListener,OnItemSelectedListener {
 
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String tag = "*C_NotifyFrag";
     private ArrayList<String> favoritesList = new ArrayList<>();
     private List<String> beerOptionsList = new ArrayList<>();
     private boolean notInOnCreate = false;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NotifyFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NotifyFragment newInstance(String param1, String param2) {
-        NotifyFragment fragment = new NotifyFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public NotifyFragment() {
         // Required empty public constructor
@@ -79,11 +48,6 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-        }
     }
 
     // Code inspired by: http://weimenglee.blogspot.nl/2013/08/android-tip-handling-events-in-fragment.html
@@ -131,7 +95,9 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
             zipCodeLettersET.setText(zipLetters);
             zipCodeNumbersET.setText(zipNumbers);
             Double radiusKM = (Double.parseDouble(radius))/1000;
-            radiusET.setText(String.format("%.2f", radiusKM));
+            // the .format function produces a number with a "," but .parseDouble only takes "."
+            String[] radiusParts = String.format("%.2f", radiusKM).split(",");
+            radiusET.setText(radiusParts[0] + "." + radiusParts[1]);
             maxPriceET.setText(maxPrice);
         }
 
@@ -167,7 +133,6 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
         }
     }
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
     }
 
     private void addFavoriteToLayout(String beerTitle, View view){
@@ -191,18 +156,11 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
                 v.setVisibility(View.GONE);
                 Log.d(tag, "voor verwijderen " + favoritesList.size());
                 favoritesList.remove( ( (TextView)( ((LinearLayout) v).getChildAt(0)) ).getText().toString());
-                // TODO: ook verwijderen uit shared prefs en uit de array ?
-                Log.d(tag, "favorites list lengte is nu" + favoritesList.size());
+                // TODO: Maybe the item should be removed in the shared preffrences directly,
+                // now the change is only saved if the user presses the screen top button.
                 return true;
             }
         });
-        // TODO: Dit stond hier om te hebben dat het item highlight zolang ie ingedrukt is, maar nu maakt ie m gewoon permanent grijs
-//            newLayout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    v.setBackgroundColor(getActivity().getResources().getColor(R.color.MainBackgroundColor));
-//                }
-//            });
 
         // fill the text of the new Textview and add it to the layout in the activity
         favoBeer.setText(beerTitle);
@@ -282,8 +240,6 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
             editor.putString("zipLetters", zipCodeLettersET.getText().toString());
             editor.putString("maxPrice", maxPrice.toString());
             editor.putString("radius", String.valueOf(radius));
-            // TODO: de bieren opslaan
-            // editor.putString()
             editor.commit();
             // Use the fragment activity communication interface object to give the relevant
             // settings to the activity
@@ -330,10 +286,7 @@ public class NotifyFragment extends Fragment implements View.OnClickListener,OnI
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(String zipCode, int radius, Double maxPrice, List<String> favoriteBeers);
-
-        //TODO: meer methods toevoegen
     }
 
 }

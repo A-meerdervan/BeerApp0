@@ -18,9 +18,6 @@ import java.util.Calendar;
  */
 public class ResetAlarmOnBoot extends BroadcastReceiver{
 
-    // The refresf interval is every TODO: zeg de juiste, nu 2 min maar graag 1 dag
-    private static final Integer INTERVAL = 2 * 60 * 1000;
-
     @Override
     public void onReceive(Context appContext, Intent intent) {
         Toast.makeText(appContext, "In onreceive after boot", Toast.LENGTH_SHORT).show();

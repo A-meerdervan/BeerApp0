@@ -3,8 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_notificatie_regel">Persoonlijk aanbod</string>
-    <string name="title_activity_alle_aanbiedingen">Alle Aanbiedingen</string>
+    <string name="title_activity_notificatie_regel"></string>
+    <string name="title_activity_alle_aanbiedingen">Alle aanbiedingen</string>
     <string name="title_activity_nav">nav</string>
 
     <string name="title_section1">Section 1</string>
