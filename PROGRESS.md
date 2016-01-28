@@ -4,14 +4,16 @@
 
 **Vr 25-1-13**  
 Doelen van de dag:  
-Gedaan: 
+Voorbereiden op het geven van een demo, en die geven.
+Gedaan:  
+De demo gegeven en daarvoor voorbereid.
 
 **Do 25-1-13**  
 Doelen van de dag:  
-Verslag inleveren.
-Gedaan: 
-Erachter gekomen dat de app snachts zichzelf niet heeft geupdate. Ik ben nu bezig de bug te proberen te vinden.
+Verslag maken en het verslag inleveren. Een icoontje voor de app maken.
 
+Gedaan: 
+Gewerkt aan het creeren van een logo voor de app, een icoontje om weer te geven onder apps in de telefoon. Hiervoor is heb ik het gratis programma Paint.net gedownload. Er is met succes een icoontje gemaakt. Daarna heb ik een icoontje gemaakt voor naast een notificatie van de app.
 
 
 **Wo 25-1-13**  
@@ -19,7 +21,7 @@ Doelen van de dag:
 De app mooier maken, en de gebruikers ervaring meer gestroomlijnd. App laten testen door mensen en feedback verkrijgen. Deze feedback vervolgens verwerken.
 
 Gedaan: 
-Verder gewerkt aan het UI design van de app, de juiste text berichten sturen in de juiste gevallen, zoals dat het filter geen resultaten heeft opgeleverd. Na aandringen van mensen het invoeren van de afstand tot een supermarkt in meters veranderd naar kilometers. 
+Verder gewerkt aan het UI design van de app, de juiste text berichten sturen in de juiste gevallen, zoals dat het filter geen resultaten heeft opgeleverd. Na aandringen van mensen, het invoeren van de afstand tot een supermarkt in meters veranderd naar kilometers. Ook is het nu zo dat als je naast een fragment klikt, de fragment weer gesloten word. 
 
 **Di 25-1-13**  
 Doelen van de dag:  

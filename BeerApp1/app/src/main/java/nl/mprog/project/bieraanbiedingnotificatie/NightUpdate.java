@@ -54,7 +54,7 @@ public class NightUpdate extends BroadcastReceiver{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(appContext, "I'm updating", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(appContext, "I'm updating", Toast.LENGTH_SHORT).show();
         }
 
         @Override
