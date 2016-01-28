@@ -61,19 +61,19 @@ Warsteiner
 De het startscherm is screenshot A. in figuur 1. De gebruiker heeft twee keuzes, of klikken op persoonlijke aanbiedingen of op de alle aanbiedingen . De app bestaat dan ook uit twee delen. Het eerste is om in te stellen welke aanbiedingen in aanmerking komen voor een notificatie en de huidige aanbiedingen die daar aan voldoen weer te geven.  
 Klikken brengt men naar screenshot B. Rechtsboven kan met klikken op de voorkeuren knop, wat leid tot screenshot C. Hier kan de gebruiker zijn voorkeuren instellen.   
 
-![Alt text](/doc/homeScreen.png)  
+![Alt text](/doc/homeScreenklein.png)  
 *Figuur 1. Screenshot A. Het thuis scherm*  
 
-![Alt text](/doc/notify.png)  
+![Alt text](/doc/notifyklein.png)  
 *Figuur 1. Screenshot B. Het notificatie overzicht*  
 
-![Alt text](/doc/voorkeuren.png)  
+![Alt text](/doc/voorkeurenklein.png)  
 *Figuur 1. Screenshot C. De voorkeuren*  
 
-![Alt text](/doc/alleAanbiedingen.png)  
+![Alt text](/doc/alleAanbiedingenklein.png)  
 *Figuur 1. Screenshot D. Het overzicht van alle aanbiedingen*  
 
-![Alt text](/doc/filterFragment.png)  
+![Alt text](/doc/filterFragmentklein.png)  
 *Figuur 1. Screenshot E. Het filter voor alle aanbiedingen.*  
   
 #### Externe afhankelijkheden
